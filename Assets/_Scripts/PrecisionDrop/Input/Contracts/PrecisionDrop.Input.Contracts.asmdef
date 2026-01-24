@@ -1,0 +1,14 @@
+{
+    "name": "PrecisionDrop.Input.Contracts",
+    "rootNamespace": "PrecisionDrop.Input.Contracts",
+    "references": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
