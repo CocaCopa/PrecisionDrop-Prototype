@@ -1,0 +1,17 @@
+{
+    "name": "PrecisionDrop.Platforms.Unity",
+    "rootNamespace": "PrecisionDrop.Platforms.Unity",
+    "references": [
+        "CocaCopa.Primitives",
+        "PrecisionDrop.Platforms.Contracts"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
