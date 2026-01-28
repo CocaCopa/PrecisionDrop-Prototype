@@ -10,7 +10,7 @@ namespace PrecisionDrop.LevelManagment.Unity {
         private IPlatformBuilder Builder {
             get {
                 if (!platformBuilder.TryGetComponent<IPlatformBuilder>(out var builder)) {
-                    throw new Exception($"GameObject '{platformBuilder.name}' does not contain a component implementing IPlatformBuilder");
+                    throw new Exception($"GameObject '{platformBuilder.name}' does not contain a component implementing {nameof(IPlatformBuilder)}");
                 }
                 return builder;
             }

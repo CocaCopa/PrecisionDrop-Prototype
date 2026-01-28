@@ -4,19 +4,17 @@ using RangeInt = CocaCopa.Primitives.RangeInt;
 
 namespace PrecisionDrop.Platforms.Unity {
     internal sealed class PlatformBuilder : MonoBehaviour, IPlatformBuilder {
+        [SerializeField] private GameObject platformsHolder;
         [SerializeField] private GameObject platformPrefab;
-        [SerializeField] private string holderName = "PlatformsHolder";
         [SerializeField, Range(1, 64)] private int segments = 36;
         [Tooltip("The gap between each platform.")]
         [SerializeField] private float platformGap;
 
-        private GameObject holderObj;
         private float prevPlatformGap;
 
         private void Awake() {
             prevPlatformGap = 0f;
-            holderObj = new GameObject(holderName);
-            holderObj.transform.parent = transform;
+            platformsHolder.transform.SetParent(transform);
         }
 
         public void Create(PlatformConfig config) {
@@ -27,7 +25,7 @@ namespace PrecisionDrop.Platforms.Unity {
                 if (InZone(i, config.gapPositions)) { continue; }
 
                 bool isDanger = InZone(i, config.dangerPositions);
-                GameObject platformObj = Instantiate(platformPrefab, holderObj.transform);
+                GameObject platformObj = Instantiate(platformPrefab, platformsHolder.transform);
                 platformObj.transform.localPosition = Vector3.zero;
                 platformObj.transform.localPosition += Vector3.down * prevPlatformGap;
                 platformObj.transform.localEulerAngles = euler + extraRotation;
