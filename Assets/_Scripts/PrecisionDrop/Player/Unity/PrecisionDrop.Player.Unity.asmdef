@@ -1,0 +1,17 @@
+{
+    "name": "PrecisionDrop.Player.Unity",
+    "rootNamespace": "PrecisionDrop.Player.Unity",
+    "references": [
+        "CocaCopa.Core",
+        "PrecisionDrop.Input.Contracts"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
