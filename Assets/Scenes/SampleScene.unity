@@ -267,9 +267,9 @@ Camera:
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
-    y: 0.08928573
+    y: 0.089743584
     width: 1
-    height: 0.82142854
+    height: 0.82051283
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 54.47975
@@ -541,7 +541,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 479435872}
   serializedVersion: 5
-  m_Mass: 20
+  m_Mass: 1
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -573,9 +573,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Gravity
   source: 1
-  localGravity: {x: 0, y: -9.81, z: 0}
-  maxMagnitude: 0
-  useAccelerationMode: 0
+  localGravity: {x: 0, y: -40, z: 0}
+  maxFallSpeed: 15
   gravityUp:
     curve:
       serializedVersion: 2
@@ -601,8 +600,8 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    curveOffset: 0
-    duration: 0
+    curveOffset: 30
+    duration: 0.5
   gravityDown:
     curve:
       serializedVersion: 2
@@ -628,7 +627,7 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    curveOffset: 0
+    curveOffset: 30
     duration: 0
   upMultiplier: 0
   downMultiplier: 0
@@ -644,7 +643,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 034e0de34b49fa2449ec2d3d51452c7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PrecisionDrop.Player.Unity.PlayerSphere
-  jumpStrength: 10
+  jumpStrength: 15
 --- !u!1 &555026528
 GameObject:
   m_ObjectHideFlags: 0
