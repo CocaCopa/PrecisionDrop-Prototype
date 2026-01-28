@@ -8,8 +8,7 @@ namespace CocaCopa.Unity.Components.EditorTools {
     internal sealed class DynamicGravityEditor : Editor {
         private SerializedProperty source;
         private SerializedProperty localGravity;
-        private SerializedProperty maxMagnitude;
-        private SerializedProperty useAccelerationMode;
+        private SerializedProperty maxFallSpeed;
         private SerializedProperty gravityUp;
         private SerializedProperty gravityDown;
         private SerializedProperty upMultiplier;
@@ -30,8 +29,7 @@ namespace CocaCopa.Unity.Components.EditorTools {
         private void FindProperties() {
             source = serializedObject.FindProperty(nameof(source));
             localGravity = serializedObject.FindProperty(nameof(localGravity));
-            maxMagnitude = serializedObject.FindProperty(nameof(maxMagnitude));
-            useAccelerationMode = serializedObject.FindProperty(nameof(useAccelerationMode));
+            maxFallSpeed = serializedObject.FindProperty(nameof(maxFallSpeed));
             gravityUp = serializedObject.FindProperty(nameof(gravityUp));
             gravityDown = serializedObject.FindProperty(nameof(gravityDown));
             upMultiplier = serializedObject.FindProperty(nameof(upMultiplier));
@@ -47,7 +45,6 @@ namespace CocaCopa.Unity.Components.EditorTools {
             EditorGUI.BeginChangeCheck();
             DrawMainSettings();
             DrawScaleSettings();
-            DrawAdvancedSettings();
             if (EditorGUI.EndChangeCheck()) {
                 SaveEditorPrefs();
             }
@@ -65,9 +62,9 @@ namespace CocaCopa.Unity.Components.EditorTools {
             }
             else { EditorGUILayout.PropertyField(localGravity); }
             EditorGUI.indentLevel--;
+            EditorGUILayout.PropertyField(maxFallSpeed);
             using (new EditorGUI.DisabledGroupScope(true)) {
-                EditorGUILayout.LabelField("Not Implemented:");
-                EditorGUILayout.PropertyField(maxMagnitude);
+                EditorGUILayout.FloatField("Current Speed", attachedRb.linearVelocity.magnitude);
             }
 
             EditorGUILayout.Space(10f);
@@ -112,13 +109,6 @@ namespace CocaCopa.Unity.Components.EditorTools {
                 }
                 EditorGUI.indentLevel--;
             }
-        }
-
-        private void DrawAdvancedSettings() {
-            EditorGUILayout.LabelField("Advanced Settings", EditorStyles.boldLabel);
-            EditorGUILayout.PropertyField(useAccelerationMode);
-
-            EditorGUILayout.Space(10f);
         }
 
         private void SaveEditorPrefs() {
