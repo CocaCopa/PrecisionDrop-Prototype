@@ -3,6 +3,7 @@ namespace CocaCopa.Core.Animation {
     /// Provides smooth value interpolation between two scalar values using a configurable easing function.
     /// </summary>
     public sealed class ValueAnimator {
+        private readonly AnimatorMode mode;
         private readonly IEasing easing;
         private readonly float from;
         private readonly float to;
@@ -24,7 +25,8 @@ namespace CocaCopa.Core.Animation {
         /// <summary>
         /// Private constructor. Use <see cref="BySpeed"/> or <see cref="ByDuration"/> to create instances.
         /// </summary>
-        private ValueAnimator(float from, float to, float speed, IEasing easing) {
+        private ValueAnimator(AnimatorMode mode, float from, float to, float speed, IEasing easing) {
+            this.mode = mode;
             this.from = from;
             this.to = to;
             this.speed = defaultSpeed = speed; // normalized progress per second
@@ -45,7 +47,7 @@ namespace CocaCopa.Core.Animation {
         /// <param name="easing">The easing function used to shape the interpolation curve.</param>
         /// <returns>A new <see cref="ValueAnimator"/> instance configured with the specified speed.</returns>
         public static ValueAnimator BySpeed(float from, float to, float speed, IEasing easing) {
-            return new ValueAnimator(from, to, speed, easing);
+            return new ValueAnimator(AnimatorMode.Speed, from, to, speed, easing);
         }
 
         /// <summary>
@@ -54,15 +56,15 @@ namespace CocaCopa.Core.Animation {
         /// </summary>
         /// <param name="from">The starting value of the animation.</param>
         /// <param name="to">The target value of the animation.</param>
-        /// <param name="durationSeconds">The total duration, in seconds, the animation should take to reach completion.</param>
+        /// <param name="durationSeconds">The total duration, in seconds, the animation should take to reach completion. Values <= 0 result in a snap</param>
         /// <param name="easing">The easing function used to shape the animation curve.</param>
         /// <returns>
         /// A new <see cref="ValueAnimator"/> instance whose speed is automatically calculated so that
         /// progress reaches 1.0 exactly after <paramref name="durationSeconds"/> seconds.
         /// </returns>
         public static ValueAnimator ByDuration(float from, float to, float durationSeconds, IEasing easing) {
-            float spd = durationSeconds <= 0f ? 1f : 1f / durationSeconds;
-            return new ValueAnimator(from, to, spd, easing);
+            float spd = durationSeconds <= 0f ? 0f : 1f / durationSeconds;
+            return new ValueAnimator(AnimatorMode.Duration, from, to, spd, easing);
         }
 
         public void OverrideSpeed(float newSpeed) => speed = newSpeed;
@@ -99,7 +101,9 @@ namespace CocaCopa.Core.Animation {
 
         private float Step(float deltaTime, bool clamp) {
             if (!paused && deltaTime > 0f) {
-                t += speed * deltaTime;
+                if (speed > 0f) { t += speed * deltaTime; }
+                else { t = mode == AnimatorMode.Duration ? 1f : 0f; }
+
                 if (clamp) t = MathUtils.Clamp01(t);
             }
 
@@ -107,6 +111,11 @@ namespace CocaCopa.Core.Animation {
             return clamp
                 ? MathUtils.Lerp(from, to, curvedT)
                 : MathUtils.LerpUnclamped(from, to, curvedT);
+        }
+
+        private enum AnimatorMode {
+            Speed,
+            Duration
         }
     }
 }
