@@ -4,10 +4,10 @@ using UnityEngine.InputSystem;
 
 namespace PrecisionDrop.Input.Unity {
     internal sealed class UnityInput : MonoBehaviour, IInputSource {
-        [SerializeField, Min(0f)] private float mouseSensitivity;
+        [SerializeField, Min(0f)] private float mouseSensitivity = 1f;
 
         public bool IsHolding { get; private set; }
-        public Vector2 MouseDragDelta => IsHolding ? playerActions.Player.LeftMouseDrag.ReadValue<Vector2>() : Vector2.zero;
+        public Vector2 MouseDragDelta => IsHolding ? playerActions.Player.LeftMouseDrag.ReadValue<Vector2>() * mouseSensitivity : Vector2.zero;
 
         private PlayerInputActions playerActions;
 
@@ -27,11 +27,6 @@ namespace PrecisionDrop.Input.Unity {
             playerActions.Player.ClickHold.canceled -= OnRelease;
 
             playerActions.Player.Disable();
-        }
-
-        public Vector2 ConsumeDragDelta() {
-            var d = MouseDragDelta;
-            return d;
         }
 
         private void OnPress(InputAction.CallbackContext _) {
