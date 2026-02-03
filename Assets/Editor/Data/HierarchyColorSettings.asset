@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d124ddfa770988440b8649bd0668b23a, type: 3}
   m_Name: HierarchyColorSettings
   m_EditorClassIdentifier: CocaCopa.EditorUtils.HierarchyColoring::CocaCopa.EditorUtils.HierarchyColoring.HierarchyColorConfig
-  targetString: ----
+  targetString: '-'
   fontColor: {r: 0, g: 1, b: 0.04102564, a: 1}
   backgroundColor: {r: 0.21960784, g: 0.21960784, b: 0.21960784, a: 1}
   fontStyle: 3
