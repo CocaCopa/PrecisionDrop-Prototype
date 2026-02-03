@@ -1,0 +1,21 @@
+{
+    "name": "PrecisionDrop.App.Unity",
+    "rootNamespace": "PrecisionDrop.App.Unity",
+    "references": [
+      "PrecisionDrop.Platforms.Contracts",
+      "PrecisionDrop.Platforms.Unity",
+      "PrecisionDrop.LevelManagment.Unity",
+      "PrecisionDrop.GameFlow.Unity",
+      "PrecisionDrop.GameFlow.Contracts",
+      "PrecisionDrop.Player.Unity"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
