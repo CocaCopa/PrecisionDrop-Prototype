@@ -1,0 +1,30 @@
+using System;
+using PrecisionDrop.Platforms.Contracts;
+using UnityEngine;
+
+namespace PrecisionDrop.Platforms.Unity {
+    internal sealed class PlatformEventBus : MonoBehaviour, IPlatformEventBus {
+        [SerializeField] private PlatformBuilder builder;
+
+        public event Action OnPlatformPassed;
+        public event Action OnPlatformCollision;
+
+        private void Awake() {
+            builder.OnPlatformGenerated += Builder_OnPlatformGenerated;
+        }
+
+        private void Builder_OnPlatformGenerated(Platform platform) {
+            platform.OnPassedPlatform += Platform_OnPassedPlatform;
+            platform.OnCollidedPlatform += Platform_OnCollidedPlatform;
+        }
+
+        private void Platform_OnPassedPlatform(Platform platform) {
+            platform.OnPassedPlatform -= Platform_OnPassedPlatform;
+            OnPlatformPassed?.Invoke();
+        }
+
+        private void Platform_OnCollidedPlatform(Platform platform) {
+            OnPlatformCollision?.Invoke();
+        }
+    }
+}
