@@ -3,7 +3,10 @@
     "rootNamespace": "PrecisionDrop.Player.Unity",
     "references": [
         "CocaCopa.Core",
-        "PrecisionDrop.Input.Contracts"
+        "PrecisionDrop.Input.Contracts",
+        "PrecisionDrop.Player.Contracts",
+        "PrecisionDrop.Platforms.Contracts",
+        "PrecisionDrop.GameFlow.Contracts"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
