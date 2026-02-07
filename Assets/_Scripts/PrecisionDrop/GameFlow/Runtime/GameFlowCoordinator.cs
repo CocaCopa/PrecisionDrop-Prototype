@@ -1,9 +1,11 @@
 using System;
 using PrecisionDrop.GameFlow.Contracts;
 using PrecisionDrop.Platforms.Contracts;
+using PrecisionDrop.Player.Contracts;
 
 namespace PrecisionDrop.GameFlow.Runtime {
     internal sealed class GameFlowCoordinator : IGameFlow {
+        private readonly IPlayerSphere playerSphere;
         private readonly IPlatformEventBus platformEventBus;
 
         public event Action OnPlayerPassedPlatform;
@@ -11,7 +13,8 @@ namespace PrecisionDrop.GameFlow.Runtime {
 
         private int passCounter;
     
-        internal GameFlowCoordinator(IPlatformEventBus platformEventBus) {
+        internal GameFlowCoordinator(IPlayerSphere playerSphere, IPlatformEventBus platformEventBus) {
+            this.playerSphere = playerSphere;
             this.platformEventBus = platformEventBus;
         }
 
@@ -21,6 +24,7 @@ namespace PrecisionDrop.GameFlow.Runtime {
         }
 
         private void PlatformEventBus_OnPlatformCollision() {
+            playerSphere.Jump();
             OnPlayerBounced?.Invoke();
         }
 

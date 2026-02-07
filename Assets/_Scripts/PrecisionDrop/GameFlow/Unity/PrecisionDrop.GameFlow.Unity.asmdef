@@ -3,9 +3,9 @@
     "rootNamespace": "PrecisionDrop.GameFlow.Unity",
     "references": [
         "PrecisionDrop.Platforms.Contracts",
-        "PrecisionDrop.Platforms.Unity",
-        "PrecisionDrop.GameFlow.Runtime",
-        "PrecisionDrop.GameFlow.Contracts"
+        "PrecisionDrop.Player.Contracts",
+        "PrecisionDrop.GameFlow.Contracts",
+        "PrecisionDrop.GameFlow.Runtime"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
