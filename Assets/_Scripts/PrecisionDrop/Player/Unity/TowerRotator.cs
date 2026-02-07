@@ -11,15 +11,15 @@ namespace PrecisionDrop.Player.Unity {
 
         private void Awake() {
             if (!unityInput.TryGetComponent<IInputSource>(out var source)) { throw new Exception($"GameObject '{unityInput.name}' does not contain a component implementing {nameof(IInputSource)}"); }
-            else { InputSource = source; }
+            InputSource = source;
         }
 
         private void LateUpdate() {
             if (!InputSource.IsHolding) { return; }
 
-            Vector3 towerEulers = towerObj.transform.localEulerAngles;
-            towerEulers.y += InputSource.MouseDragDelta.x;
-            towerObj.transform.localEulerAngles = towerEulers;
+            Vector3 towerEuler = towerObj.transform.localEulerAngles;
+            towerEuler.y += InputSource.MouseDragDelta.x;
+            towerObj.transform.localEulerAngles = towerEuler;
         }
     }
 }

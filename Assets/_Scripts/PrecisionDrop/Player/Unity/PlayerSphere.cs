@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace PrecisionDrop.Player.Unity {
     [RequireComponent(typeof(Rigidbody))]
-    internal sealed class PlayerSphere : MonoBehaviour, IPlayerStateRead, IPlayerStateWrite {
+    internal sealed class PlayerSphere : MonoBehaviour, IPlayerSphere, IPlayerStateRead, IPlayerStateWrite {
         [SerializeField] private PlayerConfigAsset defaultConfig;
 
         private Rigidbody sphereRb;
@@ -18,7 +18,7 @@ namespace PrecisionDrop.Player.Unity {
             sphereRb = GetComponent<Rigidbody>();
         }
 
-        private void OnCollisionEnter(Collision collision) {
+        public void Jump() {
             sphereRb.linearVelocity = defaultConfig.JumpStrength * Vector3.up;
         }
     }
