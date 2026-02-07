@@ -135,8 +135,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b11e492520d45442b839aa0d2092f69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: PrecisionDrop.Platforms.Unity::PrecisionDrop.Platforms.Unity.PlatformPiece
-  platformRenderer: {fileID: 0}
-  platformCollider: {fileID: 0}
 --- !u!65 &6227948000360690731
 BoxCollider:
   m_ObjectHideFlags: 0

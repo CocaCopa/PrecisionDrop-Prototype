@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 193145cd9669bbe408905ab5e290908e, type: 3}
+  m_Name: ThemeConfig_1
+  m_EditorClassIdentifier: PrecisionDrop.App.Unity::PrecisionDrop.App.Unity.LevelThemeAsset
+  playerMat: {fileID: 2100000, guid: 364ba5122c9e6dc4fa944f2d6c2963d8, type: 2}
+  dangerMat: {fileID: 2100000, guid: 1bfe2f54e61c09348adfa3f2f93c1fd9, type: 2}
+  normalMat: {fileID: 2100000, guid: 9f5db27718cf08a4bae4e1369c118068, type: 2}

@@ -163,8 +163,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0575722dad637204ab0b7d085fb74b83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: PrecisionDrop.LevelManagment.Unity::PrecisionDrop.LevelManagment.Unity.PlatformGenerator
+  platformPrefab: {fileID: 5866964334699386692, guid: 655ab71446f6b564c9a25d78f09fda17, type: 3}
+  platformPart: {fileID: 8902245657346621342, guid: a88895e91f97e194e93cdabeee17c323, type: 3}
+  piecePrefab: {fileID: 2485824473256659511, guid: 2a174ef73eb21e947b084516b613c221, type: 3}
   platformsHolder: {fileID: 1903749731}
-  platformPrefab: {fileID: 2485824473256659511, guid: 2a174ef73eb21e947b084516b613c221, type: 3}
   segments: 36
   platformGap: 5
 --- !u!1 &326202815
@@ -716,7 +718,7 @@ GameObject:
   - component: {fileID: 678116793}
   - component: {fileID: 678116792}
   m_Layer: 0
-  m_Name: TowerRotator
+  m_Name: TowerController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -829,6 +831,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ecaa82c071b190d48a0793c4c173bc76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: PrecisionDrop.App.Unity::PrecisionDrop.App.Unity.AppBootstrapper
+  themeSelectorAsset: {fileID: 11400000, guid: 1cb81bb46fec2a74fb72cf120eac25de, type: 2}
   playerSystem: {fileID: 1087362015}
   gameFlowSystem: {fileID: 1949107717}
   levelGeneratorSystem: {fileID: 326202816}
@@ -970,6 +973,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: PrecisionDrop.Player.Unity::PrecisionDrop.Player.Unity.PlayerSystem
   cameraController: {fileID: 1558143331}
+  playerSphere: {fileID: 479435879}
+  playerVisuals: {fileID: 8382022908429848329}
 --- !u!1 &1439661947
 GameObject:
   m_ObjectHideFlags: 0
@@ -1121,6 +1126,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 094eb96ce36412643b07da9f5330cf49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: PrecisionDrop.Player.Unity::PrecisionDrop.Player.Unity.CameraController
+  camTransform: {fileID: 330585546}
+  moveOffset: 5
+  moveCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  moveSpeed: 2.75
 --- !u!1 &1620066336
 GameObject:
   m_ObjectHideFlags: 0
@@ -1464,6 +1496,7 @@ GameObject:
   - component: {fileID: 3060456645471408425}
   - component: {fileID: 8382022908429848328}
   - component: {fileID: 3065183049549570974}
+  - component: {fileID: 8382022908429848329}
   m_Layer: 0
   m_Name: Model
   m_TagString: Untagged
@@ -1496,6 +1529,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8210308871668326717}
   m_Mesh: {fileID: -7103430376498893636, guid: ea594f0985a459249902a7529af58146, type: 3}
+--- !u!114 &8382022908429848329
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8210308871668326717}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9d8dfb2bdae412b87798dd3c3c76099, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: PrecisionDrop.Player.Unity::PrecisionDrop.Player.Unity.PlayerVisuals
 --- !u!1 &8709977730161427415
 GameObject:
   m_ObjectHideFlags: 0
@@ -1537,7 +1582,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -3846018093981099296, guid: ea594f0985a459249902a7529af58146, type: 3}
+  - {fileID: 2100000, guid: 64ca0bdde63623d41a673df1ca798454, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
