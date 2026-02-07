@@ -5,21 +5,26 @@ using UnityEngine;
 namespace PrecisionDrop.Platforms.Unity {
     [RequireComponent(typeof(Collider))]
     internal sealed class PlatformPiece : MonoBehaviour {
-        private MeshRenderer platformRenderer;
-        private Collider platformCollider;
+        private MeshRenderer pieceRenderer;
+        private Collider pieceCollider;
 
         internal event Action OnPlayerCollided;
         internal event Action OnPlayerPassed;
 
         private void Awake() {
-            platformCollider = GetComponent<Collider>();
-            platformRenderer = GetComponentInChildren<MeshRenderer>();
+            pieceCollider = GetComponent<Collider>();
+            pieceRenderer = GetComponentInChildren<MeshRenderer>();
 
-            if (platformCollider == null) { throw new NullReferenceException($"[{nameof(PlatformPiece)}] Component: '{nameof(Collider)}' not serialized"); }
-            if (platformRenderer == null) { throw new NullReferenceException($"[{nameof(PlatformPiece)}] Component: '{nameof(MeshRenderer)}' not serialized"); }
+            if (pieceCollider == null) { throw new NullReferenceException($"[{nameof(PlatformPiece)}] Component: '{nameof(Collider)}' not serialized"); }
+            if (pieceRenderer == null) { throw new NullReferenceException($"[{nameof(PlatformPiece)}] Component: '{nameof(MeshRenderer)}' not serialized"); }
         }
 
-        internal void Init(Vector3 localPos, Vector3 localEuler, PieceVariant type) {
+        internal void DisableCollider() {
+            pieceCollider.enabled = false;
+        }
+
+        internal void Init(Vector3 localPos, Vector3 localEuler, PieceVariant type, Material mat) {
+            pieceRenderer.material = mat;
             transform.localPosition = localPos;
             transform.localEulerAngles = localEuler;
 
@@ -32,8 +37,8 @@ namespace PrecisionDrop.Platforms.Unity {
         }
 
         private void PieceType_Gap() {
-            platformRenderer.enabled = false;
-            platformCollider.isTrigger = true;
+            pieceRenderer.enabled = false;
+            pieceCollider.isTrigger = true;
         }
 
         private void PieceType_Danger() {

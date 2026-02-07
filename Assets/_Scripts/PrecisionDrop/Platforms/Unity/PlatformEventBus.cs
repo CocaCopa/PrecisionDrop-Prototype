@@ -9,7 +9,7 @@ namespace PrecisionDrop.Platforms.Unity {
         public event Action OnPlatformPassed;
         public event Action OnPlatformCollision;
 
-        private void Awake() {
+        public void Init() {
             builder.OnPlatformGenerated += Builder_OnPlatformGenerated;
         }
 
