@@ -7,7 +7,8 @@
       "PrecisionDrop.LevelManagment.Unity",
       "PrecisionDrop.GameFlow.Unity",
       "PrecisionDrop.GameFlow.Contracts",
-      "PrecisionDrop.Player.Unity"
+      "PrecisionDrop.Player.Unity",
+      "PrecisionDrop.Player.Contracts"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
