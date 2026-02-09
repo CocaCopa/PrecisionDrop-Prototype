@@ -11,8 +11,8 @@ namespace CocaCopa.Unity.Components {
         [SerializeField, Min(0f)] private float maxFallSpeed;
         [SerializeField] private ScaleSettings gravityUp = new ScaleSettings(AnimationCurve.Linear(0f, 0f, 1f, 1f), 0f, 0f);
         [SerializeField] private ScaleSettings gravityDown = new ScaleSettings(AnimationCurve.Linear(0f, 0f, 1f, 1f), 0f, 0f);
-        [SerializeField] float upMultiplier;
-        [SerializeField] float downMultiplier;
+        [SerializeField] private float upMultiplier;
+        [SerializeField] private float downMultiplier;
 
         private Rigidbody playerRb;
         private ValueAnimator upAnimator;
@@ -59,11 +59,11 @@ namespace CocaCopa.Unity.Components {
         private void UpdateAccelMultipliers() {
             if (Vector3.Dot(LinearVelocity, GravityVector) < 0f) {
                 upMultiplier = upAnimator.EvaluateUnclamped(Time.fixedDeltaTime);
-                if (downAnimator.Progress != DownOffset) { downAnimator.SetProgress(DownOffset); }
+                if (!Mathf.Approximately(downAnimator.Progress, DownOffset)) { downAnimator.SetProgress(DownOffset); }
             }
             else {
                 downMultiplier = downAnimator.EvaluateUnclamped(Time.fixedDeltaTime);
-                if (upAnimator.Progress != UpOffset) { upAnimator.SetProgress(UpOffset); }
+                if (!Mathf.Approximately(upAnimator.Progress, UpOffset)) { upAnimator.SetProgress(UpOffset); }
             }
         }
 

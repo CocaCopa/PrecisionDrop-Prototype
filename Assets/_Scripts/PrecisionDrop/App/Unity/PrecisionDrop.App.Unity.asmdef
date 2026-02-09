@@ -4,7 +4,7 @@
     "references": [
       "PrecisionDrop.Platforms.Contracts",
       "PrecisionDrop.Platforms.Unity",
-      "PrecisionDrop.LevelManagment.Unity",
+      "PrecisionDrop.LevelGeneration.Unity",
       "PrecisionDrop.GameFlow.Unity",
       "PrecisionDrop.GameFlow.Contracts",
       "PrecisionDrop.Player.Unity",

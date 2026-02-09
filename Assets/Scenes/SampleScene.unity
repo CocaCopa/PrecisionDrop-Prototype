@@ -164,9 +164,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: PrecisionDrop.LevelManagment.Unity::PrecisionDrop.LevelManagment.Unity.PlatformGenerator
   platformPrefab: {fileID: 5866964334699386692, guid: 655ab71446f6b564c9a25d78f09fda17, type: 3}
-  platformPart: {fileID: 8902245657346621342, guid: a88895e91f97e194e93cdabeee17c323, type: 3}
+  partPrefab: {fileID: 8902245657346621342, guid: a88895e91f97e194e93cdabeee17c323, type: 3}
   piecePrefab: {fileID: 2485824473256659511, guid: 2a174ef73eb21e947b084516b613c221, type: 3}
   platformsHolder: {fileID: 1903749731}
+  totalParts: 3
   segments: 36
   platformGap: 5
 --- !u!1 &326202815
@@ -198,6 +199,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 071942e6bbf64814996665f95cb5e003, type: 3}
   m_Name: 
   m_EditorClassIdentifier: PrecisionDrop.LevelManagment.Unity::PrecisionDrop.LevelManagment.Unity.PlatformGeneratorInstaller
+  generationSettings:
+    platformSegments: 36
+    firstBatchCount: 6
+    totalGapSections: 010000000200000004000000
+    gapRange:
+      min: 4
+      max: 6
 --- !u!4 &326202817
 Transform:
   m_ObjectHideFlags: 0
@@ -268,9 +276,9 @@ Camera:
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
-    y: 0.089743584
+    y: 0
     width: 1
-    height: 0.82051283
+    height: 1
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 54.47975
@@ -737,7 +745,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PrecisionDrop.Player.Unity.CameraController
   unityInput: {fileID: 1903074189}
-  towerObj: {fileID: 276018433}
+  towerObj: {fileID: 1903749731}
 --- !u!4 &678116793
 Transform:
   m_ObjectHideFlags: 0
@@ -1183,7 +1191,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PerspectiveLockHorizontalFov
   targetCamera: {fileID: 330585545}
-  targetAspect: {x: 9, y: 16}
+  targetAspect: {x: 9, y: 19.5}
 --- !u!4 &1620066338
 Transform:
   m_ObjectHideFlags: 0

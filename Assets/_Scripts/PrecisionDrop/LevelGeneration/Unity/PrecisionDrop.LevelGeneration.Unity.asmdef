@@ -1,10 +1,11 @@
 {
-    "name": "PrecisionDrop.LevelManagment.Runtime",
-    "rootNamespace": "PrecisionDrop.LevelManagment.Runtime",
+    "name": "PrecisionDrop.LevelGeneration.Unity",
+    "rootNamespace": "PrecisionDrop.LevelGeneration.Unity",
     "references": [
-        "CocaCopa.Core",
         "CocaCopa.Primitives",
-        "PrecisionDrop.Platforms.Contracts"
+        "PrecisionDrop.Platforms.Contracts",
+        "PrecisionDrop.GameFlow.Contracts",
+        "PrecisionDrop.LevelGeneration.Runtime"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
@@ -14,5 +15,5 @@
     "autoReferenced": false,
     "defineConstraints": [],
     "versionDefines": [],
-    "noEngineReferences": true
+    "noEngineReferences": false
 }

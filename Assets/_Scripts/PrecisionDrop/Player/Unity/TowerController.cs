@@ -3,7 +3,7 @@ using PrecisionDrop.Input.Contracts;
 using UnityEngine;
 
 namespace PrecisionDrop.Player.Unity {
-    internal sealed class TowerRotator : MonoBehaviour {
+    internal sealed class TowerController : MonoBehaviour {
         [SerializeField] private GameObject unityInput;
         [SerializeField] private GameObject towerObj;
 

@@ -45,4 +45,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: PrecisionDrop.Platforms.Unity::PrecisionDrop.Platforms.Unity.Platform
   totalParts: 3
-  breakForceAmount: 10
+  breakForceAmount: 15

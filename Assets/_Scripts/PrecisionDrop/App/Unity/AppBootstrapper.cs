@@ -1,6 +1,6 @@
 using System;
 using PrecisionDrop.GameFlow.Unity;
-using PrecisionDrop.LevelManagment.Unity;
+using PrecisionDrop.LevelGeneration.Unity;
 using PrecisionDrop.Platforms.Unity;
 using PrecisionDrop.Platforms.Unity.Presentation;
 using PrecisionDrop.Player.Unity;
@@ -21,7 +21,7 @@ namespace PrecisionDrop.App.Unity {
             var levelTheme = themeSelectorAsset.Select();
             
             gameFlowSystem.Install(playerSystem.PlayerApi, platformsSystem.EventBus);
-            levelGeneratorSystem.Install(platformsSystem.Builder);
+            levelGeneratorSystem.Install(gameFlowSystem.Api, platformsSystem.Builder);
             playerSystem.Install(gameFlowSystem.Api, CreatePlayerTheme(levelTheme));
             platformsSystem.Install(CreatePlatformTheme(levelTheme));
         }

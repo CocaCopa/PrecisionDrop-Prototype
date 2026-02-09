@@ -23,12 +23,19 @@ namespace PrecisionDrop.GameFlow.Runtime {
             platformEventBus.OnPlatformPassed += PlatformEventBus_OnPlatformPassed;
         }
 
-        private void PlatformEventBus_OnPlatformCollision() {
+        private void PlatformEventBus_OnPlatformCollision(IPlatform platform) {
             playerSphere.Jump();
             OnPlayerBounced?.Invoke();
+            if (passCounter > 2) {
+                passCounter = 0;
+                platform.Break();
+                OnPlayerPassedPlatform?.Invoke();
+            }
+            passCounter = 0;
         }
 
-        private void PlatformEventBus_OnPlatformPassed() {
+        private void PlatformEventBus_OnPlatformPassed(IPlatform platform) {
+            platform.Break();
             passCounter++;
             OnPlayerPassedPlatform?.Invoke();
         }

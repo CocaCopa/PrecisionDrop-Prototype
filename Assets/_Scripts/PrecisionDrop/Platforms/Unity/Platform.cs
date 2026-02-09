@@ -5,7 +5,6 @@ using UnityEngine;
 
 namespace PrecisionDrop.Platforms.Unity {
     internal sealed class Platform : MonoBehaviour, IPlatform {
-        [SerializeField, Min(1)] private int totalParts;
         [SerializeField] private float breakForceAmount;
         
         private const float BounceCooldown = 0.15f;
@@ -17,9 +16,10 @@ namespace PrecisionDrop.Platforms.Unity {
         private PlatformPart[] platformParts;
         private PlatformPiece[] platformPieces;
 
-        internal int TotalParts => totalParts;
+        private int totalParts;
 
         internal void Init(PlatformPart[] parts, PlatformPiece[] pieces) {
+            totalParts = parts.Length;
             this.platformParts = parts;
             this.platformPieces = pieces;
             for (int i = 0; i < pieces.Length; i++) {
@@ -39,7 +39,6 @@ namespace PrecisionDrop.Platforms.Unity {
                 var piece = platformPieces[i];
                 UnhookPieceEvents(piece);
             }
-            Break();
             OnPassedPlatform?.Invoke(this);
         }
 
@@ -66,7 +65,6 @@ namespace PrecisionDrop.Platforms.Unity {
         }
 
         private void ThrowParts() {
-            
             for (int i = 0; i < platformParts.Length; i++) {
                 var part = platformParts[i];
                 part.Separate();
