@@ -6,13 +6,13 @@ namespace PrecisionDrop.LevelGeneration.Runtime {
     internal struct GenerationSettings {
         public int platformSegments;
         public int firstBatchCount;
-        public int[] totalGapSections;
+        public GapConfig[] gapConfigs;
         public RangeInt gapRange;
 
-        public GenerationSettings(int platformSegments, int firstBatchCount, int[] totalGapSections, RangeInt gapRange) {
+        public GenerationSettings(int platformSegments, int firstBatchCount, GapConfig[] gapConfigs, RangeInt gapRange) {
             this.platformSegments = platformSegments;
             this.firstBatchCount = firstBatchCount;
-            this.totalGapSections = totalGapSections;
+            this.gapConfigs = gapConfigs;
             this.gapRange = gapRange;
         }
     }

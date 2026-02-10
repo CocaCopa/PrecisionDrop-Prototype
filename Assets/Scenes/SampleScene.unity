@@ -202,7 +202,15 @@ MonoBehaviour:
   generationSettings:
     platformSegments: 36
     firstBatchCount: 6
-    totalGapSections: 010000000200000004000000
+    gapConfigs:
+    - total: 1
+      chance: 65
+    - total: 2
+      chance: 20
+    - total: 3
+      chance: 10
+    - total: 4
+      chance: 5
     gapRange:
       min: 4
       max: 6

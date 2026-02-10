@@ -16,8 +16,26 @@ namespace PrecisionDrop.LevelGeneration.Runtime {
         private RangeInt GapPositions =>
             new RangeInt(0, RandomUtil.Int(genSettings.gapRange.min, genSettings.gapRange.max));
 
-        private int GapCount =>
-            genSettings.totalGapSections[RandomUtil.Int(0, genSettings.totalGapSections.Length - 1)];
+        private int GetRandomGapConfig() {
+            float totalChance = 0f;
+            for (int i = 0; i < genSettings.gapConfigs.Length; i++) { totalChance += genSettings.gapConfigs[i].chance; }
+
+            if (totalChance < 100) {
+                throw new Exception(
+                    $"[{nameof(LevelGeneratorFlow)}] {nameof(GapConfig)} chances sum to {totalChance}%, but must be 100%."
+                );
+            }
+
+            float roll = RandomUtil.Float(0f, totalChance);
+            float cumulative = 0f;
+
+            for (int i = 0; i < genSettings.gapConfigs.Length; i++) {
+                cumulative += genSettings.gapConfigs[i].chance;
+                if (roll <= cumulative) { return genSettings.gapConfigs[i].total; }
+            }
+
+            return genSettings.gapConfigs[^1].total;
+        }
 
         private static bool AlignWithPrevious => RandomUtil.Int(0, 100) < 25;
 
@@ -52,7 +70,7 @@ namespace PrecisionDrop.LevelGeneration.Runtime {
             if (AlignWithPrevious) { rotationY += RandomUtil.Float(-10f, 10f); }
             else { rotationY = RandomUtil.Float(20f, 340f); }
 
-            RangeInt[] gapRanges = BuildGapRanges(36, GapCount, GapPositions);
+            RangeInt[] gapRanges = BuildGapRanges(36, GetRandomGapConfig(), GapPositions);
             var config = new PlatformConfig(rotationY, gapRanges, new RangeInt(25, 30));
             generator.Create(config);
         }

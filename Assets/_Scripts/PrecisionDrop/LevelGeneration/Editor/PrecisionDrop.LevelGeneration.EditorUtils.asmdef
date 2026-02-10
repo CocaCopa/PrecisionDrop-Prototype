@@ -1,0 +1,16 @@
+{
+    "name": "PrecisionDrop.LevelGeneration.EditorUtils",
+    "rootNamespace": "PrecisionDrop.LevelGeneration.EditorUtils",
+    "references": [
+        "PrecisionDrop.LevelGeneration.Runtime"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
