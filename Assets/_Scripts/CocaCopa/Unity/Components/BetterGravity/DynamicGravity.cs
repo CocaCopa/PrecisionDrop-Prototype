@@ -9,8 +9,10 @@ namespace CocaCopa.Unity.Components {
         [SerializeField] private GravitySource source;
         [SerializeField] private Vector3 localGravity = new Vector3(0f, -9.81f, 0f);
         [SerializeField, Min(0f)] private float maxFallSpeed;
-        [SerializeField] private ScaleSettings gravityUp = new ScaleSettings(AnimationCurve.Linear(0f, 0f, 1f, 1f), 0f, 0f);
-        [SerializeField] private ScaleSettings gravityDown = new ScaleSettings(AnimationCurve.Linear(0f, 0f, 1f, 1f), 0f, 0f);
+        [SerializeField]
+        private ScaleSettings gravityUp = new ScaleSettings(AnimationCurve.Linear(0f, 0f, 1f, 1f), 0f, 0f);
+        [SerializeField]
+        private ScaleSettings gravityDown = new ScaleSettings(AnimationCurve.Linear(0f, 0f, 1f, 1f), 0f, 0f);
         [SerializeField] private float upMultiplier;
         [SerializeField] private float downMultiplier;
 
@@ -25,16 +27,29 @@ namespace CocaCopa.Unity.Components {
                 _ => throw new NotImplementedException()
             };
         }
+
         private float UpOffset => gravityUp.curveOffset / 100f;
         private float DownOffset => gravityDown.curveOffset / 100f;
-        private Vector3 LinearVelocity { get => playerRb.linearVelocity; set => playerRb.linearVelocity = value; }
-        private float GravityMultiplier => Vector3.Dot(LinearVelocity, GravityVector) < 0f ? upMultiplier : downMultiplier;
+
+        private Vector3 LinearVelocity {
+            get => playerRb.linearVelocity;
+            set => playerRb.linearVelocity = value;
+        }
+
+        private float GravityMultiplier =>
+            Vector3.Dot(LinearVelocity, GravityVector) < 0f ? upMultiplier : downMultiplier;
 
         private Vector3 GravityDir => GravityVector.normalized;
         private float FallSpeed => Vector3.Dot(LinearVelocity, GravityDir);
 
 #if UNITY_EDITOR
         internal void UpdateScaleSettings_EditorOnly() => CreateGravityAnimators();
+#endif
+
+#if UNITY_EDITOR
+        private void OnValidate() {
+            if (UnityEditor.EditorApplication.isPlaying) { CreateGravityAnimators(); }
+        }
 #endif
 
         private void Awake() {
@@ -71,9 +86,7 @@ namespace CocaCopa.Unity.Components {
             Vector3 gravityAccel = GravityVector * GravityMultiplier;
 
             if (maxFallSpeed > 0f) {
-                if (FallSpeed >= maxFallSpeed) {
-                    gravityAccel = Vector3.zero;
-                }
+                if (FallSpeed >= maxFallSpeed) { gravityAccel = Vector3.zero; }
                 else {
                     float accelAlongGravity = Vector3.Dot(gravityAccel, GravityDir);
                     float predicted = FallSpeed + accelAlongGravity * Time.fixedDeltaTime;

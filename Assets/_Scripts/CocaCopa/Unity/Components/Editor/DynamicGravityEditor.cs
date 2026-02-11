@@ -17,7 +17,6 @@ namespace CocaCopa.Unity.Components.EditorTools {
         private bool upGravityFoldout;
         private bool downGravityFoldout;
 
-        private bool pendingScaleChanges;
         private Rigidbody attachedRb;
 
         private void OnEnable() {
@@ -71,29 +70,13 @@ namespace CocaCopa.Unity.Components.EditorTools {
         }
 
         private void DrawScaleSettings() {
-            EditorGUI.BeginChangeCheck();
             EditorGUILayout.LabelField("Scale Settings", EditorStyles.boldLabel);
             ScaleSettingsFoldout(ref upGravityFoldout, "Gravity Up", gravityUp, upMultiplier);
             ScaleSettingsFoldout(ref downGravityFoldout, "Gravity Down", gravityDown, downMultiplier);
-            if (EditorGUI.EndChangeCheck()) {
-                pendingScaleChanges = true;
-            }
-            EditorGUILayout.Space(5f);
-            if (EditorApplication.isPlaying && pendingScaleChanges) {
-                EditorGUILayout.HelpBox("Pending Changes... Press Recalculate for the new settings to take effect", MessageType.Info);
-            }
-            using (new EditorGUI.DisabledGroupScope(!EditorApplication.isPlaying || !pendingScaleChanges)) {
-                string buttonMsg = EditorApplication.isPlaying ? "Recalculate" : "Recalculate (Play Mode only)";
-                if (GUILayout.Button(buttonMsg)) {
-                    (target as DynamicGravity).UpdateScaleSettings_EditorOnly();
-                    pendingScaleChanges = false;
-                }
-            }
-            GUI.enabled = true;
             EditorGUILayout.Space(10f);
         }
 
-        private void ScaleSettingsFoldout(ref bool foldout, string label, SerializedProperty scaleSettings, SerializedProperty multiplier) {
+        private static void ScaleSettingsFoldout(ref bool foldout, string label, SerializedProperty scaleSettings, SerializedProperty multiplier) {
             foldout = EditorGUILayout.Foldout(foldout, label, toggleOnLabelClick: true);
             if (foldout) {
                 var curve = scaleSettings.FindPropertyRelative(nameof(ScaleSettings.curve));

@@ -1,19 +1,20 @@
 {
-    "name": "PrecisionDrop.LevelGeneration.Runtime",
-    "rootNamespace": "PrecisionDrop.LevelGeneration.Runtime",
-    "references": [
-        "CocaCopa.Core",
-        "CocaCopa.Primitives",
-        "PrecisionDrop.Platforms.Contracts",
-        "PrecisionDrop.GameFlow.Contracts"
-    ],
-    "includePlatforms": [],
-    "excludePlatforms": [],
-    "allowUnsafeCode": false,
-    "overrideReferences": true,
-    "precompiledReferences": [],
-    "autoReferenced": false,
-    "defineConstraints": [],
-    "versionDefines": [],
-    "noEngineReferences": true
+  "name": "PrecisionDrop.LevelGeneration.Runtime",
+  "rootNamespace": "PrecisionDrop.LevelGeneration.Runtime",
+  "references": [
+    "CocaCopa.Core",
+    "CocaCopa.Logger.API",
+    "CocaCopa.Primitives",
+    "PrecisionDrop.Platforms.Contracts",
+    "PrecisionDrop.GameFlow.Contracts"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": true,
+  "precompiledReferences": [],
+  "autoReferenced": false,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": true
 }

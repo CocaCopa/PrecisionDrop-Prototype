@@ -203,17 +203,26 @@ MonoBehaviour:
     platformSegments: 36
     firstBatchCount: 6
     gapConfigs:
-    - total: 1
+    - totalGaps: 1
+      gapRange:
+        min: 4
+        max: 6
       chance: 65
-    - total: 2
+    - totalGaps: 2
+      gapRange:
+        min: 4
+        max: 5
       chance: 20
-    - total: 3
+    - totalGaps: 3
+      gapRange:
+        min: 4
+        max: 5
       chance: 10
-    - total: 4
+    - totalGaps: 4
+      gapRange:
+        min: 4
+        max: 4
       chance: 5
-    gapRange:
-      min: 4
-      max: 6
 --- !u!4 &326202817
 Transform:
   m_ObjectHideFlags: 0
@@ -754,6 +763,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PrecisionDrop.Player.Unity.CameraController
   unityInput: {fileID: 1903074189}
   towerObj: {fileID: 1903749731}
+  centralCylinder: {fileID: 592360829889967031}
+  offsetOnPassPlatform: 5
 --- !u!4 &678116793
 Transform:
   m_ObjectHideFlags: 0
@@ -989,6 +1000,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: PrecisionDrop.Player.Unity::PrecisionDrop.Player.Unity.PlayerSystem
   cameraController: {fileID: 1558143331}
+  towerController: {fileID: 678116792}
   playerSphere: {fileID: 479435879}
   playerVisuals: {fileID: 8382022908429848329}
 --- !u!1 &1439661947

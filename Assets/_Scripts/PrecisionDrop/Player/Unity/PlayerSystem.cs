@@ -7,6 +7,7 @@ using UnityEngine;
 namespace PrecisionDrop.Player.Unity {
     public class PlayerSystem : MonoBehaviour {
         [SerializeField] private CameraController cameraController;
+        [SerializeField] private TowerController towerController;
         [SerializeField] private PlayerSphere playerSphere;
         [SerializeField] private PlayerVisuals playerVisuals;
         
@@ -17,7 +18,9 @@ namespace PrecisionDrop.Player.Unity {
 
         private void Awake() {
             if (cameraController == null) { throw new NullReferenceException($"[{nameof(PlayerSystem)}] {nameof(cameraController)} is not assigned."); }
+            if (towerController == null) { throw new NullReferenceException($"[{nameof(PlayerSystem)}] {nameof(towerController)} is not assigned."); }
             if (playerVisuals == null) { throw new NullReferenceException($"[{nameof(PlayerSystem)}] {nameof(playerVisuals)} is not assigned."); }
+            if (playerSphere == null) { throw new NullReferenceException($"[{nameof(PlayerSystem)}] {nameof(playerSphere)} is not assigned."); }
         }
 
         public void Install(IGameFlow gameFlow, PlayerTheme theme) {
@@ -28,6 +31,7 @@ namespace PrecisionDrop.Player.Unity {
             installed = true;
 
             cameraController.Install(gameFlow);
+            towerController.Install(gameFlow);
             playerVisuals.Install(theme);
         }
 
@@ -38,6 +42,7 @@ namespace PrecisionDrop.Player.Unity {
         
             initialized = true;
             cameraController.Init();
+            towerController.Init();
             playerVisuals.ApplyTheme();
         }
     }

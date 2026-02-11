@@ -2,13 +2,20 @@
 using PrecisionDrop.LevelGeneration.Runtime;
 using UnityEditor;
 using UnityEngine;
+using RangeInt = CocaCopa.Primitives.RangeInt;
 
 namespace PrecisionDrop.LevelGeneration.EditorUtils {
     [CustomPropertyDrawer(typeof(GapConfig))]
     public sealed class GapConfigDrawer : PropertyDrawer {
+
         private static readonly GUIContent TotalLabel = new GUIContent(
-            "Total",
+            "Total Gaps",
             "Number of gaps this configuration generates on a platform."
+        );
+
+        private static readonly GUIContent RangeLabel = new GUIContent(
+            "Gap Range",
+            "The segment index range where gaps may be placed."
         );
 
         private static readonly GUIContent ChanceLabel = new GUIContent(
@@ -26,11 +33,17 @@ namespace PrecisionDrop.LevelGeneration.EditorUtils {
             "Maximum value this slider can reach based on other entries."
         );
 
+        // Rich-text style for header so we can color parts of the label.
+        private static readonly GUIStyle HeaderStyle = new GUIStyle(EditorStyles.boldLabel) {
+            richText = true
+        };
+
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label) {
             EditorGUI.BeginProperty(position, label, property);
 
-            var totalProp  = property.FindPropertyRelative(nameof(GapConfig.total));
-            var chanceProp = property.FindPropertyRelative(nameof(GapConfig.chance));
+            var totalProp    = property.FindPropertyRelative(nameof(GapConfig.totalGaps));
+            var gapRangeProp = property.FindPropertyRelative(nameof(GapConfig.gapRange));
+            var chanceProp   = property.FindPropertyRelative(nameof(GapConfig.chance));
 
             float lineH  = EditorGUIUtility.singleLineHeight;
             float vSpace = EditorGUIUtility.standardVerticalSpacing;
@@ -39,12 +52,12 @@ namespace PrecisionDrop.LevelGeneration.EditorUtils {
 
             // Header
             var headerRect = new Rect(position.x, position.y, position.width, lineH);
-            EditorGUI.LabelField(headerRect, BuildHeaderLabel(property, label), EditorStyles.boldLabel);
+            EditorGUI.LabelField(headerRect, BuildHeaderLabel(property, label), HeaderStyle);
 
             int oldIndent = EditorGUI.indentLevel;
             EditorGUI.indentLevel = oldIndent + 1;
 
-            // Total
+            // Total Gaps
             var totalRect = new Rect(position.x, headerRect.yMax + vSpace, position.width, lineH);
             EditorGUI.BeginChangeCheck();
             int totalValue = EditorGUI.IntField(totalRect, TotalLabel, totalProp.intValue);
@@ -52,8 +65,14 @@ namespace PrecisionDrop.LevelGeneration.EditorUtils {
                 totalProp.intValue = Mathf.Max(0, totalValue);
             }
 
-            // Chance (0–100, clamped after change if in array)
-            var chanceRect = new Rect(position.x, totalRect.yMax + vSpace, position.width, lineH);
+            // Gap Range (dynamic height + draw children)
+            float rangeH = EditorGUI.GetPropertyHeight(gapRangeProp, RangeLabel, true);
+            var rangeRect = new Rect(position.x, totalRect.yMax + vSpace, position.width, rangeH);
+            EditorGUI.PropertyField(rangeRect, gapRangeProp, RangeLabel, true);
+
+            // Chance
+            var chanceRect = new Rect(position.x, rangeRect.yMax + vSpace, position.width, lineH);
+
             EditorGUI.BeginChangeCheck();
             float newChance = EditorGUI.Slider(
                 chanceRect,
@@ -69,7 +88,7 @@ namespace PrecisionDrop.LevelGeneration.EditorUtils {
                 chanceProp.floatValue = Mathf.Clamp(newChance, 0f, maxAllowed);
             }
 
-            // Only show Remaining + MaxAllowed when inside an array
+            // Remaining + MaxAllowed only when inside array
             if (inArray) {
                 float remaining = CalculateRemainingChance(property);
 
@@ -96,30 +115,40 @@ namespace PrecisionDrop.LevelGeneration.EditorUtils {
             float lineH  = EditorGUIUtility.singleLineHeight;
             float vSpace = EditorGUIUtility.standardVerticalSpacing;
 
+            var gapRangeProp = property.FindPropertyRelative(nameof(GapConfig.gapRange));
+            float rangeH = EditorGUI.GetPropertyHeight(gapRangeProp, RangeLabel, true);
+
             bool inArray = TryGetParentArrayProperty(property, out _);
 
-            if (!inArray) {
-                // Header + Total + Chance
-                return (lineH * 3f) + (vSpace * 2f);
+            // Header + Total + Range + Chance (+ optional Remaining + MaxAllowed)
+            float height =
+                lineH + vSpace +     // header
+                lineH + vSpace +     // total
+                rangeH + vSpace +    // range (dynamic)
+                lineH;               // chance
+
+            if (inArray) {
+                height += vSpace + lineH; // remaining
+                height += vSpace + lineH; // max allowed
             }
 
-            // Header + Total + Chance + Remaining + MaxAllowed
-            return (lineH * 5f) + (vSpace * 4f);
+            return height;
         }
 
         private static GUIContent BuildHeaderLabel(SerializedProperty elementProperty, GUIContent fallbackLabel) {
             var chanceProp = elementProperty.FindPropertyRelative(nameof(GapConfig.chance));
             float chance = chanceProp != null ? Mathf.Clamp(chanceProp.floatValue, 0f, 100f) : 0f;
 
+            const string orange = "#FFA500";
+
             return TryGetElementIndex(elementProperty, out int index)
-                ? new GUIContent($"Config {index + 1} ({chance:0.#}%)")
+                ? new GUIContent($"Config {index + 1} <color={orange}>({chance:0.#}%)</color>")
                 : new GUIContent($"{fallbackLabel.text} ({chance:0.#}%)");
         }
 
         private static bool TryGetElementIndex(SerializedProperty elementProperty, out int index) {
             index = -1;
 
-            // Example: "gapConfigs.Array.data[3]"
             string path = elementProperty.propertyPath;
 
             int start = path.LastIndexOf('[');
@@ -153,7 +182,6 @@ namespace PrecisionDrop.LevelGeneration.EditorUtils {
 
         private static float CalculateRemainingChance(SerializedProperty elementProperty) {
             if (!TryGetParentArrayProperty(elementProperty, out var arrayProp)) {
-                // Not used when not in array, but keep it correct anyway
                 var selfChance = elementProperty.FindPropertyRelative(nameof(GapConfig.chance)).floatValue;
                 return Mathf.Clamp(100f - selfChance, 0f, 100f);
             }
@@ -172,7 +200,6 @@ namespace PrecisionDrop.LevelGeneration.EditorUtils {
         private static bool TryGetParentArrayProperty(SerializedProperty elementProperty, out SerializedProperty arrayProperty) {
             arrayProperty = null;
 
-            // "gapConfigs.Array.data[3]" -> "gapConfigs"
             string path = elementProperty.propertyPath;
 
             int arrayIndex = path.LastIndexOf(".Array.data[", System.StringComparison.Ordinal);

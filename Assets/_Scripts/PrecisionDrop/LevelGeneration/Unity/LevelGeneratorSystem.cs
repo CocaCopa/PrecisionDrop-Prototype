@@ -18,10 +18,6 @@ namespace PrecisionDrop.LevelGeneration.Unity {
 
         private void ValidateGenSettings() {
             generationSettings.firstBatchCount = Mathf.Max(0, generationSettings.firstBatchCount);
-            generationSettings.gapRange = new CocaCopa.Primitives.RangeInt(
-                Mathf.Max(0, generationSettings.gapRange.min),
-                Mathf.Max(generationSettings.gapRange.min, generationSettings.gapRange.max)
-            );
         }
 
         public void Install(IGameFlow gameFlow, IPlatformBuilder builder) {

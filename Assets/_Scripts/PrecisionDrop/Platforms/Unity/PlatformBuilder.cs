@@ -76,6 +76,7 @@ namespace PrecisionDrop.Platforms.Unity {
         private PlatformPiece[] CreatePlatformPieces(PlatformPart[] parents, PlatformConfig config) {
             PlatformPiece[] pieces = new PlatformPiece[segments];
 
+            float step = 360f / segments;
             int piecesPerParent = segments / parents.Length;
             int remainder = segments % parents.Length;
             int parentIndex = 0;
@@ -90,7 +91,7 @@ namespace PrecisionDrop.Platforms.Unity {
 
                 PieceVariant type = PieceVariant.Normal;
                 if (InZone(i, config.GapPositions)) { type = PieceVariant.Gap; }
-                // else if (InZone(i, config.DangerPositions)) { type = PieceVariant.Danger; }
+                else if (InZone(i, config.DangerPositions)) { type = PieceVariant.Danger; }
 
                 GameObject pieceObj = Instantiate(piecePrefab, parents[parentIndex].transform);
                 if (!pieceObj.TryGetComponent<PlatformPiece>(out var platformPiece)) {
@@ -99,7 +100,6 @@ namespace PrecisionDrop.Platforms.Unity {
                 }
 
                 Vector3 localPos = Vector3.zero;
-                float step = 360f / segments;
                 float y = step * (i + 1);
                 Vector3 localEuler = new Vector3(0f, y + config.RotationY, 0f);
                 platformPiece.Init(localPos, localEuler, type, GetMaterial(type, platformTheme));
@@ -110,6 +110,9 @@ namespace PrecisionDrop.Platforms.Unity {
             return pieces;
         }
 
+        private static bool InZone(int index, RangeInt range) {
+            return index >= range.min && index < range.max;
+        }
         private static bool InZone(int index, RangeInt[] ranges) {
             return ranges.Any(r => index >= r.min && index < r.max);
         }
