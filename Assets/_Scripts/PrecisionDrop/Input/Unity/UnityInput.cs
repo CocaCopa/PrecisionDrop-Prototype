@@ -5,11 +5,16 @@ using UnityEngine.InputSystem;
 namespace PrecisionDrop.Input.Unity {
     internal sealed class UnityInput : MonoBehaviour, IInputSource {
         [SerializeField, Min(0f)] private float mouseSensitivity = 1f;
+        [SerializeField] private bool invertRotation;
 
         public bool IsHolding { get; private set; }
-        public Vector2 MouseDragDelta => IsHolding ? playerActions.Player.LeftMouseDrag.ReadValue<Vector2>() * mouseSensitivity : Vector2.zero;
+
+        public Vector2 MouseDragDelta => IsHolding
+            ? playerActions.Player.LeftMouseDrag.ReadValue<Vector2>() * mouseSensitivity * RotDir
+            : Vector2.zero;
 
         private PlayerInputActions playerActions;
+        private int RotDir => invertRotation ? -1 : 1;
 
         private void Awake() {
             playerActions = new PlayerInputActions();
