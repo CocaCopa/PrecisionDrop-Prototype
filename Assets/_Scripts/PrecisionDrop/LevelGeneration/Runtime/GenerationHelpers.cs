@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using CocaCopa.Core;
 using CocaCopa.Core.Randomization;
 using CocaCopa.Primitives;
 
@@ -35,7 +36,7 @@ namespace PrecisionDrop.LevelGeneration.Runtime {
         /// Computes the solid platform sections by inverting the provided gap ranges
         /// within the total segment count.
         /// </summary>
-        internal static RangeInt[] GetSolidPlatforms(RangeInt[] gapRanges, int segments = 36) {
+        internal static RangeInt[] GetSolidPlatforms(RangeInt[] gapRanges, int segments) {
             var inverted = new List<RangeInt>();
             int current = 0;
 
@@ -60,7 +61,7 @@ namespace PrecisionDrop.LevelGeneration.Runtime {
             float totalChance = 0f;
             for (int i = 0; i < configs.Length; i++) { totalChance += configs[i].chance; }
 
-            if (totalChance < 100) {
+            if (!MathUtils.Approximately(totalChance, 100f)) {
                 throw new Exception(
                     $"[{nameof(LevelGeneratorFlow)}] {nameof(GapConfig)} chances sum to {totalChance}%, but must be 100%."
                 );

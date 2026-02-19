@@ -2,7 +2,9 @@
   "name": "PrecisionDrop.LevelGeneration.EditorUtils",
   "rootNamespace": "PrecisionDrop.LevelGeneration.EditorUtils",
   "references": [
+    "CocaCopa.EditorUtils",
     "PrecisionDrop.LevelGeneration.Runtime",
+    "PrecisionDrop.LevelGeneration.Unity",
     "CocaCopa.Primitives"
   ],
   "includePlatforms": [],

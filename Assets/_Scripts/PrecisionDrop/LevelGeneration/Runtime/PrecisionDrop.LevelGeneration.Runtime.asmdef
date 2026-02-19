@@ -3,8 +3,8 @@
   "rootNamespace": "PrecisionDrop.LevelGeneration.Runtime",
   "references": [
     "CocaCopa.Core",
-    "CocaCopa.Logger.API",
     "CocaCopa.Primitives",
+    "CocaCopa.Logger.API",
     "PrecisionDrop.Platforms.Contracts",
     "PrecisionDrop.GameFlow.Contracts"
   ],

@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddf2d8ab83c549bca7440c2926b93824, type: 3}
+  m_Name: BaseConfig
+  m_EditorClassIdentifier: PrecisionDrop.LevelGeneration.Unity::PrecisionDrop.LevelGeneration.Unity.GenerationSettingsAsset
+  generationSettings:
+    firstBatchCount: 6
+    gapConfigs:
+    - totalGaps: 1
+      gapRange:
+        min: 4
+        max: 6
+      chance: 65
+    - totalGaps: 2
+      gapRange:
+        min: 4
+        max: 5
+      chance: 20
+    - totalGaps: 3
+      gapRange:
+        min: 4
+        max: 5
+      chance: 10
+    - totalGaps: 4
+      gapRange:
+        min: 4
+        max: 4
+      chance: 5
+    dangerConfig:
+      tesddsdfa: 0

@@ -1,17 +1,16 @@
 using System;
-using CocaCopa.Primitives;
 
 namespace PrecisionDrop.LevelGeneration.Runtime {
     [Serializable]
     internal struct GenerationSettings {
-        public int platformSegments;
         public int firstBatchCount;
         public GapConfig[] gapConfigs;
+        public DangerConfig dangerConfig;
 
-        public GenerationSettings(int platformSegments, int firstBatchCount, GapConfig[] gapConfigs) {
-            this.platformSegments = platformSegments;
+        public GenerationSettings(int firstBatchCount, GapConfig[] gapConfigs, DangerConfig dangerConfig) {
             this.firstBatchCount = firstBatchCount;
             this.gapConfigs = gapConfigs;
+            this.dangerConfig = dangerConfig;
         }
     }
 }

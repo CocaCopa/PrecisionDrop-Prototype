@@ -199,30 +199,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 071942e6bbf64814996665f95cb5e003, type: 3}
   m_Name: 
   m_EditorClassIdentifier: PrecisionDrop.LevelManagment.Unity::PrecisionDrop.LevelManagment.Unity.PlatformGeneratorInstaller
-  generationSettings:
-    platformSegments: 36
-    firstBatchCount: 6
-    gapConfigs:
-    - totalGaps: 1
-      gapRange:
-        min: 4
-        max: 6
-      chance: 65
-    - totalGaps: 2
-      gapRange:
-        min: 4
-        max: 5
-      chance: 20
-    - totalGaps: 3
-      gapRange:
-        min: 4
-        max: 5
-      chance: 10
-    - totalGaps: 4
-      gapRange:
-        min: 4
-        max: 4
-      chance: 5
+  generationAsset: {fileID: 11400000, guid: e236371449694174188b3ca46a3e7648, type: 2}
 --- !u!4 &326202817
 Transform:
   m_ObjectHideFlags: 0
@@ -1318,7 +1295,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f92cbeaf531ee2249a8ed480cff19ca0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: PrecisionDrop.Input.Unity::PrecisionDrop.Input.Unity.UnityInput
-  mouseSensitivity: 1
+  mouseSensitivity: 0.85
+  invertRotation: 1
 --- !u!4 &1903074191
 Transform:
   m_ObjectHideFlags: 0

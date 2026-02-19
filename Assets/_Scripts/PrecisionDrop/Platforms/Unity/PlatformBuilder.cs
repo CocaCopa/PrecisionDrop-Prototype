@@ -23,11 +23,7 @@ namespace PrecisionDrop.Platforms.Unity {
 
         internal event Action<Platform> OnPlatformGenerated;
 
-        private void OnValidate() {
-            // int divisor = (totalParts % 2 == 0) ? totalParts : 2 * totalParts;
-            // segments -= segments % divisor;
-            // segments = Mathf.Max(0, segments);
-        }
+        public int PlatformSegments => segments; 
 
         public void Install(PlatformTheme theme) {
             platformTheme = theme;
