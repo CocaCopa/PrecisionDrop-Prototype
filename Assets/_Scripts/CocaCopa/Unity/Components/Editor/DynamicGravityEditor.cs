@@ -37,7 +37,7 @@ namespace CocaCopa.Unity.Components.EditorTools {
 
         public override void OnInspectorGUI() {
             serializedObject.Update();
-            EditorCommon.DisplayScriptReference(target);
+            EditorCommon.DisplayScriptReference(serializedObject);
 
             if (attachedRb.useGravity) { EditorGUILayout.HelpBox("Gravity is enabled on the attached Rigidbody.", MessageType.Warning); }
 

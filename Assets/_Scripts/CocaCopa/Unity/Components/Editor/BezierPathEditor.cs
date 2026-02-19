@@ -71,7 +71,7 @@ namespace CocaCopa.Unity.Components.EditorTools {
 
         public override void OnInspectorGUI() {
             serializedObject.Update();
-            EditorCommon.DisplayScriptReference(target);
+            EditorCommon.DisplayScriptReference(serializedObject);
 
             EditorGUI.BeginChangeCheck();
             DrawVisualizationProperties();

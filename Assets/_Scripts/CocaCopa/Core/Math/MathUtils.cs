@@ -44,11 +44,21 @@ namespace CocaCopa.Core {
             if (a > b) return a;
             else return b;
         }
+        
+        public static int Max(int a, int b) {
+            if (a > b) return a;
+            else return b;
+        }
 
         /// <summary>
         /// Returns the smaller of <paramref name="a"/> and <paramref name="b"/>.
         /// </summary>
         public static float Min(float a, float b) {
+            if (a < b) return a;
+            else return b;
+        }
+
+        public static int Min(int a, int b) {
             if (a < b) return a;
             else return b;
         }
