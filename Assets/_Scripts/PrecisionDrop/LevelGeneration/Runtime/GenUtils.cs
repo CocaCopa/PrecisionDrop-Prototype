@@ -5,31 +5,13 @@ using CocaCopa.Core.Randomization;
 using CocaCopa.Primitives;
 
 namespace PrecisionDrop.LevelGeneration.Runtime {
-    internal static class GenerationHelpers {
+    internal static class GenUtils {
         /// <summary>
         /// Converts the given range into a new range that always starts from zero
         /// and ends at a randomly selected value within the original range.
         /// </summary>
         internal static RangeInt ToBaseRange(RangeInt range) {
             return new RangeInt(0, RandomUtil.Int(range.min, range.max));
-        }
-
-        /// <summary>
-        /// Repeats the given gap range across the generated platform.
-        /// </summary>
-        /// <returns>The computed gap ranges</returns>
-        internal static RangeInt[] BuildGapRanges(int segments, int gaps, RangeInt range) {
-            int partSize = segments / gaps;
-
-            var ranges = new RangeInt[gaps];
-
-            for (int partIndex = 0; partIndex < gaps; partIndex++) {
-                int offset = partIndex * partSize;
-
-                ranges[partIndex] = new RangeInt(range.min + offset, range.max + offset);
-            }
-
-            return ranges;
         }
 
         /// <summary>

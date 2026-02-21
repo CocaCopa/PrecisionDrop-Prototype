@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
-using CocaCopa.Core;
 using CocaCopa.Core.Randomization;
 using CocaCopa.Primitives;
-using CocaCopa.Logger.API;
 using PrecisionDrop.GameFlow.Contracts;
 using PrecisionDrop.Platforms.Contracts;
 
@@ -51,31 +49,30 @@ namespace PrecisionDrop.LevelGeneration.Runtime {
             if (AlignWithPrevious) { rotationY += RandomUtil.Float(-10f, 10f); }
             else { rotationY = RandomUtil.Float(20f, 340f); }
 
-            var gapConfig = GenerationHelpers.GetRandomGapConfig(genSettings.gapConfigs);
+            var gapConfig = GenUtils.GetRandomGapConfig(genSettings.gapConfigs);
             GeneratePlatform(gapConfig);
         }
 
         private void GeneratePlatform(GapConfig gapConfig) {
-            RangeInt[] gapRanges = GenerationHelpers.BuildGapRanges(
+            RangeInt[] gapPositions = GapGen.BuildGapRanges(
                 totalSegments,
                 gapConfig.totalGaps,
-                GenerationHelpers.ToBaseRange(gapConfig.gapRange)
+                GenUtils.ToBaseRange(gapConfig.gapRange)
             );
 
-            var dangerSections = CalculateDangerSections(gapRanges);
+            RangeInt[] dangerPositions = CalculateDangerSections(gapPositions);
 
-            var config = new PlatformConfig(rotationY, gapRanges, dangerSections);
+            var config = new PlatformConfig(rotationY, gapPositions, dangerPositions);
             generator.Create(config);
         }
 
         private RangeInt[] CalculateDangerSections(RangeInt[] gapRanges) {
-            const int splitThreshold = 15;
             RangeInt dangerPairRange = new RangeInt(1, 2);
 
-            var solidSections = GenerationHelpers.GetSolidPlatforms(gapRanges, totalSegments);
+            var solidSections = GenUtils.GetSolidPlatforms(gapRanges, totalSegments);
             var danger = new List<RangeInt>();
 
-            int fullDangerSectionCount = 0;
+            int fullDangerSectionCounter = 0;
 
             // ReSharper disable once LoopCanBeConvertedToQuery
             for (int i = 0; i < solidSections.Length; i++) {
@@ -84,44 +81,27 @@ namespace PrecisionDrop.LevelGeneration.Runtime {
 
                 if (totalSolids < dangerPairRange.min) { continue; }
 
-                // Full section is consisted of danger pieces.
-                if (totalSolids <= 5 && fullDangerSectionCount < 2) {
-                    if (RandomUtil.Int(0, 100) < 30) {
-                        fullDangerSectionCount++;
-                        danger.Add(new RangeInt(solidSection.min, solidSection.max));
-                        continue;
-                    }
+                if (PreferFullDangerSection(totalSolids, ref fullDangerSectionCounter)) {
+                    danger.Add(solidSection);
+                    continue;
                 }
-                
-                int maxPairs = (int)(totalSolids * 0.25f);
-                maxPairs = MathUtils.Max(2, maxPairs);
-                int totalPairs = RandomUtil.Int(2, maxPairs);
 
-                int totalDangerPieces = totalPairs * dangerPairRange.max;
-                int safePieces = totalSolids - totalDangerPieces;
-                int baseGap = safePieces / totalPairs;
-                
-                // Don't count the gap after the last danger section
-                int gapCount = totalPairs - 1;
-
-                // This calculates the number of safe pieces after the last danger section
-                int remaining = safePieces % totalPairs;
-                int lastGap = baseGap + remaining;
-                
-                int extraGap = lastGap / gapCount;
-                int extraGapRemainder = lastGap % gapCount;
-
-                int cursorIndex = solidSection.min;
-                for (int j = 0; j < totalPairs; j++) {
-                    int sectionStart = cursorIndex;
-                    int sectionEnd = sectionStart + dangerPairRange.max;
-
-                    cursorIndex = sectionEnd + baseGap + extraGap + (j < extraGapRemainder ? 1 : 0);
-                    danger.Add(new RangeInt(sectionStart, sectionEnd));
-                }
+                var dangerPairs = DangerGen.CalculateDangerPairs(solidSection, dangerPairRange);
+                danger.AddRange(dangerPairs);
             }
 
             return danger.ToArray();
+        }
+
+        private static bool PreferFullDangerSection(int totalSolids, ref int fullDangerSectionCounter) {
+            if (fullDangerSectionCounter >= 2) { return false; }
+
+            if (totalSolids <= 5 && RandomUtil.Int(0, 100) < 30) {
+                fullDangerSectionCounter++;
+                return true;
+            }
+
+            return false;
         }
     }
 }
