@@ -3,7 +3,6 @@ using PrecisionDrop.GameFlow.Contracts;
 using PrecisionDrop.LevelGeneration.Runtime;
 using PrecisionDrop.Platforms.Contracts;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace PrecisionDrop.LevelGeneration.Unity {
     public sealed class LevelGeneratorSystem : MonoBehaviour {

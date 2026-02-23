@@ -6,7 +6,7 @@ using UnityEngine;
 namespace PrecisionDrop.Platforms.Unity {
     internal sealed class Platform : MonoBehaviour, IPlatform {
         [SerializeField] private float breakForceAmount;
-        
+
         private const float BounceCooldown = 0.15f;
         private float bounceTimer;
 
@@ -30,6 +30,7 @@ namespace PrecisionDrop.Platforms.Unity {
 
         private void Piece_OnPlayerCollided() {
             if (Time.time < bounceTimer) { return; }
+
             bounceTimer = Time.time + BounceCooldown;
             OnCollidedPlatform?.Invoke(this);
         }
@@ -39,6 +40,7 @@ namespace PrecisionDrop.Platforms.Unity {
                 var piece = platformPieces[i];
                 UnhookPieceEvents(piece);
             }
+
             OnPassedPlatform?.Invoke(this);
         }
 
@@ -51,7 +53,7 @@ namespace PrecisionDrop.Platforms.Unity {
             piece.OnPlayerCollided -= Piece_OnPlayerCollided;
             piece.OnPlayerPassed -= Piece_OnPlayerPassed;
         }
-       
+
         public void Break() {
             DisablePieceColliders();
             ThrowParts();
@@ -68,11 +70,11 @@ namespace PrecisionDrop.Platforms.Unity {
             for (int i = 0; i < platformParts.Length; i++) {
                 var part = platformParts[i];
                 part.Separate();
-                Vector3 throwDir = GetRandomDirectionsPerPart(i, Vector3.forward);                
+                Vector3 throwDir = GetRandomDirectionsPerPart(i, Vector3.forward);
                 part.Throw(breakForceAmount, -throwDir);
             }
         }
-        
+
         /// <summary>
         /// Returns a random direction vector within the angular slice defined by <paramref name="partIndex"/>,
         /// where the full 360° circle is evenly divided into <c>totalParts</c> slices.
@@ -87,11 +89,10 @@ namespace PrecisionDrop.Platforms.Unity {
         /// <returns>
         /// A normalized direction vector lying within the angular bounds of the specified slice.
         /// </returns>
-        private Vector3 GetRandomDirectionsPerPart(int partIndex, Vector3 referenceDir)
-        {
+        private Vector3 GetRandomDirectionsPerPart(int partIndex, Vector3 referenceDir) {
             float sliceAngle = 360f / totalParts;
             float startAngle = partIndex * sliceAngle;
-            float endAngle   = (partIndex + 1) * sliceAngle;
+            float endAngle = (partIndex + 1) * sliceAngle;
 
             float randomAngle = UnityEngine.Random.Range(startAngle, endAngle);
 

@@ -67,14 +67,13 @@ namespace PrecisionDrop.LevelGeneration.Runtime {
         }
 
         private RangeInt[] CalculateDangerSections(RangeInt[] gapRanges) {
-            RangeInt dangerPairRange = new RangeInt(1, 2);
+            RangeInt dangerPairRange = new RangeInt(1, 1);
 
             var solidSections = GenUtils.GetSolidPlatforms(gapRanges, totalSegments);
             var danger = new List<RangeInt>();
 
             int fullDangerSectionCounter = 0;
 
-            // ReSharper disable once LoopCanBeConvertedToQuery
             for (int i = 0; i < solidSections.Length; i++) {
                 var solidSection = solidSections[i];
                 var totalSolids = solidSection.max - solidSection.min;

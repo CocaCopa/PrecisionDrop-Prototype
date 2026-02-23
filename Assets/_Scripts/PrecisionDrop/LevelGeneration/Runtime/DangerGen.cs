@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using CocaCopa.Core;
 using CocaCopa.Core.Randomization;
+using CocaCopa.Logger.API;
 using CocaCopa.Primitives;
 
 namespace PrecisionDrop.LevelGeneration.Runtime {
@@ -9,7 +10,7 @@ namespace PrecisionDrop.LevelGeneration.Runtime {
             var dangerSections = new List<RangeInt>();
             var totalSolids = solidSection.max - solidSection.min;
 
-            int maxPairs = (int)(totalSolids * 0.25f);
+            int maxPairs = (int)(totalSolids * 0.15f);
             maxPairs = MathUtils.Max(2, maxPairs);
             int totalPairs = RandomUtil.Int(2, maxPairs);
             totalPairs = 3;
@@ -20,14 +21,27 @@ namespace PrecisionDrop.LevelGeneration.Runtime {
             if (safePieces < 0) { return dangerSections; }
 
             int gap = DangerSectionsGap(safePieces, totalPairs, out int gapRemainder);
-
+            int removedCount = 0;
             int cursorIndex = solidSection.min;
-            for (int i = 0; i < totalPairs; i++) {
+
+            for (int i = totalPairs - 1; i >= 0; i--) {
+                int finalGap = gap + (i < gapRemainder ? 1 : 0);
+                int shrunkGap = finalGap - (int)(finalGap * RandomUtil.Float(0f, 0.75f));
+                if (i != totalPairs - 1) { removedCount += finalGap - shrunkGap; }
+
                 int sectionStart = cursorIndex;
                 int sectionEnd = sectionStart + dangerPairs[i];
 
-                cursorIndex = sectionEnd + gap + (i < gapRemainder ? 1 : 0);
+                cursorIndex = sectionEnd + shrunkGap;
                 dangerSections.Add(new RangeInt(sectionStart, sectionEnd));
+            }
+
+            int push = (int)(removedCount * RandomUtil.Float(0f, 1f));
+            for (int i = 0; i < dangerSections.Count; i++) {
+                var section = dangerSections[i];
+                section.min += push;
+                section.max += push;
+                dangerSections[i] = section;
             }
 
             return dangerSections;
