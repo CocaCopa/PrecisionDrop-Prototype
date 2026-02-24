@@ -67,7 +67,7 @@ namespace PrecisionDrop.LevelGeneration.Runtime {
         }
 
         private RangeInt[] CalculateDangerSections(RangeInt[] gapRanges) {
-            RangeInt dangerPairRange = new RangeInt(1, 1);
+            RangeInt dangerPairRange = new RangeInt(1, 2);
 
             var solidSections = GenUtils.GetSolidPlatforms(gapRanges, totalSegments);
             var danger = new List<RangeInt>();

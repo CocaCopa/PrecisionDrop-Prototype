@@ -13,7 +13,6 @@ namespace PrecisionDrop.LevelGeneration.Runtime {
             int maxPairs = (int)(totalSolids * 0.15f);
             maxPairs = MathUtils.Max(2, maxPairs);
             int totalPairs = RandomUtil.Int(2, maxPairs);
-            totalPairs = 3;
 
             int totalDangerPieces = GetTotalDangerPieces(totalPairs, dangerPairRange, out int[] dangerPairs);
 
@@ -37,10 +36,25 @@ namespace PrecisionDrop.LevelGeneration.Runtime {
             }
 
             int push = (int)(removedCount * RandomUtil.Float(0f, 1f));
+            int roll = RandomUtil.Int(0, 100);
             for (int i = 0; i < dangerSections.Count; i++) {
                 var section = dangerSections[i];
                 section.min += push;
                 section.max += push;
+
+                if (roll < 25) {
+                    if (i == 0) {
+                        int sectionEnd = solidSection.min + (section.max - section.min);
+                        section.min = solidSection.min;
+                        section.max = sectionEnd;
+                    }
+                    else if (i == dangerSections.Count - 1) {
+                        int sectionStart = solidSection.max - (section.max - section.min);
+                        section.min = sectionStart;
+                        section.max = solidSection.max;
+                    }
+                }
+
                 dangerSections[i] = section;
             }
 
