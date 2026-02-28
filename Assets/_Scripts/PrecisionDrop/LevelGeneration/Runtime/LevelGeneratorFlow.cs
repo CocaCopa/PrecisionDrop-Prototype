@@ -7,24 +7,23 @@ using PrecisionDrop.Platforms.Contracts;
 
 namespace PrecisionDrop.LevelGeneration.Runtime {
     internal sealed class LevelGeneratorFlow : IDisposable {
-        private readonly GenerationSettings genSettings;
-        private readonly IPlatformBuilder generator;
         private readonly IGameFlow gameFlow;
+        private readonly IPlatformBuilder generator;
+        private readonly GenerationSettings genSettings;
         private readonly int totalSegments;
 
-        private int FirstBatchCount => genSettings.firstBatchCount;
-
-        private static bool AlignWithPrevious => RandomUtil.Int(0, 100) < 25;
-
-        private int totalPassCount;
         private float rotationY;
+        private int totalPassCount;
 
         internal LevelGeneratorFlow(GenerationSettings genSettings, IGameFlow gameFlow, IPlatformBuilder generator) {
-            this.totalSegments = generator.PlatformSegments;
+            totalSegments = generator.PlatformSegments;
             this.gameFlow = gameFlow;
             this.generator = generator;
             this.genSettings = genSettings;
         }
+
+        private int FirstBatchCount => genSettings.firstBatchCount;
+        private static bool AlignWithPrevious => RandomUtil.Int(0, 100) < 25;
 
         public void Dispose() {
             gameFlow.OnPlayerPassedPlatform -= GameFlow_OnPlayerPassedPlatform;
@@ -38,7 +37,7 @@ namespace PrecisionDrop.LevelGeneration.Runtime {
         private void CreateFirstBatch() {
             for (int i = 0; i < FirstBatchCount; i++) {
                 rotationY = RandomUtil.Float(-50f, 50f);
-                var gapConfig = genSettings.gapConfigs[0];
+                GapConfig gapConfig = genSettings.gapConfigs[0];
                 GeneratePlatform(gapConfig);
             }
         }
@@ -49,7 +48,7 @@ namespace PrecisionDrop.LevelGeneration.Runtime {
             if (AlignWithPrevious) { rotationY += RandomUtil.Float(-10f, 10f); }
             else { rotationY = RandomUtil.Float(20f, 340f); }
 
-            var gapConfig = GenUtils.GetRandomGapConfig(genSettings.gapConfigs);
+            GapConfig gapConfig = GenUtils.GetRandomGapConfig(genSettings.gapConfigs);
             GeneratePlatform(gapConfig);
         }
 
@@ -61,22 +60,20 @@ namespace PrecisionDrop.LevelGeneration.Runtime {
             );
 
             RangeInt[] dangerPositions = CalculateDangerSections(gapPositions);
-
             var config = new PlatformConfig(rotationY, gapPositions, dangerPositions);
             generator.Create(config);
         }
 
         private RangeInt[] CalculateDangerSections(RangeInt[] gapRanges) {
-            RangeInt dangerPairRange = new RangeInt(1, 2);
-
-            var solidSections = GenUtils.GetSolidPlatforms(gapRanges, totalSegments);
+            RangeInt[] solidSections = GenUtils.GetSolidPlatforms(gapRanges, totalSegments);
+            var dangerPairRange = new RangeInt(1, 2);
             var danger = new List<RangeInt>();
 
             int fullDangerSectionCounter = 0;
 
             for (int i = 0; i < solidSections.Length; i++) {
-                var solidSection = solidSections[i];
-                var totalSolids = solidSection.max - solidSection.min;
+                RangeInt solidSection = solidSections[i];
+                int totalSolids = solidSection.max - solidSection.min;
 
                 if (totalSolids < dangerPairRange.min) { continue; }
 
@@ -85,7 +82,7 @@ namespace PrecisionDrop.LevelGeneration.Runtime {
                     continue;
                 }
 
-                var dangerPairs = DangerGen.CalculateDangerPairs(solidSection, dangerPairRange);
+                RangeInt[] dangerPairs = DangerGen.CalculateDangerPairs(genSettings.dangerConfig, solidSection, dangerPairRange);
                 danger.AddRange(dangerPairs);
             }
 

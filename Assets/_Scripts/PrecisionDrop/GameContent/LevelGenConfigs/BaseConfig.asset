@@ -36,4 +36,12 @@ MonoBehaviour:
         max: 4
       chance: 5
     dangerConfig:
-      tesddsdfa: 0
+      pairCount:
+        maxPairDensityRatio: 0.12
+        minDangerPairCount: 2
+      gapVariation:
+        maxGapShrinkRatio: 0.75
+      offset:
+        offsetUtilizationRatio:
+          min: 0
+          max: 1

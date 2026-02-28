@@ -13,12 +13,20 @@ MonoBehaviour:
   m_Name: Temp
   m_EditorClassIdentifier: PrecisionDrop.LevelGeneration.Unity::PrecisionDrop.LevelGeneration.Unity.GenerationSettingsAsset
   generationSettings:
-    firstBatchCount: 6
+    firstBatchCount: 10
     gapConfigs:
-    - totalGaps: 4
+    - totalGaps: 1
       gapRange:
-        min: 4
-        max: 4
+        min: 6
+        max: 6
       chance: 100
     dangerConfig:
-      tesddsdfa: 0
+      pairCount:
+        maxPairDensityRatio: 0.12
+        minDangerPairCount: 2
+      gapVariation:
+        maxGapShrinkRatio: 0.75
+      offset:
+        offsetUtilizationRatio:
+          min: 0
+          max: 1
