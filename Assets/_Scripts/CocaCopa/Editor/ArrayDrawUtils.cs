@@ -6,8 +6,8 @@ using UnityEngine;
 
 namespace CocaCopa.EditorUtils {
     /// <summary>
-    /// Utility helper for drawing SerializedProperty arrays/lists using a ReorderableList
-    /// with optional scroll behaviour after a configurable number of visible elements.
+    ///     Utility helper for drawing SerializedProperty arrays/lists using a ReorderableList
+    ///     with optional scroll behaviour after a configurable number of visible elements.
     /// </summary>
     public static class ArrayDrawUtils {
         private const float ScrollbarWidth = 12f;
@@ -17,74 +17,8 @@ namespace CocaCopa.EditorUtils {
         private static readonly Dictionary<string, Vector2> Scrolls = new();
 
         /// <summary>
-        /// Header configuration options for a drawn array.<br/>
-        /// Allows specifying a custom label and GUIStyle.
-        /// </summary>
-        public readonly struct HeaderOpt {
-
-            /// <summary>
-            /// Header label text. If null or empty, the property's displayName is used.
-            /// </summary>
-            public readonly string Label;
-
-            /// <summary>
-            /// GUIStyle used when rendering the header label.
-            /// </summary>
-            public readonly GUIStyle Style;
-
-            /// <summary>
-            /// Creates header options using the default EditorStyles.label style.
-            /// </summary>
-            public HeaderOpt(string label) {
-                Label = label;
-                Style = EditorStyles.label;
-            }
-
-            /// <summary>
-            /// Creates header options with a custom GUIStyle.
-            /// </summary>
-            public HeaderOpt(string label, GUIStyle style) {
-                Label = label;
-                Style = style;
-            }
-        }
-
-        /// <summary>
-        /// Layout configuration options for the rendered array.<br/>
-        /// Controls scroll threshold and bottom padding.
-        /// </summary>
-        public readonly struct RectOpt {
-
-            /// <summary>
-            /// Maximum number of visible elements before scroll mode activates.
-            /// </summary>
-            public readonly int MaxVisibleWithoutScroll;
-
-            /// <summary>
-            /// Extra space added below the array block.
-            /// </summary>
-            public readonly float BottomPadding;
-
-            /// <summary>
-            /// Creates layout options with default bottom padding.
-            /// </summary>
-            public RectOpt(int maxVisibleWithoutScroll) {
-                MaxVisibleWithoutScroll = maxVisibleWithoutScroll;
-                BottomPadding = 2f;
-            }
-
-            /// <summary>
-            /// Creates layout options with explicit scroll threshold and bottom padding.
-            /// </summary>
-            public RectOpt(int maxVisibleWithoutScroll, float bottomPadding) {
-                MaxVisibleWithoutScroll = maxVisibleWithoutScroll;
-                BottomPadding = bottomPadding;
-            }
-        }
-
-        /// <summary>
-        /// Draws a custom reorderable array with default layout configuration.
-        /// Scroll activates after 10 elements and applies 20px bottom padding.
+        ///     Draws a custom reorderable array with default layout configuration.
+        ///     Scroll activates after 10 elements and applies 20px bottom padding.
         /// </summary>
         /// <param name="arrayProp">SerializedProperty representing the array or list.</param>
         /// <param name="headerOptions">Header label and style configuration.</param>
@@ -93,12 +27,11 @@ namespace CocaCopa.EditorUtils {
         }
 
         /// <summary>
-        /// Draws a custom reorderable array with configurable header and layout behavior.
-        /// Automatically switches to scroll mode after the configured element threshold.
-        /// 
-        /// NOTE:
-        /// If used inside a PropertyDrawer, ensure sufficient height is allocated,
-        /// otherwise layout-based padding may not appear.
+        ///     Draws a custom reorderable array with configurable header and layout behavior.
+        ///     Automatically switches to scroll mode after the configured element threshold.<br /><br />
+        ///     <b>NOTE:</b><br />
+        ///     If used inside a PropertyDrawer, ensure sufficient height is allocated,
+        ///     otherwise layout-based padding may not appear.
         /// </summary>
         /// <param name="arrayProp">SerializedProperty representing the array or list.</param>
         /// <param name="headerOpt">Header rendering configuration.</param>
@@ -118,7 +51,7 @@ namespace CocaCopa.EditorUtils {
                 return;
             }
 
-            var list = GetOrCreateList(arrayProp, headerOpt.Label);
+            ReorderableList list = GetOrCreateList(arrayProp, headerOpt.Label);
 
             string collapseKey = GetCollapseKey(arrayProp);
             bool expanded = SessionState.GetBool(collapseKey, true);
@@ -128,17 +61,15 @@ namespace CocaCopa.EditorUtils {
             // ================= HEADER =================
             // IMPORTANT: Allocate padding INSIDE the rect Unity reserves, otherwise it gets clipped.
             float headerBlockH = headerH + (expanded ? 0f : Mathf.Max(0f, rectOpt.BottomPadding));
-            var rawHeaderRect = GUILayoutUtility.GetRect(0f, headerBlockH, GUILayout.ExpandWidth(true));
-            var headerRect = EditorGUI.IndentedRect(new Rect(rawHeaderRect.x, rawHeaderRect.y, rawHeaderRect.width, headerH));
+            Rect rawHeaderRect = GUILayoutUtility.GetRect(0f, headerBlockH, GUILayout.ExpandWidth(true));
+            Rect headerRect = EditorGUI.IndentedRect(new Rect(rawHeaderRect.x, rawHeaderRect.y, rawHeaderRect.width, headerH));
 
-            if (Event.current.type == EventType.Repaint)
-                ReorderableList.defaultBehaviours.DrawHeaderBackground(headerRect);
+            if (Event.current.type == EventType.Repaint) { ReorderableList.defaultBehaviours.DrawHeaderBackground(headerRect); }
 
             HandleHeaderToggle(headerRect, ref expanded, collapseKey);
             DrawHeaderWithFoldout(headerRect, arrayProp, headerOpt, expanded);
 
-            if (!expanded)
-                return;
+            if (!expanded) { return; }
 
             // ============ NORMAL MODE (no scroll) ============
             if (arrayProp.arraySize <= rectOpt.MaxVisibleWithoutScroll) {
@@ -148,8 +79,7 @@ namespace CocaCopa.EditorUtils {
 
             // ============ SCROLL MODE ============
             string scrollKey = arrayProp.propertyPath;
-            if (!Scrolls.TryGetValue(scrollKey, out var scroll))
-                scroll = Vector2.zero;
+            if (!Scrolls.TryGetValue(scrollKey, out Vector2 scroll)) { scroll = Vector2.zero; }
 
             float footerH = list.footerHeight;
             float elementsViewportH = GetElementsViewportHeight(list, rectOpt.MaxVisibleWithoutScroll);
@@ -158,17 +88,17 @@ namespace CocaCopa.EditorUtils {
             float contentH = elementsViewportH + footerH;
             float totalH = contentH + bottomPad;
 
-            var fullRect = GUILayoutUtility.GetRect(0f, totalH, GUILayout.ExpandWidth(true));
+            Rect fullRect = GUILayoutUtility.GetRect(0f, totalH, GUILayout.ExpandWidth(true));
             var contentRect = new Rect(fullRect.x, fullRect.y, fullRect.width, contentH);
 
-            var elementsRect = EditorGUI.IndentedRect(new Rect(
+            Rect elementsRect = EditorGUI.IndentedRect(new Rect(
                 contentRect.x,
                 contentRect.y,
                 contentRect.width,
                 elementsViewportH
             ));
 
-            var footerRect = EditorGUI.IndentedRect(new Rect(
+            Rect footerRect = EditorGUI.IndentedRect(new Rect(
                 contentRect.x,
                 elementsRect.yMax,
                 contentRect.width,
@@ -178,7 +108,7 @@ namespace CocaCopa.EditorUtils {
             float totalElementsContentH = Mathf.Max(0f, list.GetHeight() - headerH - footerH);
             float maxScrollY = Mathf.Max(0f, totalElementsContentH - elementsViewportH);
 
-            var e = Event.current;
+            Event e = Event.current;
             if (e.type == EventType.ScrollWheel && elementsRect.Contains(e.mousePosition)) {
                 scroll.y += e.delta.y * WheelSpeed;
                 scroll.y = Mathf.Clamp(scroll.y, 0f, maxScrollY);
@@ -230,7 +160,7 @@ namespace CocaCopa.EditorUtils {
         // =====================================================
 
         private static void HandleHeaderToggle(Rect headerRect, ref bool expanded, string collapseKey) {
-            var e = Event.current;
+            Event e = Event.current;
 
             if (e.type == EventType.MouseDown &&
                 e.button == 0 &&
@@ -265,7 +195,7 @@ namespace CocaCopa.EditorUtils {
 
                 EditorGUI.Foldout(triangleRect, expanded, GUIContent.none, false);
 
-                var title = string.IsNullOrEmpty(headerOpt.Label)
+                string title = string.IsNullOrEmpty(headerOpt.Label)
                     ? arrayProp.displayName
                     : headerOpt.Label;
 
@@ -281,10 +211,10 @@ namespace CocaCopa.EditorUtils {
             float bottomPad = Mathf.Max(0f, bottomPadding);
             float totalH = contentH + bottomPad;
 
-            var rect = GUILayoutUtility.GetRect(0f, totalH, GUILayout.ExpandWidth(true));
+            Rect rect = GUILayoutUtility.GetRect(0f, totalH, GUILayout.ExpandWidth(true));
             var contentRect = new Rect(rect.x, rect.y, rect.width, contentH);
 
-            var indentedRect = EditorGUI.IndentedRect(contentRect);
+            Rect indentedRect = EditorGUI.IndentedRect(contentRect);
 
             GUI.BeginGroup(indentedRect);
             {
@@ -313,19 +243,18 @@ namespace CocaCopa.EditorUtils {
             }
 
             float h = 0f;
-            for (int i = 0; i < count; i++) {
+            for (int i = 0; i < count; i++)
                 h += list.elementHeightCallback != null
                     ? list.elementHeightCallback(i)
                     : list.elementHeight;
-            }
 
             return h + 4f;
         }
 
         private static ReorderableList GetOrCreateList(SerializedProperty arrayProp, string header) {
-            var key = arrayProp.propertyPath;
+            string key = arrayProp.propertyPath;
 
-            if (Lists.TryGetValue(key, out var existing)) {
+            if (Lists.TryGetValue(key, out ReorderableList existing)) {
                 if (existing.serializedProperty != null &&
                     existing.serializedProperty.serializedObject == arrayProp.serializedObject) {
                     existing.serializedProperty = arrayProp;
@@ -342,19 +271,83 @@ namespace CocaCopa.EditorUtils {
             );
 
             list.drawElementCallback = (rect, index, isActive, isFocused) => {
-                var element = arrayProp.GetArrayElementAtIndex(index);
+                SerializedProperty element = arrayProp.GetArrayElementAtIndex(index);
                 rect.y += 1f;
                 rect.height = EditorGUI.GetPropertyHeight(element, true);
                 EditorGUI.PropertyField(rect, element, GUIContent.none, true);
             };
 
             list.elementHeightCallback = index => {
-                var element = arrayProp.GetArrayElementAtIndex(index);
+                SerializedProperty element = arrayProp.GetArrayElementAtIndex(index);
                 return EditorGUI.GetPropertyHeight(element, true) + 2f;
             };
 
             Lists[key] = list;
             return list;
+        }
+
+        /// <summary>
+        ///     Header configuration options for a drawn array.<br />
+        ///     Allows specifying a custom label and GUIStyle.
+        /// </summary>
+        public readonly struct HeaderOpt {
+            /// <summary>
+            ///     Header label text. If null or empty, the property's displayName is used.
+            /// </summary>
+            public readonly string Label;
+
+            /// <summary>
+            ///     GUIStyle used when rendering the header label.
+            /// </summary>
+            public readonly GUIStyle Style;
+
+            /// <summary>
+            ///     Creates header options using the default EditorStyles.label style.
+            /// </summary>
+            public HeaderOpt(string label) {
+                Label = label;
+                Style = EditorStyles.label;
+            }
+
+            /// <summary>
+            ///     Creates header options with a custom GUIStyle.
+            /// </summary>
+            public HeaderOpt(string label, GUIStyle style) {
+                Label = label;
+                Style = style;
+            }
+        }
+
+        /// <summary>
+        ///     Layout configuration options for the rendered array.<br />
+        ///     Controls scroll threshold and bottom padding.
+        /// </summary>
+        public readonly struct RectOpt {
+            /// <summary>
+            ///     Maximum number of visible elements before scroll mode activates.
+            /// </summary>
+            public readonly int MaxVisibleWithoutScroll;
+
+            /// <summary>
+            ///     Extra space added below the array block.
+            /// </summary>
+            public readonly float BottomPadding;
+
+            /// <summary>
+            ///     Creates layout options with default bottom padding.
+            /// </summary>
+            public RectOpt(int maxVisibleWithoutScroll) {
+                MaxVisibleWithoutScroll = maxVisibleWithoutScroll;
+                BottomPadding = 2f;
+            }
+
+            /// <summary>
+            ///     Creates layout options with explicit scroll threshold and bottom padding.
+            /// </summary>
+            public RectOpt(int maxVisibleWithoutScroll, float bottomPadding) {
+                MaxVisibleWithoutScroll = maxVisibleWithoutScroll;
+                BottomPadding = bottomPadding;
+            }
         }
     }
 }
