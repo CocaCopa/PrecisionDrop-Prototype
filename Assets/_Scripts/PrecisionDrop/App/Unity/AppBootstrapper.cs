@@ -18,8 +18,8 @@ namespace PrecisionDrop.App.Unity {
 
         private void Awake() {
             ValidateSceneWiring();
-            var levelTheme = themeSelectorAsset.Select();
-            
+            LevelThemeAsset levelTheme = themeSelectorAsset.Select();
+
             gameFlowSystem.Install(playerSystem.PlayerApi, platformsSystem.EventBus);
             levelGeneratorSystem.Install(gameFlowSystem.Api, platformsSystem.Builder);
             playerSystem.Install(gameFlowSystem.Api, CreatePlayerTheme(levelTheme));
@@ -34,9 +34,7 @@ namespace PrecisionDrop.App.Unity {
         }
 
         private static PlayerTheme CreatePlayerTheme(LevelThemeAsset levelTheme) {
-            return new PlayerTheme(
-                levelTheme.PlayerMat
-            );
+            return new PlayerTheme(levelTheme.PlayerMat, levelTheme.PlayerTrailMat);
         }
 
         private static PlatformTheme CreatePlatformTheme(LevelThemeAsset levelTheme) {
@@ -47,13 +45,15 @@ namespace PrecisionDrop.App.Unity {
         }
 
         private void ValidateSceneWiring() {
-            if (!themeSelectorAsset) throw new NullReferenceException(Msg(nameof(themeSelectorAsset)));
-            if (!playerSystem) throw new NullReferenceException(Msg(nameof(playerSystem)));
-            if (!platformsSystem) throw new NullReferenceException(Msg(nameof(platformsSystem)));
-            if (!levelGeneratorSystem) throw new NullReferenceException(Msg(nameof(levelGeneratorSystem)));
-            if (!gameFlowSystem) throw new NullReferenceException(Msg(nameof(gameFlowSystem)));
+            if (!themeSelectorAsset) { throw new NullReferenceException(Msg(nameof(themeSelectorAsset))); }
+            if (!playerSystem) { throw new NullReferenceException(Msg(nameof(playerSystem))); }
+            if (!platformsSystem) { throw new NullReferenceException(Msg(nameof(platformsSystem))); }
+            if (!levelGeneratorSystem) { throw new NullReferenceException(Msg(nameof(levelGeneratorSystem))); }
+            if (!gameFlowSystem) { throw new NullReferenceException(Msg(nameof(gameFlowSystem))); }
         }
 
-        private string Msg(string fieldName) => $"[{nameof(AppBootstrapper)}] Missing reference: {fieldName} on '{name}'.";
+        private string Msg(string fieldName) {
+            return $"[{nameof(AppBootstrapper)}] Missing reference: {fieldName} on '{name}'.";
+        }
     }
 }

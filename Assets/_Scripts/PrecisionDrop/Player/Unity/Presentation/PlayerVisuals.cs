@@ -3,6 +3,8 @@ using UnityEngine;
 namespace PrecisionDrop.Player.Unity.Presentation {
     [RequireComponent(typeof(MeshRenderer))]
     internal sealed class PlayerVisuals : MonoBehaviour {
+        [SerializeField] private TrailRenderer trailRenderer;
+
         private MeshRenderer meshRenderer;
         private PlayerTheme theme;
 
@@ -15,7 +17,8 @@ namespace PrecisionDrop.Player.Unity.Presentation {
         }
 
         internal void ApplyTheme() {
-            meshRenderer.material = theme.mat;
+            meshRenderer.material = theme.SphereMat;
+            trailRenderer.material = theme.TrailMat;
         }
     }
 }

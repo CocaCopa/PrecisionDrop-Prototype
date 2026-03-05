@@ -10,6 +10,7 @@ namespace PrecisionDrop.GameFlow.Runtime {
 
         public event Action OnPlayerPassedPlatform;
         public event Action OnPlayerBounced;
+        public event Action OnPlayerHitDanger;
 
         private int passCounter;
 
@@ -44,6 +45,7 @@ namespace PrecisionDrop.GameFlow.Runtime {
 
         private void DangerCollision() {
             playerSphere.Lose();
+            OnPlayerHitDanger?.Invoke();
         }
 
         private void PlatformEventBus_OnPlatformPassed(IPlatform platform) {

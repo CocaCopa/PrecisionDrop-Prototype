@@ -7,8 +7,7 @@ namespace PrecisionDrop.Player.Unity {
     internal sealed class TowerController : MonoBehaviour {
         [SerializeField] private GameObject unityInput;
         [SerializeField] private GameObject towerObj;
-        [Space(10f)]
-        [SerializeField] private Transform centralCylinder;
+        [Space(10f)] [SerializeField] private Transform centralCylinder;
         [SerializeField] private float offsetOnPassPlatform;
 
         private IInputSource InputSource { get; set; }
@@ -16,13 +15,18 @@ namespace PrecisionDrop.Player.Unity {
 
         internal void Install(IGameFlow gameFlow) {
             this.gameFlow = gameFlow;
-        } 
+        }
 
         public void Init() {
-            if (!unityInput.TryGetComponent<IInputSource>(out var source)) { throw new Exception($"GameObject '{unityInput.name}' does not contain a component implementing {nameof(IInputSource)}"); }
+            if (!unityInput.TryGetComponent(out IInputSource source)) { throw new Exception($"GameObject '{unityInput.name}' does not contain a component implementing {nameof(IInputSource)}"); }
             InputSource = source;
-            
+
             gameFlow.OnPlayerPassedPlatform += GameFlow_OnPlayerPassedPlatform;
+            gameFlow.OnPlayerHitDanger += GameFlow_OnPlayerHitDanger;
+        }
+
+        private void GameFlow_OnPlayerHitDanger() {
+            enabled = false;
         }
 
         private void GameFlow_OnPlayerPassedPlatform() {

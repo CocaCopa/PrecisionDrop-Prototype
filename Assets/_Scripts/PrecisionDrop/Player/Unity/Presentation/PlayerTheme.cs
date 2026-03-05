@@ -1,13 +1,15 @@
 using UnityEngine;
 
 namespace PrecisionDrop.Player.Unity.Presentation {
-    public struct PlayerTheme {
-        public Material mat;
-        
-        public bool IsValid => mat != null;
+    public readonly struct PlayerTheme {
+        public readonly Material SphereMat;
+        public readonly Material TrailMat;
 
-        public PlayerTheme(Material mat) {
-            this.mat = mat;
+        public bool IsValid => SphereMat != null;
+
+        public PlayerTheme(Material sphereMat, Material trailMat) {
+            SphereMat = sphereMat;
+            TrailMat = trailMat;
         }
     }
 }

@@ -38,7 +38,7 @@ namespace PrecisionDrop.LevelGeneration.Runtime {
             for (int i = 0; i < FirstBatchCount; i++) {
                 rotationY = RandomUtil.Float(-50f, 50f);
                 GapConfig gapConfig = genSettings.gapConfigs[0];
-                GeneratePlatform(gapConfig);
+                GeneratePlatform(gapConfig, false);
             }
         }
 
@@ -52,14 +52,14 @@ namespace PrecisionDrop.LevelGeneration.Runtime {
             GeneratePlatform(gapConfig);
         }
 
-        private void GeneratePlatform(GapConfig gapConfig) {
+        private void GeneratePlatform(GapConfig gapConfig, bool alsoGenerateDanger = true) {
             RangeInt[] gapPositions = GapGen.BuildGapRanges(
                 totalSegments,
                 gapConfig.totalGaps,
                 GenUtils.ToBaseRange(gapConfig.gapRange)
             );
 
-            RangeInt[] dangerPositions = CalculateDangerSections(gapPositions);
+            RangeInt[] dangerPositions = alsoGenerateDanger ? CalculateDangerSections(gapPositions) : Array.Empty<RangeInt>();
             var config = new PlatformConfig(rotationY, gapPositions, dangerPositions);
             generator.Create(config);
         }
