@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using PrecisionDrop.Platforms.Contracts;
 using UnityEngine;
 
@@ -10,8 +9,8 @@ namespace PrecisionDrop.Platforms.Unity {
         private const float BounceCooldown = 0.15f;
         private float bounceTimer;
 
+        public event Action<Platform, PieceVariant> OnCollidedPlatform;
         public event Action<Platform> OnPassedPlatform;
-        public event Action<Platform> OnCollidedPlatform;
 
         private PlatformPart[] platformParts;
         private PlatformPiece[] platformPieces;
@@ -20,24 +19,24 @@ namespace PrecisionDrop.Platforms.Unity {
 
         internal void Init(PlatformPart[] parts, PlatformPiece[] pieces) {
             totalParts = parts.Length;
-            this.platformParts = parts;
-            this.platformPieces = pieces;
+            platformParts = parts;
+            platformPieces = pieces;
             for (int i = 0; i < pieces.Length; i++) {
-                var piece = pieces[i];
+                PlatformPiece piece = pieces[i];
                 HookPieceEvents(piece);
             }
         }
 
-        private void Piece_OnPlayerCollided() {
+        private void Piece_OnPlayerCollided(PieceVariant pieceVariant) {
             if (Time.time < bounceTimer) { return; }
 
             bounceTimer = Time.time + BounceCooldown;
-            OnCollidedPlatform?.Invoke(this);
+            OnCollidedPlatform?.Invoke(this, pieceVariant);
         }
 
         private void Piece_OnPlayerPassed() {
             for (int i = 0; i < platformPieces.Length; i++) {
-                var piece = platformPieces[i];
+                PlatformPiece piece = platformPieces[i];
                 UnhookPieceEvents(piece);
             }
 
@@ -61,14 +60,14 @@ namespace PrecisionDrop.Platforms.Unity {
 
         private void DisablePieceColliders() {
             for (int i = 0; i < platformPieces.Length; i++) {
-                var piece = platformPieces[i];
+                PlatformPiece piece = platformPieces[i];
                 piece.DisableCollider();
             }
         }
 
         private void ThrowParts() {
             for (int i = 0; i < platformParts.Length; i++) {
-                var part = platformParts[i];
+                PlatformPart part = platformParts[i];
                 part.Separate();
                 Vector3 throwDir = GetRandomDirectionsPerPart(i, Vector3.forward);
                 part.Throw(breakForceAmount, -throwDir);

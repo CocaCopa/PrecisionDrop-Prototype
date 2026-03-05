@@ -522,7 +522,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 479435872}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 5f251ac8b95394043aaf3f7e4b1ef876, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -647,6 +647,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PrecisionDrop.Player.Unity.PlayerSphere
   defaultConfig: {fileID: 11400000, guid: d2c265eab474ba840a42275e92b912bd, type: 2}
+  visuals: {fileID: 8382022908429848329}
 --- !u!1 &555026528
 GameObject:
   m_ObjectHideFlags: 0
@@ -1548,6 +1549,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9d8dfb2bdae412b87798dd3c3c76099, type: 3}
   m_Name: 
   m_EditorClassIdentifier: PrecisionDrop.Player.Unity::PrecisionDrop.Player.Unity.PlayerVisuals
+  bounceFadeOpts:
+  - curve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 0
+      m_PostInfinity: 0
+      m_RotationOrder: 0
+    time: 0
+    height: 0
+  - curve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 0
+      m_PostInfinity: 0
+      m_RotationOrder: 0
+    time: 0
+    height: 0
 --- !u!1 &8709977730161427415
 GameObject:
   m_ObjectHideFlags: 0

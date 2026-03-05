@@ -3,6 +3,6 @@ using System;
 namespace PrecisionDrop.Platforms.Contracts {
     public interface IPlatformEventBus {
         event Action<IPlatform> OnPlatformPassed;
-        event Action<IPlatform> OnPlatformCollision;
+        event Action<IPlatform, PieceVariant> OnPlatformCollision;
     }
 }

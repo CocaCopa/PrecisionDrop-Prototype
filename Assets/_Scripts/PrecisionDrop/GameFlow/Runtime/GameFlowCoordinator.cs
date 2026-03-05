@@ -12,7 +12,7 @@ namespace PrecisionDrop.GameFlow.Runtime {
         public event Action OnPlayerBounced;
 
         private int passCounter;
-    
+
         internal GameFlowCoordinator(IPlayerSphere playerSphere, IPlatformEventBus platformEventBus) {
             this.playerSphere = playerSphere;
             this.platformEventBus = platformEventBus;
@@ -23,7 +23,15 @@ namespace PrecisionDrop.GameFlow.Runtime {
             platformEventBus.OnPlatformPassed += PlatformEventBus_OnPlatformPassed;
         }
 
-        private void PlatformEventBus_OnPlatformCollision(IPlatform platform) {
+        private void PlatformEventBus_OnPlatformCollision(IPlatform platform, PieceVariant pieceVariant) {
+            // ReSharper disable once SwitchStatementMissingSomeEnumCasesNoDefault
+            switch (pieceVariant) {
+                case PieceVariant.Normal: NormalCollision(platform); break;
+                case PieceVariant.Danger: DangerCollision(); break;
+            }
+        }
+
+        private void NormalCollision(IPlatform platform) {
             playerSphere.Jump();
             OnPlayerBounced?.Invoke();
             if (passCounter > 2) {
@@ -32,6 +40,10 @@ namespace PrecisionDrop.GameFlow.Runtime {
                 OnPlayerPassedPlatform?.Invoke();
             }
             passCounter = 0;
+        }
+
+        private void DangerCollision() {
+            playerSphere.Lose();
         }
 
         private void PlatformEventBus_OnPlatformPassed(IPlatform platform) {

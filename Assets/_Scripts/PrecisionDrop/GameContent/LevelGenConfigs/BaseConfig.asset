@@ -38,7 +38,7 @@ MonoBehaviour:
     dangerConfig:
       pairCount:
         maxPairDensityRatio: 0.12
-        minDangerPairCount: 2
+        minDangerPairCount: 1
       gapVariation:
         maxGapShrinkRatio: 0.75
       offset:

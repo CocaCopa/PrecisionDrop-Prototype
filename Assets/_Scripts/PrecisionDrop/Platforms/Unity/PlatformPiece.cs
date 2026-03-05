@@ -1,14 +1,15 @@
 using System;
-using PrecisionDrop.Platforms.Unity.Presentation;
+using PrecisionDrop.Platforms.Contracts;
 using UnityEngine;
 
 namespace PrecisionDrop.Platforms.Unity {
     [RequireComponent(typeof(Collider))]
     internal sealed class PlatformPiece : MonoBehaviour {
-        private MeshRenderer pieceRenderer;
         private Collider pieceCollider;
+        private MeshRenderer pieceRenderer;
+        private PieceVariant pieceVariant;
 
-        internal event Action OnPlayerCollided;
+        internal event Action<PieceVariant> OnPlayerCollided;
         internal event Action OnPlayerPassed;
 
         private void Awake() {
@@ -19,11 +20,20 @@ namespace PrecisionDrop.Platforms.Unity {
             if (pieceRenderer == null) { throw new NullReferenceException($"[{nameof(PlatformPiece)}] Component: '{nameof(MeshRenderer)}' not serialized"); }
         }
 
+        private void OnCollisionEnter(Collision collision) {
+            OnPlayerCollided?.Invoke(pieceVariant);
+        }
+
+        private void OnTriggerEnter(Collider other) {
+            OnPlayerPassed?.Invoke();
+        }
+
         internal void DisableCollider() {
             pieceCollider.enabled = false;
         }
 
         internal void Init(Vector3 localPos, Vector3 localEuler, PieceVariant type, Material mat) {
+            pieceVariant = type;
             pieceRenderer.material = mat;
             transform.localPosition = localPos;
             transform.localEulerAngles = localEuler;
@@ -31,7 +41,7 @@ namespace PrecisionDrop.Platforms.Unity {
             switch (type) {
                 case PieceVariant.Normal: break;
                 case PieceVariant.Gap: PieceType_Gap(); break;
-                case PieceVariant.Danger: PieceType_Danger(); break;
+                case PieceVariant.Danger: break;
                 default: throw new NotImplementedException($"[{nameof(PlatformPiece)}]");
             }
         }
@@ -39,18 +49,6 @@ namespace PrecisionDrop.Platforms.Unity {
         private void PieceType_Gap() {
             pieceRenderer.enabled = false;
             pieceCollider.isTrigger = true;
-        }
-
-        private void PieceType_Danger() {
-
-        }
-
-        private void OnCollisionEnter(Collision collision) {
-            OnPlayerCollided?.Invoke();
-        }
-
-        private void OnTriggerEnter(Collider other) {
-            OnPlayerPassed?.Invoke();
         }
     }
 }

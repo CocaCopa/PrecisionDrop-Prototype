@@ -1,12 +1,26 @@
 using PrecisionDrop.Player.Contracts;
+using PrecisionDrop.Player.Unity.Presentation;
 using UnityEngine;
 
 namespace PrecisionDrop.Player.Unity {
     [RequireComponent(typeof(Rigidbody))]
     internal sealed class PlayerSphere : MonoBehaviour, IPlayerSphere, IPlayerStateRead, IPlayerStateWrite {
         [SerializeField] private PlayerConfigAsset defaultConfig;
+        [SerializeField] private PlayerVisuals visuals;
 
+        private bool canJump;
         private Rigidbody sphereRb;
+        private bool test;
+
+        private void Awake() {
+            sphereRb = GetComponent<Rigidbody>();
+            canJump = true;
+        }
+
+        public void Jump() {
+            if (!canJump) { return; }
+            sphereRb.linearVelocity = defaultConfig.JumpStrength * Vector3.up;
+        }
 
         public bool CanSmash { get; private set; }
 
@@ -14,12 +28,8 @@ namespace PrecisionDrop.Player.Unity {
             CanSmash = enable;
         }
 
-        private void Awake() {
-            sphereRb = GetComponent<Rigidbody>();
-        }
-
-        public void Jump() {
-            sphereRb.linearVelocity = defaultConfig.JumpStrength * Vector3.up;
+        public void Lose() {
+            canJump = false;
         }
     }
 }
