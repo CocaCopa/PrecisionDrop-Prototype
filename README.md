@@ -1,6 +1,6 @@
 # PrecisionDrop (Work In Progress)  
 
-![hippo](https://github.com/user-attachments/assets/386e1c69-4580-4212-b62c-a55bf1d54d95)
+![hippo](https://github.com/user-attachments/assets/daaa8a49-73ba-47bc-b849-ad3a4e3ab567)
 
 ## Quick Overview
 
