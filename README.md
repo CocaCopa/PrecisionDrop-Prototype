@@ -31,10 +31,10 @@ The goal is to build gameplay systems that can be extended comfortably as comple
 
 ## Current State
 
-Features are split into:
-- `Contracts`: interfaces & data definitions
-- `Runtime`: engine-agnostic gameplay logic
-- `Unity`: MonoBehaviours and scene integration
+The project is structured into three layers:
+- `Contracts` : Interfaces and data definitions shared between systems.
+- `Runtime`   : Pure C# gameplay logic independent of Unity APIs.
+- `Unity`     : MonoBehaviour components responsible for scene integration and presentation.
 
 Assembly Definitions are used to enforce boundaries and prevent unintended coupling.
 
@@ -61,7 +61,28 @@ Procedural generation logic
 - Gap configurations with weighted chances
 - Custom editors for better clarity
 
-*In development
+---
+
+### Procedural Danger Generation
+
+Platforms are generated using a multi-phase procedural pipeline:
+
+1. <b>Pair Count Phase:</b>  
+Determines how many danger pairs will appear on the platform.
+
+2. <b>Gap Distribution Phase:</b>  
+Evenly distributes safe segments between danger sections.
+
+3. <b>Gap Variation Phase:</b>  
+Introduces randomness by shrinking safe sections between danger sections.
+
+4. <b>Offset Phase:</b>  
+Offsets the entire pattern to avoid predictable layouts.
+
+5. <b>Edge Snap Phase:</b>  
+Occasionally snaps the first or last danger section to platform edges.
+
+The phases are intentionally isolated to allow debugging and balancing each step independently.
 
 ---
 
