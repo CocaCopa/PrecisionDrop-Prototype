@@ -7,7 +7,8 @@ namespace PrecisionDrop.Player.Unity {
     internal sealed class TowerController : MonoBehaviour {
         [SerializeField] private GameObject unityInput;
         [SerializeField] private GameObject towerObj;
-        [Space(10f)] [SerializeField] private Transform centralCylinder;
+        [Space(10f)]
+        [SerializeField] private Transform centralCylinder;
         [SerializeField] private float offsetOnPassPlatform;
 
         private IInputSource InputSource { get; set; }

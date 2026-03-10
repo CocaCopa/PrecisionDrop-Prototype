@@ -28,7 +28,7 @@ namespace PrecisionDrop.Player.Unity {
         }
 
         private void GameFlow_OnPlayerPassedPlatform() {
-            if (moveCoroutine != null) StopCoroutine(moveCoroutine);
+            if (moveCoroutine != null) { StopCoroutine(moveCoroutine); }
             moveCoroutine = StartCoroutine(MoveRoutine());
         }
 
@@ -46,11 +46,17 @@ namespace PrecisionDrop.Player.Unity {
 
             camTransform.position = targetPos;
         }
-        
+
         private class Easing : IEasing {
             private readonly AnimationCurve curve;
-            public float Evaluate(float t) => curve.Evaluate(t);
-            public Easing(AnimationCurve curve) => this.curve = curve;
+
+            public float Evaluate(float t) {
+                return curve.Evaluate(t);
+            }
+
+            public Easing(AnimationCurve curve) {
+                this.curve = curve;
+            }
         }
     }
 }
