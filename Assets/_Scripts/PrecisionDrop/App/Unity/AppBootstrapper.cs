@@ -34,7 +34,7 @@ namespace PrecisionDrop.App.Unity {
         }
 
         private static PlayerTheme CreatePlayerTheme(LevelThemeAsset levelTheme) {
-            return new PlayerTheme(levelTheme.PlayerMat, levelTheme.PlayerTrailMat);
+            return new PlayerTheme(levelTheme.PlayerMat, levelTheme.PlayerTrailMat, levelTheme.PlayerBounceVfxId);
         }
 
         private static PlatformTheme CreatePlatformTheme(LevelThemeAsset levelTheme) {

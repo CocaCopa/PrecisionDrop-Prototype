@@ -20,6 +20,10 @@ namespace PrecisionDrop.Player.Unity {
         public void Jump() {
             if (!canJump) { return; }
             sphereRb.linearVelocity = defaultConfig.JumpStrength * Vector3.up;
+            if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit)) {
+                Transform hitObj = hit.collider.transform;
+                visuals.BounceEffect(hitObj);
+            }
         }
 
         public bool CanSmash { get; private set; }

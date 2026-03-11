@@ -266,10 +266,10 @@ TrailRenderer:
     textureScale: {x: 1, y: 1}
     shadowBias: 0.5
     generateLightingData: 1
-  m_MinVertexDistance: 0.1
+  m_MinVertexDistance: 0.4
   m_Autodestruct: 0
   m_Emitting: 1
-  m_ApplyActiveColorSpace: 1
+  m_ApplyActiveColorSpace: 0
 --- !u!1 &276018433
 GameObject:
   m_ObjectHideFlags: 0
@@ -420,9 +420,9 @@ Camera:
   m_LensShift: {x: 0, y: 0}
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0
+    x: 0.34980017
     y: 0
-    width: 1
+    width: 0.3003997
     height: 1
   near clip plane: 0.3
   far clip plane: 1000

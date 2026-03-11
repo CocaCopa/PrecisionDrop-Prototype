@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using CocaCopa.PrefabRegistry;
 using PrecisionDrop.Platforms.Contracts;
 using PrecisionDrop.Platforms.Unity.Presentation;
 using UnityEngine;
@@ -7,15 +8,17 @@ using RangeInt = CocaCopa.Primitives.RangeInt;
 
 namespace PrecisionDrop.Platforms.Unity {
     internal sealed class PlatformBuilder : MonoBehaviour, IPlatformBuilder {
-        [SerializeField] private GameObject platformPrefab;
-        [SerializeField] private GameObject partPrefab;
-        [SerializeField] private GameObject piecePrefab;
-        [Space(10f)]
         [SerializeField] private GameObject platformsHolder;
+        [Space(10f)]
         [SerializeField] private int totalParts = 3;
-        [SerializeField, Range(2, 64)] private int segments = 36;
+        [SerializeField] [Range(2, 64)] private int segments = 36;
         [Tooltip("The gap between each platform.")]
         [SerializeField] private float platformGap;
+
+        private const string PrefabGroupID = "Platform";
+        private const string PlatformSegmentKey = "Segment";
+        private const string PlatformPieceKey = "Piece";
+        private const string PlatformPartKey = "Part";
 
         private PlatformTheme platformTheme;
 
@@ -23,7 +26,7 @@ namespace PrecisionDrop.Platforms.Unity {
 
         internal event Action<Platform> OnPlatformGenerated;
 
-        public int PlatformSegments => segments; 
+        public int PlatformSegments => segments;
 
         public void Install(PlatformTheme theme) {
             platformTheme = theme;
@@ -43,7 +46,8 @@ namespace PrecisionDrop.Platforms.Unity {
         }
 
         private GameObject CreatePlatformRoot(out Platform platform) {
-            GameObject platformObj = Instantiate(platformPrefab, platformsHolder.transform, false);
+            if (!PrefabRegistry.TryInstantiate(PrefabGroupID, PlatformSegmentKey, platformsHolder.transform, out GameObject platformObj)) { ThrowPrefabException(PlatformSegmentKey); }
+
             platformObj.transform.localPosition = Vector3.down * prevPlatformGap;
             return platformObj.TryGetComponent(out platform)
                 ? platformObj
@@ -52,13 +56,11 @@ namespace PrecisionDrop.Platforms.Unity {
         }
 
         private PlatformPart[] CreatePartsParents(Transform root) {
-            PlatformPart[] parents = new PlatformPart[totalParts];
+            var parents = new PlatformPart[totalParts];
             for (int i = 0; i < totalParts; i++) {
-                var parent = Instantiate(partPrefab, root).transform;
-                if (!parent.TryGetComponent<PlatformPart>(out var part)) {
-                    throw new NullReferenceException(
-                        $"[{nameof(PlatformBuilder)}] Part obj does not have '{nameof(PlatformPart)}' component attached");
-                }
+                if (!PrefabRegistry.TryInstantiate(PrefabGroupID, PlatformPartKey, root, out GameObject parentObj)) { ThrowPrefabException(PlatformPartKey); }
+                Transform parent = parentObj.transform;
+                if (!parent.TryGetComponent<PlatformPart>(out PlatformPart part)) { ThrowComponentException(nameof(PlatformPart), "Part"); }
 
                 parent.localPosition = Vector3.zero;
                 parent.localEulerAngles = Vector3.zero;
@@ -70,7 +72,7 @@ namespace PrecisionDrop.Platforms.Unity {
         }
 
         private PlatformPiece[] CreatePlatformPieces(PlatformPart[] parents, PlatformConfig config) {
-            PlatformPiece[] pieces = new PlatformPiece[segments];
+            var pieces = new PlatformPiece[segments];
 
             float step = 360f / segments;
             int piecesPerParent = segments / parents.Length;
@@ -85,19 +87,16 @@ namespace PrecisionDrop.Platforms.Unity {
                     parentIndex++;
                 }
 
-                PieceVariant type = PieceVariant.Normal;
+                var type = PieceVariant.Normal;
                 if (InZone(i, config.GapPositions)) { type = PieceVariant.Gap; }
                 else if (InZone(i, config.DangerPositions)) { type = PieceVariant.Danger; }
 
-                GameObject pieceObj = Instantiate(piecePrefab, parents[parentIndex].transform);
-                if (!pieceObj.TryGetComponent<PlatformPiece>(out var platformPiece)) {
-                    throw new NullReferenceException(
-                        $"[{nameof(PlatformBuilder)}] Piece obj does not have '{nameof(PlatformPiece)}' component attached");
-                }
+                if (!PrefabRegistry.TryInstantiate(PrefabGroupID, PlatformPieceKey, parents[parentIndex].transform, out GameObject pieceObj)) { ThrowPrefabException(PlatformPieceKey); }
+                if (!pieceObj.TryGetComponent<PlatformPiece>(out PlatformPiece platformPiece)) { ThrowComponentException(nameof(PlatformPiece), "Piece"); }
 
                 Vector3 localPos = Vector3.zero;
                 float y = step * (i + 1);
-                Vector3 localEuler = new Vector3(0f, y + config.RotationY, 0f);
+                var localEuler = new Vector3(0f, y + config.RotationY, 0f);
                 platformPiece.Init(localPos, localEuler, type, GetMaterial(type, platformTheme));
                 pieces[i] = platformPiece;
                 pieceIndex++;
@@ -106,9 +105,20 @@ namespace PrecisionDrop.Platforms.Unity {
             return pieces;
         }
 
+        private static void ThrowPrefabException(string key) {
+            throw new Exception(
+                $"[{nameof(PlatformBuilder)}] Could not fetch prefab using key '{key}' and group ID '{PrefabGroupID}'");
+        }
+
+        private static void ThrowComponentException(string componentName, string objName) {
+            throw new NullReferenceException(
+                $"[{nameof(PlatformBuilder)}] Could not fetch '{nameof(PlatformPiece)}' component from {objName} object");
+        }
+
         private static bool InZone(int index, RangeInt range) {
             return index >= range.min && index < range.max;
         }
+
         private static bool InZone(int index, RangeInt[] ranges) {
             return ranges.Any(r => index >= r.min && index < r.max);
         }

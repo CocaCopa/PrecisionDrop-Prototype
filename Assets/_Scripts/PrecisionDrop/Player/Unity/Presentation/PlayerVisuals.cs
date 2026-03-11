@@ -1,9 +1,12 @@
+using CocaCopa.PrefabRegistry;
 using UnityEngine;
 
 namespace PrecisionDrop.Player.Unity.Presentation {
     [RequireComponent(typeof(MeshRenderer))]
     internal sealed class PlayerVisuals : MonoBehaviour {
         [SerializeField] private TrailRenderer trailRenderer;
+
+        private const string PlayerGroupId = "Player_Bounce";
 
         private MeshRenderer meshRenderer;
         private PlayerTheme theme;
@@ -19,6 +22,13 @@ namespace PrecisionDrop.Player.Unity.Presentation {
         internal void ApplyTheme() {
             meshRenderer.material = theme.SphereMat;
             trailRenderer.material = theme.TrailMat;
+        }
+
+        internal void BounceEffect(Transform hitObj) {
+            if (PrefabRegistry.TryInstantiate(PlayerGroupId, theme.BounceVfxId, hitObj, out GameObject bounceVfx)) {
+                Vector3 spherePosition = transform.position;
+                bounceVfx.transform.position = spherePosition;
+            }
         }
     }
 }
