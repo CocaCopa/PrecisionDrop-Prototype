@@ -35,7 +35,7 @@ namespace PrecisionDrop.Player.Unity {
         }
 
         private void LateUpdate() {
-            if (!InputSource.IsHolding) { return; }
+            if (InputSource is not { IsHolding: true }) { return; }
 
             Vector3 towerEuler = towerObj.transform.localEulerAngles;
             towerEuler.y += InputSource.MouseDragDelta.x;
