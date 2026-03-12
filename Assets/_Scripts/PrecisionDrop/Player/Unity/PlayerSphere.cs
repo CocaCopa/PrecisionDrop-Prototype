@@ -20,10 +20,7 @@ namespace PrecisionDrop.Player.Unity {
         public void Jump() {
             if (!canJump) { return; }
             sphereRb.linearVelocity = defaultConfig.JumpStrength * Vector3.up;
-            if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit)) {
-                Transform hitObj = hit.collider.transform;
-                visuals.BounceEffect(hitObj);
-            }
+            visuals.BounceEffect(GetCollidedObj());
         }
 
         public bool CanSmash { get; private set; }
@@ -34,6 +31,15 @@ namespace PrecisionDrop.Player.Unity {
 
         public void Lose() {
             canJump = false;
+
+            sphereRb.interpolation = RigidbodyInterpolation.None;
+            transform.SetParent(GetCollidedObj().parent);
+        }
+
+        private Transform GetCollidedObj() {
+            return Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit)
+                ? hit.transform
+                : null;
         }
     }
 }

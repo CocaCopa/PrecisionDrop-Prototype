@@ -1,3 +1,4 @@
+using System;
 using CocaCopa.PrefabRegistry;
 using UnityEngine;
 
@@ -25,6 +26,8 @@ namespace PrecisionDrop.Player.Unity.Presentation {
         }
 
         internal void BounceEffect(Transform hitObj) {
+            if (hitObj == null) { throw new NullReferenceException($"[{nameof(PlayerVisuals)}] {nameof(hitObj)}"); }
+
             if (PrefabRegistry.TryInstantiate(PlayerGroupId, theme.BounceVfxId, hitObj, out GameObject bounceVfx)) {
                 Vector3 spherePosition = transform.position;
                 bounceVfx.transform.position = spherePosition;

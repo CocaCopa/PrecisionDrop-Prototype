@@ -27,7 +27,7 @@ namespace PrecisionDrop.Player.Unity {
         }
 
         private void GameFlow_OnPlayerHitDanger() {
-            enabled = false;
+            // enabled = false;
         }
 
         private void GameFlow_OnPlayerPassedPlatform() {
