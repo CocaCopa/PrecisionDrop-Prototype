@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5620629166485208711}
   - component: {fileID: 5350585243692937309}
+  - component: {fileID: 6911999563354189888}
   m_Layer: 0
   m_Name: Platform
   m_TagString: Untagged
@@ -44,5 +45,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30ce67d69133fb14d8f032d49de0bad4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: PrecisionDrop.Platforms.Unity::PrecisionDrop.Platforms.Unity.Platform
-  totalParts: 3
   breakForceAmount: 15
+--- !u!65 &6911999563354189888
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5866964334699386692}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 6.8029976, y: 0.49605176, z: 6.813571}
+  m_Center: {x: 0.0037341118, y: -0.041165963, z: -0.0035595894}

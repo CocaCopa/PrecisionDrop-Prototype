@@ -314,9 +314,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0575722dad637204ab0b7d085fb74b83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: PrecisionDrop.LevelManagment.Unity::PrecisionDrop.LevelManagment.Unity.PlatformGenerator
-  platformPrefab: {fileID: 5866964334699386692, guid: 655ab71446f6b564c9a25d78f09fda17, type: 3}
-  partPrefab: {fileID: 8902245657346621342, guid: a88895e91f97e194e93cdabeee17c323, type: 3}
-  piecePrefab: {fileID: 2485824473256659511, guid: 2a174ef73eb21e947b084516b613c221, type: 3}
   platformsHolder: {fileID: 1903749731}
   totalParts: 3
   segments: 36
@@ -420,9 +417,9 @@ Camera:
   m_LensShift: {x: 0, y: 0}
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0.34980017
+    x: 0.376306
     y: 0
-    width: 0.3003997
+    width: 0.24738799
     height: 1
   near clip plane: 0.3
   far clip plane: 1000

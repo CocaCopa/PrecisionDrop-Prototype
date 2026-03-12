@@ -9,22 +9,29 @@ namespace PrecisionDrop.Platforms.Unity {
         private const float BounceCooldown = 0.15f;
         private float bounceTimer;
 
-        public event Action<Platform, PieceVariant> OnCollidedPlatform;
-        public event Action<Platform> OnPassedPlatform;
+        internal event Action<Platform, PieceVariant> OnCollidedPlatform;
+        internal event Action<Platform> OnPassedPlatform;
 
         private PlatformPart[] platformParts;
         private PlatformPiece[] platformPieces;
 
         private int totalParts;
+        private bool isBroken;
+        private bool isPassed;
+
+        private void OnTriggerEnter(Collider other) {
+            if (isPassed) { return; }
+            isPassed = true;
+            Platform_OnPlayerPassed();
+        }
 
         internal void Init(PlatformPart[] parts, PlatformPiece[] pieces) {
             totalParts = parts.Length;
             platformParts = parts;
             platformPieces = pieces;
-            for (int i = 0; i < pieces.Length; i++) {
-                PlatformPiece piece = pieces[i];
-                HookPieceEvents(piece);
-            }
+            isBroken = false;
+            isPassed = false;
+            HookPieceEvents(platformPieces);
         }
 
         private void Piece_OnPlayerCollided(PieceVariant pieceVariant) {
@@ -34,26 +41,28 @@ namespace PrecisionDrop.Platforms.Unity {
             OnCollidedPlatform?.Invoke(this, pieceVariant);
         }
 
-        private void Piece_OnPlayerPassed() {
-            for (int i = 0; i < platformPieces.Length; i++) {
-                PlatformPiece piece = platformPieces[i];
-                UnhookPieceEvents(piece);
-            }
-
+        private void Platform_OnPlayerPassed() {
+            UnhookPieceEvents(platformPieces);
             OnPassedPlatform?.Invoke(this);
         }
 
-        private void HookPieceEvents(PlatformPiece piece) {
-            piece.OnPlayerCollided += Piece_OnPlayerCollided;
-            piece.OnPlayerPassed += Piece_OnPlayerPassed;
+        private void HookPieceEvents(PlatformPiece[] pieces) {
+            for (int i = 0; i < pieces.Length; i++) {
+                PlatformPiece piece = pieces[i];
+                piece.OnPlayerCollided += Piece_OnPlayerCollided;
+            }
         }
 
-        private void UnhookPieceEvents(PlatformPiece piece) {
-            piece.OnPlayerCollided -= Piece_OnPlayerCollided;
-            piece.OnPlayerPassed -= Piece_OnPlayerPassed;
+        private void UnhookPieceEvents(PlatformPiece[] pieces) {
+            for (int i = 0; i < pieces.Length; i++) {
+                PlatformPiece piece = platformPieces[i];
+                piece.OnPlayerCollided -= Piece_OnPlayerCollided;
+            }
         }
 
         public void Break() {
+            if (isBroken) { return; }
+            isBroken = true;
             DisablePieceColliders();
             ThrowParts();
         }

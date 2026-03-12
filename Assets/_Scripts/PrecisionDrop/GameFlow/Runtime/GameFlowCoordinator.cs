@@ -38,7 +38,6 @@ namespace PrecisionDrop.GameFlow.Runtime {
             if (passCounter > 2) {
                 passCounter = 0;
                 platform.Break();
-                OnPlayerPassedPlatform?.Invoke();
             }
             passCounter = 0;
         }
