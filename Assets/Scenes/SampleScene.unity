@@ -417,9 +417,9 @@ Camera:
   m_LensShift: {x: 0, y: 0}
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0.376306
+    x: 0
     y: 0
-    width: 0.24738799
+    width: 1
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
@@ -1282,32 +1282,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: PrecisionDrop.Player.Unity::PrecisionDrop.Player.Unity.CameraController
   camTransform: {fileID: 330585546}
-  moveOffset: 5
-  moveCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 1
-      outSlope: 1
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 1
-      outSlope: 1
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  moveSpeed: 2.75
+  playerTransform: {fileID: 479435875}
+  verticalOffset: 7.5
+  followSpeed: 15
 --- !u!1 &1620066336
 GameObject:
   m_ObjectHideFlags: 0

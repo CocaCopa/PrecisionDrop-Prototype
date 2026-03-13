@@ -1,4 +1,3 @@
-using System.Collections;
 using CocaCopa.Core.Animation;
 using PrecisionDrop.GameFlow.Contracts;
 using UnityEngine;
@@ -6,57 +5,41 @@ using UnityEngine;
 namespace PrecisionDrop.Player.Unity {
     internal sealed class CameraController : MonoBehaviour {
         [SerializeField] private Transform camTransform;
-        [Space(10f)]
-        [SerializeField] private float moveOffset;
-        [SerializeField] private AnimationCurve moveCurve = AnimationCurve.Linear(0f, 0f, 1f, 1f);
-        [SerializeField] private float moveSpeed;
+        [SerializeField] private Transform playerTransform;
+        [SerializeField] private float verticalOffset;
+        [SerializeField] private float followSpeed = 10f;
+
         private IGameFlow gameFlow;
 
-        private Coroutine moveCoroutine;
-        private ValueAnimator moveAnimator;
-
-        private Vector3 lastTargetPos;
+        private float moveDuration;
+        private float elapsed;
+        private bool isMoving;
 
         internal void Install(IGameFlow gameFlow) {
             this.gameFlow = gameFlow;
         }
 
         internal void Init() {
-            gameFlow.OnPlayerPassedPlatform += GameFlow_OnPlayerPassedPlatform;
-            moveAnimator = ValueAnimator.BySpeed(0f, 1f, moveSpeed, new Easing(moveCurve));
-            lastTargetPos = camTransform.position;
+            Vector3 camStartPos = camTransform.position;
+            camStartPos.y = playerTransform.position.y + verticalOffset;
+
+            camTransform.position = camStartPos;
         }
 
-        private void GameFlow_OnPlayerPassedPlatform() {
-            if (moveCoroutine != null) { StopCoroutine(moveCoroutine); }
-            moveCoroutine = StartCoroutine(MoveRoutine());
-        }
+        private void LateUpdate() {
+            float desiredY = playerTransform.position.y + verticalOffset;
 
-        private IEnumerator MoveRoutine() {
-            Vector3 startPos = camTransform.position;
-            Vector3 targetPos = lastTargetPos + Vector3.down * moveOffset;
-            lastTargetPos = targetPos;
-            moveAnimator.ResetAnimator();
-            yield return null;
-            while (!moveAnimator.IsComplete) {
-                float t = moveAnimator.Evaluate(Time.deltaTime);
-                camTransform.position = Vector3.Lerp(startPos, targetPos, t);
-                yield return null;
-            }
+            if (!(desiredY < camTransform.position.y)) { return; }
 
-            camTransform.position = targetPos;
-        }
+            float newY = Mathf.MoveTowards(
+                camTransform.position.y,
+                desiredY,
+                followSpeed * Time.deltaTime
+            );
 
-        private class Easing : IEasing {
-            private readonly AnimationCurve curve;
-
-            public float Evaluate(float t) {
-                return curve.Evaluate(t);
-            }
-
-            public Easing(AnimationCurve curve) {
-                this.curve = curve;
-            }
+            Vector3 pos = camTransform.position;
+            pos.y = newY;
+            camTransform.position = pos;
         }
     }
 }
