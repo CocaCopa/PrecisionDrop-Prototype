@@ -2,27 +2,54 @@ using System;
 
 namespace CocaCopa.Core.Randomization {
     public static class RandomUtil {
-        private static readonly Random sharedRng = new Random();
+        private static readonly Random SharedRng = new();
 
-        #region Float
-        public static float Float(float min, float max) {
-            return Float(min, max, sharedRng);
+        /// <summary>
+        /// Returns a random boolean value with a 50% probability for <c>true</c> and <c>false</c>.
+        /// </summary>
+        public static bool Bool() {
+            return SharedRng.Next(2) == 0;
         }
 
-        public static float Float(float min, float max, Random rng) {
-            if (min > max) { throw new ArgumentException("min cannot be greater than max"); }
-            return (float)(rng.NextDouble() * (max - min) + min);
+        #region Float
+        /// <summary>
+        /// Returns a random floating-point value between <paramref name="minInclusive"/> and <paramref name="maxExclusive"/>.
+        /// </summary>
+        public static float Float(float minInclusive, float maxExclusive) {
+            return Float(minInclusive, maxExclusive, SharedRng);
+        }
+
+        /// <summary>
+        /// Returns a random floating-point value between <paramref name="minInclusive"/> and <paramref name="maxExclusive"/>
+        /// using the provided <see cref="Random"/> instance.
+        /// </summary>
+        /// <exception cref="ArgumentException">
+        /// Thrown when <paramref name="minInclusive"/> is greater than <paramref name="maxExclusive"/>.
+        /// </exception>
+        public static float Float(float minInclusive, float maxExclusive, Random rng) {
+            if (minInclusive > maxExclusive) { throw new ArgumentException("min cannot be greater than max"); }
+            return (float)(rng.NextDouble() * (maxExclusive - minInclusive) + minInclusive);
         }
         #endregion
 
         #region Int
-        public static int Int(int min, int max) {
-            return Int(min, max, sharedRng);
+        /// <summary>
+        /// Returns a random integer between <paramref name="minInclusive"/> and <paramref name="maxInclusive"/>.
+        /// </summary>
+        public static int Int(int minInclusive, int maxInclusive) {
+            return Int(minInclusive, maxInclusive, SharedRng);
         }
 
-        public static int Int(int min, int max, Random rng) {
-            if (min > max) { throw new ArgumentException("min cannot be greater than max"); }
-            return rng.Next(min, max + 1);
+        /// <summary>
+        /// Returns a random integer between <paramref name="minInclusive"/> and <paramref name="maxInclusive"/>
+        /// using the provided <see cref="Random"/> instance.
+        /// </summary>
+        /// <exception cref="ArgumentException">
+        /// Thrown when <paramref name="minInclusive"/> is greater than <paramref name="maxInclusive"/>.
+        /// </exception>
+        public static int Int(int minInclusive, int maxInclusive, Random rng) {
+            if (minInclusive > maxInclusive) { throw new ArgumentException("min cannot be greater than max"); }
+            return rng.Next(minInclusive, maxInclusive + 1);
         }
         #endregion
     }
