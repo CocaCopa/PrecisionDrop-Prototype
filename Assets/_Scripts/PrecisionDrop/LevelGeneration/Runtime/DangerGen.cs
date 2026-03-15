@@ -25,15 +25,15 @@ namespace PrecisionDrop.LevelGeneration.Runtime {
         ///     Ensures all generated danger sections remain within the bounds of the solid section.
         /// </summary>
         internal static RangeInt[] CalculateDangerPairs(DangerConfig dangerConfig, RangeInt solidSection, RangeInt dangerPairRange) {
-            PlatformLayout platformLayout = GetPlatformLayout(dangerConfig.pairCount, solidSection, dangerPairRange);
+            PlatformLayout platformLayout = GetPlatformLayout(dangerConfig.pair, solidSection, dangerPairRange);
 
             RangeInt[] dangerSections = GenerateUniformDangerSections(platformLayout);
             dangerSections = VaryDangerSectionGaps(dangerConfig.gapVariation, dangerSections, platformLayout, out int removedCount);
 
             OffsetConfig offsetConfig = dangerConfig.offset;
-            int offset = (int)(removedCount * RandomUtil.Float(offsetConfig.offsetUtilizationRatio.min, offsetConfig.offsetUtilizationRatio.max));
+            int offset = (int)(removedCount * RandomUtil.Float(offsetConfig.ratio.min / 100f, offsetConfig.ratio.max / 100f));
             dangerSections = OffsetDangerSections(offset, dangerSections);
-            if (Rng01 < 0.25f) {
+            if (Rng01 < dangerConfig.offset.edgeSnapChance / 100f) {
                 dangerSections[0] = SnapDangerToLeftEdge(dangerSections[0], solidSection);
                 dangerSections[^1] = SnapDangerToRightEdge(dangerSections[^1], solidSection);
             }
@@ -44,9 +44,9 @@ namespace PrecisionDrop.LevelGeneration.Runtime {
         private static PlatformLayout GetPlatformLayout(PairCountConfig pairConfig, RangeInt solidSection, RangeInt dangerPairRange) {
             int totalSolids = solidSection.max - solidSection.min;
 
-            int maxPairs = (int)(totalSolids * pairConfig.maxPairDensityRatio);
-            maxPairs = MathUtils.Max(pairConfig.minDangerPairCount, maxPairs);
-            int totalPairs = RandomUtil.Int(pairConfig.minDangerPairCount, maxPairs);
+            int maxPairs = (int)(totalSolids * pairConfig.densityRatio / 100f);
+            maxPairs = MathUtils.Max(pairConfig.minPairCount, maxPairs);
+            int totalPairs = RandomUtil.Int(pairConfig.minPairCount, maxPairs);
             if (totalPairs == 0) { return new PlatformLayout(totalSolids, totalSolids, Array.Empty<int>(), solidSection.min); }
 
             int totalDangerPieces = GetTotalDangerPieces(totalPairs, dangerPairRange, out int[] dangerPairs);
@@ -121,7 +121,7 @@ namespace PrecisionDrop.LevelGeneration.Runtime {
             for (int i = 0; i < totalPairs; i++) {
                 RangeInt section = dangerSections[i];
                 int gap = GetPlatformGap(i);
-                int shrunkGap = gap - (int)(gap * RandomUtil.Float(0f, dangerGapConfig.maxGapShrinkRatio));
+                int shrunkGap = gap - (int)(gap * RandomUtil.Float(0f, dangerGapConfig.shrinkRatio / 100f));
                 if (i != totalPairs - 1 || totalPairs == 1) { removedCount += gap - shrunkGap; }
                 section.min = cursorIndex;
                 section.max = section.min + layout.DangerPairs[i];

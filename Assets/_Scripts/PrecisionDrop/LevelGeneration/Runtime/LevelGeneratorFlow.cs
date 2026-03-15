@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using CocaCopa.Core;
 using CocaCopa.Core.Randomization;
 using CocaCopa.Primitives;
 using PrecisionDrop.GameFlow.Contracts;
@@ -22,8 +23,10 @@ namespace PrecisionDrop.LevelGeneration.Runtime {
             this.genSettings = genSettings;
         }
 
-        private int FirstBatchCount => genSettings.firstBatchCount;
-        private static bool AlignWithPrevious => RandomUtil.Int(0, 100) < 25;
+        private int FirstBatchCount => genSettings.firstBatchConfig.batchCount;
+        private RangeInt FirstBatchAlignmentOffset => genSettings.firstBatchConfig.alignmentOffset;
+        private RangeInt GeneralAlignmentOffset => genSettings.generalSettings.alignmentOffset;
+        private int DefaultPlatformGapConfig => genSettings.firstBatchConfig.gapConfigIndex;
 
         public void Dispose() {
             gameFlow.OnPlayerPassedPlatform -= GameFlow_OnPlayerPassedPlatform;
@@ -36,8 +39,8 @@ namespace PrecisionDrop.LevelGeneration.Runtime {
 
         private void CreateFirstBatch() {
             for (int i = 0; i < FirstBatchCount; i++) {
-                rotationY = RandomUtil.Float(-50f, 50f);
-                GapConfig gapConfig = genSettings.gapConfigs[0];
+                rotationY = RandomUtil.Float(FirstBatchAlignmentOffset.min, FirstBatchAlignmentOffset.max);
+                GapConfig gapConfig = genSettings.gapConfigs[DefaultPlatformGapConfig];
                 GeneratePlatform(gapConfig, false);
             }
         }
@@ -45,8 +48,9 @@ namespace PrecisionDrop.LevelGeneration.Runtime {
         private void GameFlow_OnPlayerPassedPlatform() {
             totalPassCount++;
 
-            if (AlignWithPrevious) { rotationY += RandomUtil.Float(-10f, 10f); }
-            else { rotationY = RandomUtil.Float(20f, 340f); }
+            if (ShouldAlignWithPrevious()) { rotationY += RandomUtil.Float(GeneralAlignmentOffset.min, GeneralAlignmentOffset.max); }
+            // Pick an offset from the remaining circular arc outside the alignment window.
+            else { rotationY += RandomUtil.Float(GeneralAlignmentOffset.max, 360f + GeneralAlignmentOffset.min); }
 
             GapConfig gapConfig = GenUtils.GetRandomGapConfig(genSettings.gapConfigs);
             GeneratePlatform(gapConfig);
@@ -66,7 +70,7 @@ namespace PrecisionDrop.LevelGeneration.Runtime {
 
         private RangeInt[] CalculateDangerSections(RangeInt[] gapRanges) {
             RangeInt[] solidSections = GenUtils.GetSolidPlatforms(gapRanges, totalSegments);
-            var dangerPairRange = new RangeInt(1, 2);
+            RangeInt dangerPairRange = genSettings.generalSettings.dangerPairRange;
             var danger = new List<RangeInt>();
 
             int fullDangerSectionCounter = 0;
@@ -89,10 +93,15 @@ namespace PrecisionDrop.LevelGeneration.Runtime {
             return danger.ToArray();
         }
 
-        private static bool PreferFullDangerSection(int totalSolids, ref int fullDangerSectionCounter) {
-            if (fullDangerSectionCounter >= 2) { return false; }
+        private bool ShouldAlignWithPrevious() {
+            return RandomUtil.Int(0, 100) < genSettings.generalSettings.alignWithPreviousChance;
+        }
 
-            if (totalSolids <= 5 && RandomUtil.Int(0, 100) < 30) {
+        private bool PreferFullDangerSection(int totalSolids, ref int fullDangerSectionCounter) {
+            FullDangerSectionSettings fullDangerSettings = genSettings.fullDangerSectionSettings;
+            if (fullDangerSectionCounter >= fullDangerSettings.maxFullDangerSections) { return false; }
+
+            if (totalSolids <= fullDangerSettings.maxSolidsForFullDanger && RandomUtil.Int(0, 100) < fullDangerSettings.fullDangerChance) {
                 fullDangerSectionCounter++;
                 return true;
             }

@@ -7,13 +7,15 @@ namespace PrecisionDrop.LevelGeneration.Unity {
         [SerializeField] private GenerationSettings generationSettings;
 
         internal GenerationSettings GenSettings => generationSettings;
-        
+
         private void OnValidate() {
             ValidateGenSettings();
         }
 
         private void ValidateGenSettings() {
-            generationSettings.firstBatchCount = Mathf.Max(0, generationSettings.firstBatchCount);
+            FirstBatchConfig firstBatchConfig = generationSettings.firstBatchConfig;
+            firstBatchConfig.batchCount = Mathf.Max(0, firstBatchConfig.batchCount);
+            generationSettings.firstBatchConfig = firstBatchConfig;
         }
     }
 }

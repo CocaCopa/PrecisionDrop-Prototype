@@ -13,7 +13,24 @@ MonoBehaviour:
   m_Name: BaseConfig
   m_EditorClassIdentifier: PrecisionDrop.LevelGeneration.Unity::PrecisionDrop.LevelGeneration.Unity.GenerationSettingsAsset
   generationSettings:
-    firstBatchCount: 6
+    firstBatchConfig:
+      batchCount: 6
+      gapConfigIndex: 0
+      alignmentOffset:
+        min: -50
+        max: 50
+    fullDangerSectionSettings:
+      maxFullDangerSections: 2
+      maxSolidsForFullDanger: 5
+      fullDangerChance: 30
+    generalSettings:
+      dangerPairRange:
+        min: 1
+        max: 2
+      alignWithPreviousChance: 15
+      alignmentOffset:
+        min: -7
+        max: 7
     gapConfigs:
     - totalGaps: 1
       gapRange:
@@ -36,12 +53,13 @@ MonoBehaviour:
         max: 4
       chance: 5
     dangerConfig:
-      pairCount:
-        maxPairDensityRatio: 0.12
-        minDangerPairCount: 1
+      pair:
+        densityRatio: 14
+        minPairCount: 1
       gapVariation:
-        maxGapShrinkRatio: 0.75
+        shrinkRatio: 75
       offset:
-        offsetUtilizationRatio:
+        ratio:
           min: 0
-          max: 1
+          max: 100
+        edgeSnapChance: 25
