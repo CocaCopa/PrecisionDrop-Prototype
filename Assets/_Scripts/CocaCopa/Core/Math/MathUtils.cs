@@ -2,13 +2,12 @@ using System;
 
 namespace CocaCopa.Core {
     public static class MathUtils {
-
         /// <summary>
         /// Linearly interpolates between <paramref name="a"/> and <paramref name="b"/> by <paramref name="t"/>, 
         /// clamping <paramref name="t"/> to the [0, 1] range.
         /// </summary>
         public static float Lerp(float a, float b, float t) {
-            t = t < 0f ? 0f : (t > 1f ? 1f : t);
+            t = t < 0f ? 0f : t > 1f ? 1f : t;
             return a + (b - a) * t;
         }
 
@@ -38,29 +37,47 @@ namespace CocaCopa.Core {
         }
 
         /// <summary>
+        /// Returns the absolute value of the given float.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static float Abs(float value) {
+            return value < 0f ? value * -1f : value;
+        }
+
+        /// <summary>
+        /// Returns the absolute value of the given integer.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static int Abs(int value) {
+            return value < 0 ? value * -1 : value;
+        }
+
+        /// <summary>
         /// Returns the larger of <paramref name="a"/> and <paramref name="b"/>.
         /// </summary>
         public static float Max(float a, float b) {
-            if (a > b) return a;
-            else return b;
+            if (a > b) { return a; }
+            else { return b; }
         }
-        
+
         public static int Max(int a, int b) {
-            if (a > b) return a;
-            else return b;
+            if (a > b) { return a; }
+            else { return b; }
         }
 
         /// <summary>
         /// Returns the smaller of <paramref name="a"/> and <paramref name="b"/>.
         /// </summary>
         public static float Min(float a, float b) {
-            if (a < b) return a;
-            else return b;
+            if (a < b) { return a; }
+            else { return b; }
         }
 
         public static int Min(int a, int b) {
-            if (a < b) return a;
-            else return b;
+            if (a < b) { return a; }
+            else { return b; }
         }
 
         /// <summary>
@@ -94,7 +111,10 @@ namespace CocaCopa.Core {
         }
 
         public static float PingPong(float value, float min, float max, ref int dir) {
-            if (max <= min) { dir = +1; return min; }
+            if (max <= min) {
+                dir = +1;
+                return min;
+            }
 
             while (value > max || value < min) {
                 if (value > max) {
