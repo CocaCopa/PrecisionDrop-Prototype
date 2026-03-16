@@ -5,7 +5,7 @@ using PrecisionDrop.Player.Contracts;
 
 namespace PrecisionDrop.GameFlow.Runtime {
     internal sealed class GameFlowCoordinator : IGameFlow {
-        private readonly IPlayerSphere playerSphere;
+        private readonly PlayerAccess playerAccess;
         private readonly IPlatformEventBus platformEventBus;
 
         public event Action OnPlayerPassedPlatform;
@@ -13,18 +13,21 @@ namespace PrecisionDrop.GameFlow.Runtime {
         public event Action OnPlayerHitDanger;
 
         private int passCounter;
+        private bool gameOver;
 
-        internal GameFlowCoordinator(IPlayerSphere playerSphere, IPlatformEventBus platformEventBus) {
-            this.playerSphere = playerSphere;
+        internal GameFlowCoordinator(PlayerAccess playerAccess, IPlatformEventBus platformEventBus) {
+            this.playerAccess = playerAccess;
             this.platformEventBus = platformEventBus;
         }
 
         internal void Init() {
+            gameOver = false;
             platformEventBus.OnPlatformCollision += PlatformEventBus_OnPlatformCollision;
             platformEventBus.OnPlatformPassed += PlatformEventBus_OnPlatformPassed;
         }
 
         private void PlatformEventBus_OnPlatformCollision(IPlatform platform, PieceVariant pieceVariant) {
+            if (gameOver) { return; }
             // ReSharper disable once SwitchStatementMissingSomeEnumCasesNoDefault
             switch (pieceVariant) {
                 case PieceVariant.Normal: NormalCollision(platform); break;
@@ -33,7 +36,7 @@ namespace PrecisionDrop.GameFlow.Runtime {
         }
 
         private void NormalCollision(IPlatform platform) {
-            playerSphere.Jump();
+            playerAccess.Sphere.Jump();
             OnPlayerBounced?.Invoke();
             if (passCounter > 2) {
                 passCounter = 0;
@@ -43,11 +46,13 @@ namespace PrecisionDrop.GameFlow.Runtime {
         }
 
         private void DangerCollision() {
-            playerSphere.Lose();
+            gameOver = true;
+            playerAccess.Sphere.Lose();
             OnPlayerHitDanger?.Invoke();
         }
 
         private void PlatformEventBus_OnPlatformPassed(IPlatform platform) {
+            playerAccess.StateWrite.SetSmashState(true);
             platform.Break();
             passCounter++;
             OnPlayerPassedPlatform?.Invoke();
