@@ -27,6 +27,7 @@ namespace PrecisionDrop.Player.Unity {
 
         public void SetSmashState(bool enable) {
             CanSmash = enable;
+            visuals.SmashState(enable);
         }
 
         public void Lose() {

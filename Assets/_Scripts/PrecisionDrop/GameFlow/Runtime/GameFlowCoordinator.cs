@@ -28,21 +28,31 @@ namespace PrecisionDrop.GameFlow.Runtime {
 
         private void PlatformEventBus_OnPlatformCollision(IPlatform platform, PieceVariant pieceVariant) {
             if (gameOver) { return; }
-            // ReSharper disable once SwitchStatementMissingSomeEnumCasesNoDefault
+
+            if (playerAccess.StateRead.CanSmash) {
+                ForceBreakPlatform(platform);
+                NormalCollision();
+            }
+            else { VariantBasedCollision(pieceVariant); }
+
+            passCounter = 0;
+        }
+
+        private void ForceBreakPlatform(IPlatform platform) {
+            platform.Break();
+            playerAccess.StateWrite.SetSmashState(false);
+        }
+
+        private void VariantBasedCollision(PieceVariant pieceVariant) {
             switch (pieceVariant) {
-                case PieceVariant.Normal: NormalCollision(platform); break;
+                case PieceVariant.Normal: NormalCollision(); break;
                 case PieceVariant.Danger: DangerCollision(); break;
             }
         }
 
-        private void NormalCollision(IPlatform platform) {
+        private void NormalCollision() {
             playerAccess.Sphere.Jump();
             OnPlayerBounced?.Invoke();
-            if (passCounter > 2) {
-                passCounter = 0;
-                platform.Break();
-            }
-            passCounter = 0;
         }
 
         private void DangerCollision() {
@@ -52,7 +62,9 @@ namespace PrecisionDrop.GameFlow.Runtime {
         }
 
         private void PlatformEventBus_OnPlatformPassed(IPlatform platform) {
-            playerAccess.StateWrite.SetSmashState(true);
+            if (gameOver) { return; }
+
+            if (passCounter > 2 && !playerAccess.StateRead.CanSmash) { playerAccess.StateWrite.SetSmashState(true); }
             platform.Break();
             passCounter++;
             OnPlayerPassedPlatform?.Invoke();
