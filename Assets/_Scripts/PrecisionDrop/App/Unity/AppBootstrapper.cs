@@ -40,13 +40,11 @@ namespace PrecisionDrop.App.Unity {
             gameSessionInstaller = new GameSessionInstaller();
 
             LevelThemeAsset levelTheme = themeSelectorAsset.Select();
-            PlayerTheme playerTheme = CreatePlayerTheme(levelTheme);
-            PlatformTheme platformTheme = CreatePlatformTheme(levelTheme);
 
-            platformsSystem.Install(platformTheme);
+            platformsSystem.Install(levelTheme.PlatformTheme);
             gameFlowInstaller.Install(playerSystem.PlayerApi, platformsSystem.EventBus);
             levelGeneratorSystem.Install(gameFlowInstaller.Api, platformsSystem.Builder);
-            playerSystem.Install(gameFlowInstaller.Api, playerTheme);
+            playerSystem.Install(gameFlowInstaller.Api, levelTheme.PlayerTheme);
             gameSessionInstaller.Install(gameFlowInstaller.Api);
         }
 
@@ -57,21 +55,6 @@ namespace PrecisionDrop.App.Unity {
             levelGeneratorSystem.Init();
             playerSystem.Init();
             gameSessionInstaller.Init();
-        }
-
-        private static PlayerTheme CreatePlayerTheme(LevelThemeAsset levelTheme) {
-            return new PlayerTheme(
-                levelTheme.PlayerMat,
-                levelTheme.PlayerTrailMat,
-                levelTheme.PlayerBounceVfxId
-            );
-        }
-
-        private static PlatformTheme CreatePlatformTheme(LevelThemeAsset levelTheme) {
-            return new PlatformTheme(
-                levelTheme.RegularPieceMat,
-                levelTheme.DangerPieceMat
-            );
         }
 
         private void ValidateSceneWiring() {

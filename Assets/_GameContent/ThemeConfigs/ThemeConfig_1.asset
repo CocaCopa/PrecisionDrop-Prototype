@@ -12,8 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 193145cd9669bbe408905ab5e290908e, type: 3}
   m_Name: ThemeConfig_1
   m_EditorClassIdentifier: PrecisionDrop.App.Unity::PrecisionDrop.App.Unity.LevelThemeAsset
-  playerMat: {fileID: 2100000, guid: 364ba5122c9e6dc4fa944f2d6c2963d8, type: 2}
-  playerTrailMat: {fileID: 2100000, guid: 71f4e116afb6b6145b9b0529df0d4b91, type: 2}
-  playerBounceVfxId: Bounce_Red
-  dangerMat: {fileID: 2100000, guid: 1bfe2f54e61c09348adfa3f2f93c1fd9, type: 2}
-  normalMat: {fileID: 2100000, guid: 9f5db27718cf08a4bae4e1369c118068, type: 2}
+  playerTheme:
+    sphereMat: {fileID: 2100000, guid: 364ba5122c9e6dc4fa944f2d6c2963d8, type: 2}
+    smashMat: {fileID: 2100000, guid: a925222fc703daf4194933908c606e0e, type: 2}
+    trailMat: {fileID: 2100000, guid: 71f4e116afb6b6145b9b0529df0d4b91, type: 2}
+    bounceVfxId: Bounce_Red
+  platformTheme:
+    regularMat: {fileID: 2100000, guid: 9f5db27718cf08a4bae4e1369c118068, type: 2}
+    dangerMat: {fileID: 2100000, guid: 1bfe2f54e61c09348adfa3f2f93c1fd9, type: 2}

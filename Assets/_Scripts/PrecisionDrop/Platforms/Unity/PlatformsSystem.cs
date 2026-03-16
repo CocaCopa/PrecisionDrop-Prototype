@@ -8,12 +8,10 @@ namespace PrecisionDrop.Platforms.Unity {
         [SerializeField] private PlatformBuilder builder;
         [SerializeField] private PlatformEventBus eventBus;
 
-        public IPlatformBuilder Builder => (builder as IPlatformBuilder) ?? throw new NullReferenceException($"[{nameof(PlatformsSystem)}] {nameof(PlatformBuilder)}");
-        public IPlatformEventBus EventBus => (eventBus as IPlatformEventBus) ?? throw new NullReferenceException($"[{nameof(PlatformsSystem)}] {nameof(IPlatformEventBus)}");
+        public IPlatformBuilder Builder => builder as IPlatformBuilder ?? throw new NullReferenceException($"[{nameof(PlatformsSystem)}] {nameof(PlatformBuilder)}");
+        public IPlatformEventBus EventBus => eventBus as IPlatformEventBus ?? throw new NullReferenceException($"[{nameof(PlatformsSystem)}] {nameof(IPlatformEventBus)}");
 
         public void Install(PlatformTheme theme) {
-            if (!theme.IsValid) { throw new ArgumentNullException($"[{nameof(PlatformsSystem)}] {nameof(theme)}"); }
-            
             builder.Install(theme);
         }
 

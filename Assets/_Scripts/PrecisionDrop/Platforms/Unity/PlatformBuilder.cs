@@ -125,8 +125,8 @@ namespace PrecisionDrop.Platforms.Unity {
 
         private static Material GetMaterial(PieceVariant type, PlatformTheme theme) {
             return type == PieceVariant.Danger
-                ? theme.dangerMat
-                : theme.regularMat;
+                ? theme.DangerMat
+                : theme.RegularMat;
         }
     }
 }

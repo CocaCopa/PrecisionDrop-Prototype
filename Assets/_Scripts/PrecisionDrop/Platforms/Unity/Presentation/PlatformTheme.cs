@@ -1,11 +1,14 @@
+using System;
 using UnityEngine;
 
 namespace PrecisionDrop.Platforms.Unity.Presentation {
+    [Serializable]
     public struct PlatformTheme {
-        public Material regularMat;
-        public Material dangerMat;
+        [SerializeField] private Material regularMat;
+        [SerializeField] private Material dangerMat;
 
-        public bool IsValid => regularMat != null && dangerMat != null;
+        public Material RegularMat => regularMat;
+        public Material DangerMat => dangerMat;
 
         public PlatformTheme(Material regularMat, Material dangerMat) {
             this.regularMat = regularMat;

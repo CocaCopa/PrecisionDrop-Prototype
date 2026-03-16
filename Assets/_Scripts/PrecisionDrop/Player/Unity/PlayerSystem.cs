@@ -10,11 +10,11 @@ namespace PrecisionDrop.Player.Unity {
         [SerializeField] private TowerController towerController;
         [SerializeField] private PlayerSphere playerSphere;
         [SerializeField] private PlayerVisuals playerVisuals;
-        
+
         private bool installed;
         private bool initialized;
-        
-        public IPlayerSphere PlayerApi => (playerSphere as IPlayerSphere) ?? throw new NullReferenceException($"[{nameof(PlayerSystem)}] {nameof(IPlayerSphere)}");
+
+        public IPlayerSphere PlayerApi => playerSphere as IPlayerSphere ?? throw new NullReferenceException($"[{nameof(PlayerSystem)}] {nameof(IPlayerSphere)}");
 
         private void Awake() {
             if (cameraController == null) { throw new NullReferenceException($"[{nameof(PlayerSystem)}] {nameof(cameraController)} is not assigned."); }
@@ -26,7 +26,6 @@ namespace PrecisionDrop.Player.Unity {
         public void Install(IGameFlow gameFlow, PlayerTheme theme) {
             if (installed) { throw new InvalidOperationException($"[{nameof(PlayerSystem)}] {nameof(Install)}() called twice."); }
             if (gameFlow is null) { throw new ArgumentNullException($"[{nameof(PlayerSystem)}] {nameof(gameFlow)}"); }
-            if (!theme.IsValid) { throw new ArgumentNullException($"[{nameof(PlayerSystem)}] {nameof(theme)}"); }
 
             installed = true;
 
@@ -35,11 +34,13 @@ namespace PrecisionDrop.Player.Unity {
             playerVisuals.Install(theme);
         }
 
-
         public void Init() {
             if (!installed) { throw new InvalidOperationException($"[{nameof(PlayerSystem)}] {nameof(Init)}() called before {nameof(Install)}()."); }
-            if (initialized) { Debug.LogWarning($"[{nameof(PlayerSystem)}] Already initialized."); return; }
-        
+            if (initialized) {
+                Debug.LogWarning($"[{nameof(PlayerSystem)}] Already initialized.");
+                return;
+            }
+
             initialized = true;
             cameraController.Init();
             towerController.Init();
