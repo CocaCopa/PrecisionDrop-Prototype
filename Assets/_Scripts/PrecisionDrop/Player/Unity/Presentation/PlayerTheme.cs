@@ -4,20 +4,20 @@ using UnityEngine;
 namespace PrecisionDrop.Player.Unity.Presentation {
     [Serializable]
     public struct PlayerTheme {
-        [SerializeField] private Material sphereMat;
-        [SerializeField] private Material smashMat;
-        [SerializeField] private Material trailMat;
+        [SerializeField] private Color sphereColor;
+        [SerializeField] private Color smashColor;
+        [SerializeField] private Color trailColor;
         [SerializeField] private string bounceVfxId;
 
-        public Material SphereMat => sphereMat;
-        public Material SmashMat => smashMat;
-        public Material TrailMat => trailMat;
+        public Color SphereColor => sphereColor;
+        public Color SmashColor => smashColor;
+        public Color TrailColor => trailColor;
         public string BounceVfxId => bounceVfxId;
 
-        public PlayerTheme(Material sphereMat, Material smashMat, Material trailMat, string bounceVfxId) {
-            this.sphereMat = sphereMat;
-            this.smashMat = smashMat;
-            this.trailMat = trailMat;
+        public PlayerTheme(Color sphereColor, Color smashColor, Color trailColor, string bounceVfxId) {
+            this.sphereColor = sphereColor;
+            this.smashColor = smashColor;
+            this.trailColor = trailColor;
             this.bounceVfxId = bounceVfxId;
         }
     }

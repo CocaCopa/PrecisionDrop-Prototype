@@ -4,15 +4,15 @@ using UnityEngine;
 namespace PrecisionDrop.Platforms.Unity.Presentation {
     [Serializable]
     public struct PlatformTheme {
-        [SerializeField] private Material regularMat;
-        [SerializeField] private Material dangerMat;
+        [SerializeField] private Color regularColor;
+        [SerializeField] private Color dangerColor;
 
-        public Material RegularMat => regularMat;
-        public Material DangerMat => dangerMat;
+        public Color RegularColor => regularColor;
+        public Color DangerColor => dangerColor;
 
-        public PlatformTheme(Material regularMat, Material dangerMat) {
-            this.regularMat = regularMat;
-            this.dangerMat = dangerMat;
+        public PlatformTheme(Color regularColor, Color dangerColor) {
+            this.regularColor = regularColor;
+            this.dangerColor = dangerColor;
         }
     }
 }

@@ -97,7 +97,7 @@ namespace PrecisionDrop.Platforms.Unity {
                 Vector3 localPos = Vector3.zero;
                 float y = step * (i + 1);
                 var localEuler = new Vector3(0f, y + config.RotationY, 0f);
-                platformPiece.Init(localPos, localEuler, type, GetMaterial(type, platformTheme));
+                platformPiece.Init(localPos, localEuler, type, GetColor(type, platformTheme));
                 pieces[i] = platformPiece;
                 pieceIndex++;
             }
@@ -112,21 +112,17 @@ namespace PrecisionDrop.Platforms.Unity {
 
         private static void ThrowComponentException(string componentName, string objName) {
             throw new NullReferenceException(
-                $"[{nameof(PlatformBuilder)}] Could not fetch '{nameof(PlatformPiece)}' component from {objName} object");
-        }
-
-        private static bool InZone(int index, RangeInt range) {
-            return index >= range.min && index < range.max;
+                $"[{nameof(PlatformBuilder)}] Could not fetch '{componentName}' component from {objName} object");
         }
 
         private static bool InZone(int index, RangeInt[] ranges) {
             return ranges.Any(r => index >= r.min && index < r.max);
         }
 
-        private static Material GetMaterial(PieceVariant type, PlatformTheme theme) {
+        private static Color GetColor(PieceVariant type, PlatformTheme theme) {
             return type == PieceVariant.Danger
-                ? theme.DangerMat
-                : theme.RegularMat;
+                ? theme.DangerColor
+                : theme.RegularColor;
         }
     }
 }

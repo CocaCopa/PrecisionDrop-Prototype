@@ -32,9 +32,9 @@ namespace PrecisionDrop.Platforms.Unity {
             pieceCollider.enabled = false;
         }
 
-        internal void Init(Vector3 localPos, Vector3 localEuler, PieceVariant type, Material mat) {
+        internal void Init(Vector3 localPos, Vector3 localEuler, PieceVariant type, Color matColor) {
             pieceVariant = type;
-            pieceRenderer.material = mat;
+            pieceRenderer.material.color = matColor;
             transform.localPosition = localPos;
             transform.localEulerAngles = localEuler;
 
