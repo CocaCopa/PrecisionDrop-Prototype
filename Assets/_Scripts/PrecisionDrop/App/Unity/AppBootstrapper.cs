@@ -5,36 +5,66 @@ using PrecisionDrop.Platforms.Unity;
 using PrecisionDrop.Platforms.Unity.Presentation;
 using PrecisionDrop.Player.Unity;
 using PrecisionDrop.Player.Unity.Presentation;
+using PrecisionDrop.SessionTracker.Unity;
 using UnityEngine;
 
 namespace PrecisionDrop.App.Unity {
     public sealed class AppBootstrapper : MonoBehaviour {
+        [Header("Theme")]
         [SerializeField] private ThemeSelectorAsset themeSelectorAsset;
-        [Space(10f)]
+
+        [Header("UI Bootstrapper")]
+        [SerializeField] private UiBootstrapper uiBootstrapper;
+
+        [Header("Scene Systems")]
         [SerializeField] private PlayerSystem playerSystem;
-        [SerializeField] private GameFlowSystem gameFlowSystem;
         [SerializeField] private LevelGeneratorSystem levelGeneratorSystem;
         [SerializeField] private PlatformsSystem platformsSystem;
 
+        private GameFlowInstaller gameFlowInstaller;
+        private GameSessionInstaller gameSessionInstaller;
+
         private void Awake() {
             ValidateSceneWiring();
-            LevelThemeAsset levelTheme = themeSelectorAsset.Select();
-
-            gameFlowSystem.Install(playerSystem.PlayerApi, platformsSystem.EventBus);
-            levelGeneratorSystem.Install(gameFlowSystem.Api, platformsSystem.Builder);
-            playerSystem.Install(gameFlowSystem.Api, CreatePlayerTheme(levelTheme));
-            platformsSystem.Install(CreatePlatformTheme(levelTheme));
+            Compose();
+            uiBootstrapper.Install(gameSessionInstaller.ScoreApi);
         }
 
         private void Start() {
+            InitializeSystems();
+            uiBootstrapper.Init();
+        }
+
+        private void Compose() {
+            gameFlowInstaller = new GameFlowInstaller();
+            gameSessionInstaller = new GameSessionInstaller();
+
+            LevelThemeAsset levelTheme = themeSelectorAsset.Select();
+            PlayerTheme playerTheme = CreatePlayerTheme(levelTheme);
+            PlatformTheme platformTheme = CreatePlatformTheme(levelTheme);
+
+            platformsSystem.Install(platformTheme);
+            gameFlowInstaller.Install(playerSystem.PlayerApi, platformsSystem.EventBus);
+            levelGeneratorSystem.Install(gameFlowInstaller.Api, platformsSystem.Builder);
+            playerSystem.Install(gameFlowInstaller.Api, playerTheme);
+            gameSessionInstaller.Install(gameFlowInstaller.Api);
+        }
+
+        private void InitializeSystems() {
+            // Order matters.
             platformsSystem.Init();
-            gameFlowSystem.Init();
+            gameFlowInstaller.Init();
             levelGeneratorSystem.Init();
             playerSystem.Init();
+            gameSessionInstaller.Init();
         }
 
         private static PlayerTheme CreatePlayerTheme(LevelThemeAsset levelTheme) {
-            return new PlayerTheme(levelTheme.PlayerMat, levelTheme.PlayerTrailMat, levelTheme.PlayerBounceVfxId);
+            return new PlayerTheme(
+                levelTheme.PlayerMat,
+                levelTheme.PlayerTrailMat,
+                levelTheme.PlayerBounceVfxId
+            );
         }
 
         private static PlatformTheme CreatePlatformTheme(LevelThemeAsset levelTheme) {
@@ -49,7 +79,7 @@ namespace PrecisionDrop.App.Unity {
             if (!playerSystem) { throw new NullReferenceException(Msg(nameof(playerSystem))); }
             if (!platformsSystem) { throw new NullReferenceException(Msg(nameof(platformsSystem))); }
             if (!levelGeneratorSystem) { throw new NullReferenceException(Msg(nameof(levelGeneratorSystem))); }
-            if (!gameFlowSystem) { throw new NullReferenceException(Msg(nameof(gameFlowSystem))); }
+            if (!uiBootstrapper) { throw new NullReferenceException(Msg(nameof(uiBootstrapper))); }
         }
 
         private string Msg(string fieldName) {

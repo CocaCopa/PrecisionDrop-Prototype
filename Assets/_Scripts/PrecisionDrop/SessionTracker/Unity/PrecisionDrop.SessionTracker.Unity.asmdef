@@ -1,0 +1,18 @@
+{
+  "name": "PrecisionDrop.SessionTracker.Unity",
+  "rootNamespace": "PrecisionDrop.SessionTracker.Unity",
+  "references": [
+    "PrecisionDrop.GameFlow.Contracts",
+    "PrecisionDrop.SessionTracker.Contracts",
+    "PrecisionDrop.SessionTracker.Runtime"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": true,
+  "precompiledReferences": [],
+  "autoReferenced": false,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

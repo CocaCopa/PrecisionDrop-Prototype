@@ -1,22 +1,25 @@
 {
-    "name": "PrecisionDrop.App.Unity",
-    "rootNamespace": "PrecisionDrop.App.Unity",
-    "references": [
-      "PrecisionDrop.Platforms.Contracts",
-      "PrecisionDrop.Platforms.Unity",
-      "PrecisionDrop.LevelGeneration.Unity",
-      "PrecisionDrop.GameFlow.Unity",
-      "PrecisionDrop.GameFlow.Contracts",
-      "PrecisionDrop.Player.Unity",
-      "PrecisionDrop.Player.Contracts"
-    ],
-    "includePlatforms": [],
-    "excludePlatforms": [],
-    "allowUnsafeCode": false,
-    "overrideReferences": true,
-    "precompiledReferences": [],
-    "autoReferenced": false,
-    "defineConstraints": [],
-    "versionDefines": [],
-    "noEngineReferences": false
+  "name": "PrecisionDrop.App.Unity",
+  "rootNamespace": "PrecisionDrop.App.Unity",
+  "references": [
+    "PrecisionDrop.Platforms.Contracts",
+    "PrecisionDrop.Platforms.Unity",
+    "PrecisionDrop.LevelGeneration.Unity",
+    "PrecisionDrop.GameFlow.Unity",
+    "PrecisionDrop.GameFlow.Contracts",
+    "PrecisionDrop.Player.Unity",
+    "PrecisionDrop.Player.Contracts",
+    "PrecisionDrop.SessionTracker.Unity",
+    "PrecisionDrop.SessionTracker.Contracts",
+    "PrecisionDrop.UserInterface.Gameplay"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": true,
+  "precompiledReferences": [],
+  "autoReferenced": false,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
 }

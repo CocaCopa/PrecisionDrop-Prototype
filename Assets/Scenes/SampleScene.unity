@@ -986,6 +986,51 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &778090965
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 778090967}
+  - component: {fileID: 778090966}
+  m_Layer: 0
+  m_Name: UiBootstrapper
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &778090966
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 778090965}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72bcf0392e054d8e811f7689c9a2cdf6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: PrecisionDrop.App.Unity::PrecisionDrop.App.Unity.UiBootstrapper
+  scoreUI: {fileID: 1869839789}
+--- !u!4 &778090967
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 778090965}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -1167,8 +1212,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: PrecisionDrop.App.Unity::PrecisionDrop.App.Unity.AppBootstrapper
   themeSelectorAsset: {fileID: 11400000, guid: 1cb81bb46fec2a74fb72cf120eac25de, type: 2}
+  uiBootstrapper: {fileID: 778090966}
   playerSystem: {fileID: 1087362015}
-  gameFlowSystem: {fileID: 1949107717}
   levelGeneratorSystem: {fileID: 326202816}
   platformsSystem: {fileID: 970392691}
 --- !u!4 &892757038
@@ -1242,7 +1287,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1087025173}
   m_Layer: 0
-  m_Name: '- App'
+  m_Name: '- Bootstrappers'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1323,7 +1368,7 @@ GameObject:
   - component: {fileID: 1431603229}
   - component: {fileID: 1431603228}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: ScoreText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1370,8 +1415,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 20
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 5302535af1044152a457ed104f1f4b91, type: 2}
+  m_sharedMaterial: {fileID: 2164040, guid: 5302535af1044152a457ed104f1f4b91, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1680,7 +1725,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1759780598
+--- !u!1 &1846909222
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1688,24 +1733,83 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1759780599}
+  - component: {fileID: 1846909223}
+  - component: {fileID: 1846909224}
   m_Layer: 0
-  m_Name: '- GameFlow'
+  m_Name: '- UserInterface'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1759780599
+--- !u!4 &1846909223
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1759780598}
+  m_GameObject: {fileID: 1846909222}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.92796, y: 6.70328, z: -0.23426}
+  m_LocalPosition: {x: 590.5133, y: 1861.5402, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1846909224
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1846909222}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4b4e2cc6edb4fa3a8246d823e4e471e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PrecisionDrop.UserInterface.Gameplay.GameUI
+  scoreTxt: {fileID: 1431603228}
+--- !u!1 &1869839788
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1869839790}
+  - component: {fileID: 1869839789}
+  m_Layer: 0
+  m_Name: ScoreUI
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1869839789
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1869839788}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4b4e2cc6edb4fa3a8246d823e4e471e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: PrecisionDrop.UserInterface.Gameplay::PrecisionDrop.UserInterface.Gameplay.GameUI
+  scoreTxt: {fileID: 1431603228}
+--- !u!4 &1869839790
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1869839788}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1788,50 +1892,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 8334999856831895917}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1949107715
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1949107716}
-  - component: {fileID: 1949107717}
-  m_Layer: 0
-  m_Name: GameFlowSystem
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1949107716
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1949107715}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1949107717
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1949107715}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4116982cb4116c6448f3a0f7685e7f16, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PrecisionDrop.GameFlow.Unity.GameFlowInstaller
 --- !u!4 &592360829889967031
 Transform:
   m_ObjectHideFlags: 0
@@ -2065,6 +2125,10 @@ SceneRoots:
   m_Roots:
   - {fileID: 410087041}
   - {fileID: 832575519}
+  - {fileID: 1846909223}
+  - {fileID: 864054524}
+  - {fileID: 679105235}
+  - {fileID: 1869839790}
   - {fileID: 555026529}
   - {fileID: 330585546}
   - {fileID: 1620066338}
@@ -2072,8 +2136,7 @@ SceneRoots:
   - {fileID: 8334999856831895917}
   - {fileID: 1087025173}
   - {fileID: 892757038}
-  - {fileID: 1759780599}
-  - {fileID: 1949107716}
+  - {fileID: 778090967}
   - {fileID: 579582876}
   - {fileID: 326202817}
   - {fileID: 1724987613}
@@ -2086,5 +2149,3 @@ SceneRoots:
   - {fileID: 1558143330}
   - {fileID: 678116793}
   - {fileID: 479435875}
-  - {fileID: 864054524}
-  - {fileID: 679105235}
