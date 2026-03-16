@@ -5,19 +5,22 @@ namespace PrecisionDrop.Player.Unity.Presentation {
     [Serializable]
     public struct PlayerTheme {
         [SerializeField] private Color sphereColor;
-        [SerializeField] private Color smashColor;
+        [SerializeField] private Color sphereSmashColor;
         [SerializeField] private Color trailColor;
+        [SerializeField] private Color trailSmashColor;
         [SerializeField] private string bounceVfxId;
 
         public Color SphereColor => sphereColor;
-        public Color SmashColor => smashColor;
+        public Color SphereSmashColor => sphereSmashColor;
         public Color TrailColor => trailColor;
+        public Color TrailSmashColor => trailSmashColor;
         public string BounceVfxId => bounceVfxId;
 
-        public PlayerTheme(Color sphereColor, Color smashColor, Color trailColor, string bounceVfxId) {
+        public PlayerTheme(Color sphereColor, Color sphereSmashColor, Color trailColor, Color trailSmashColor, string bounceVfxId) {
             this.sphereColor = sphereColor;
-            this.smashColor = smashColor;
+            this.sphereSmashColor = sphereSmashColor;
             this.trailColor = trailColor;
+            this.trailSmashColor = trailSmashColor;
             this.bounceVfxId = bounceVfxId;
         }
     }
