@@ -1,5 +1,3 @@
-// Assets/PrefabRegistry/Editor/PrefabRegistryMenu.cs
-
 #if UNITY_EDITOR
 using UnityEditor;
 using UnityEngine;
@@ -9,7 +7,7 @@ namespace CocaCopa.PrefabRegistry.EditorUtils {
         private const string DefaultResourcesPath = "Assets/Resources";
         private const string SettingsAssetPath = DefaultResourcesPath + "/PrefabRegistrySettings.asset";
 
-        [MenuItem("Tools/Prefab Registry/Create Settings + Catalog")]
+        [MenuItem("Tools/CocaCopa/Prefab Registry/Create Settings + Catalog")]
         private static void CreateSettingsAndCatalog() {
             if (!AssetDatabase.IsValidFolder("Assets/Resources")) { AssetDatabase.CreateFolder("Assets", "Resources"); }
 

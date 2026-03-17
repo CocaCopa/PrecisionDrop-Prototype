@@ -14,7 +14,7 @@ The registry requires a `PrefabRegistrySettings` ScriptableObject that reference
 You can create both assets through the Unity menu:
 
 ```
-Tools → Prefab Registry → Create Settings + Catalog
+Tools → CocaCopa → Prefab Registry → Create Settings + Catalog
 ```
 
 This will create:
