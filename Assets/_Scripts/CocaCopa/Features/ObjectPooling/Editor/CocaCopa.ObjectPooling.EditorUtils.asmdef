@@ -1,0 +1,19 @@
+{
+    "name": "CocaCopa.ObjectPooling.EditorUtils",
+    "rootNamespace": "CocaCopa.ObjectPooling.EditorUtils",
+    "references": [
+        "CocaCopa.ObjectPooling.Unity",
+        "CocaCopa.EditorUtils"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
