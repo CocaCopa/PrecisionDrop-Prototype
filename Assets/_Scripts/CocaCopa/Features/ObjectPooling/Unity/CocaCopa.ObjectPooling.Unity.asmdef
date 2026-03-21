@@ -2,12 +2,9 @@
     "name": "CocaCopa.ObjectPooling.Unity",
     "rootNamespace": "CocaCopa.ObjectPooling.Unity",
     "references": [
-        "CocaCopa.ObjectPooling",
-        "CocaCopa.EditorUtils"
+        "CocaCopa.ObjectPooling"
     ],
-    "includePlatforms": [
-        "Editor"
-    ],
+    "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": true,

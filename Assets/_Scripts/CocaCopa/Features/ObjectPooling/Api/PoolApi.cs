@@ -24,6 +24,7 @@ namespace CocaCopa.ObjectPooling {
         }
 
         public static void Prewarm(string groupId, string prefabId) {
+            EnsureBound();
             runtime.Prewarm(groupId, prefabId);
         }
 

@@ -4,7 +4,7 @@ using CocaCopa.ObjectPooling.Unity.Runtime;
 using UnityEngine;
 
 namespace CocaCopa.ObjectPooling.Bootstrap {
-    internal sealed class PoolBootstrap {
+    public static class PoolBootstrap {
         private static PoolCatalog catalog;
         private static PoolManager poolManager;
 
@@ -21,7 +21,6 @@ namespace CocaCopa.ObjectPooling.Bootstrap {
 
             poolManager = new PoolManager(catalog);
             poolManager.Initialize();
-
             PoolApi.Bind(poolManager);
         }
 
