@@ -1,16 +1,18 @@
 using System;
+using System.Collections;
+using CocaCopa.ObjectPooling;
 using PrecisionDrop.Platforms.Contracts;
 using UnityEngine;
 
 namespace PrecisionDrop.Platforms.Unity {
-    internal sealed class Platform : MonoBehaviour, IPlatform {
+    internal sealed class PlatformRoot : MonoBehaviour, IPlatform {
         [SerializeField] private float breakForceAmount;
 
         private const float BounceCooldown = 0.15f;
         private float bounceTimer;
 
-        internal event Action<Platform, PieceVariant> OnCollidedPlatform;
-        internal event Action<Platform> OnPassedPlatform;
+        internal event Action<PlatformRoot, PieceVariant> OnCollidedPlatform;
+        internal event Action<PlatformRoot> OnPassedPlatform;
 
         private PlatformPart[] platformParts;
         private PlatformPiece[] platformPieces;
@@ -71,6 +73,20 @@ namespace PrecisionDrop.Platforms.Unity {
             isBroken = true;
             DisablePieceColliders();
             ThrowParts();
+            StartCoroutine(ReturnPlatformToPool());
+        }
+
+        private IEnumerator ReturnPlatformToPool() {
+            yield return new WaitForSeconds(5f);
+            for (int i = 0; i < platformPieces.Length; i++) {
+                PlatformPiece piece = platformPieces[i];
+                PoolApi.Return(piece.gameObject);
+            }
+            for (int i = 0; i < platformParts.Length; i++) {
+                PlatformPart part = platformParts[i];
+                PoolApi.Return(part.gameObject);
+            }
+            PoolApi.Return(gameObject);
         }
 
         private void DisablePieceColliders() {

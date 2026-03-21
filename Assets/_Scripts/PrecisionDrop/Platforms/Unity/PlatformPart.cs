@@ -1,8 +1,11 @@
 using System;
+using CocaCopa.ObjectPooling;
 using UnityEngine;
 
 namespace PrecisionDrop.Platforms.Unity {
-    public class PlatformPart : MonoBehaviour {
+    public class PlatformPart : MonoBehaviour, IPoolable {
+        [SerializeField] private Vector3 constForce;
+        [Space(10)]
         [SerializeField] private RigidbodySettings rigidbodySettings;
 
         private Rigidbody rb;
@@ -16,9 +19,24 @@ namespace PrecisionDrop.Platforms.Unity {
             rb.collisionDetectionMode = rigidbodySettings.collisionDetection;
         }
 
+        private void FixedUpdate() {
+            if (!rb) { return; }
+
+            rb.AddForce(constForce, ForceMode.Force);
+        }
+
         internal void Throw(float forceAmount, Vector3 direction) {
             Vector3 force = forceAmount * direction;
             rb.AddForce(force, ForceMode.Impulse);
+        }
+
+        public void ResetForReuse() {
+            enabled = true;
+        }
+
+        public void PrepareForRelease() {
+            Destroy(rb);
+            enabled = false;
         }
 
         [Serializable]

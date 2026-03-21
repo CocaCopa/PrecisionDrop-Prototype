@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8918598393140610189}
   - component: {fileID: 3575582390355478291}
   m_Layer: 0
-  m_Name: BounceEffect_Red
+  m_Name: BounceEffect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -306,7 +306,7 @@ ParticleSystem:
       maxColor: {r: 1, g: 1, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
-        key0: {r: 0.9056604, g: 0.3914496, b: 0.32894266, a: 1}
+        key0: {r: 1, g: 1, b: 1, a: 1}
         key1: {r: 0.7971698, g: 0.9067733, b: 1, a: 0}
         key2: {r: 0, g: 0, b: 0, a: 0}
         key3: {r: 0, g: 0, b: 0, a: 0}

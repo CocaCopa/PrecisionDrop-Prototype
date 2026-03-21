@@ -17,7 +17,7 @@ MonoBehaviour:
     sphereSmashColor: {r: 1, g: 0.93333334, b: 0.32156864, a: 1}
     trailColor: {r: 0.5647059, g: 0.10980392, b: 0.10980392, a: 1}
     trailSmashColor: {r: 1, g: 0.5432855, b: 0, a: 1}
-    bounceVfxId: Bounce_Red
+    bounceVfxColor: {r: 0.90588236, g: 0.39215687, b: 0.32941177, a: 1}
   platformTheme:
     regularColor: {r: 0.26666668, g: 0.29411766, b: 0.32941177, a: 1}
     dangerColor: {r: 0.54901963, g: 0.6509804, b: 0.85882354, a: 1}

@@ -1,10 +1,11 @@
 using System;
+using CocaCopa.ObjectPooling;
 using PrecisionDrop.Platforms.Contracts;
 using UnityEngine;
 
 namespace PrecisionDrop.Platforms.Unity {
     [RequireComponent(typeof(Collider))]
-    internal sealed class PlatformPiece : MonoBehaviour {
+    internal sealed class PlatformPiece : MonoBehaviour, IPoolable {
         private Collider pieceCollider;
         private MeshRenderer pieceRenderer;
         private PieceVariant pieceVariant;
@@ -20,7 +21,7 @@ namespace PrecisionDrop.Platforms.Unity {
             if (pieceRenderer == null) { throw new NullReferenceException($"[{nameof(PlatformPiece)}] Component: '{nameof(MeshRenderer)}' not serialized"); }
         }
 
-        private void OnCollisionEnter(Collision collision) {
+        private void OnCollisionEnter(Collision _) {
             OnPlayerCollided?.Invoke(pieceVariant);
         }
 
@@ -49,6 +50,14 @@ namespace PrecisionDrop.Platforms.Unity {
         private void PieceType_Gap() {
             pieceRenderer.enabled = false;
             pieceCollider.isTrigger = true;
+        }
+
+        public void ResetForReuse() { }
+
+        public void PrepareForRelease() {
+            pieceRenderer.enabled = true;
+            pieceCollider.enabled = true;
+            pieceCollider.isTrigger = false;
         }
     }
 }

@@ -1,6 +1,6 @@
 using System;
 using System.Linq;
-using CocaCopa.PrefabRegistry;
+using CocaCopa.ObjectPooling;
 using PrecisionDrop.Platforms.Contracts;
 using PrecisionDrop.Platforms.Unity.Presentation;
 using UnityEngine;
@@ -8,23 +8,26 @@ using RangeInt = CocaCopa.Primitives.RangeInt;
 
 namespace PrecisionDrop.Platforms.Unity {
     internal sealed class PlatformBuilder : MonoBehaviour, IPlatformBuilder {
+        [Header("Pool Selection")]
+        [SerializeField] private string poolId;
+        [SerializeField] private string rootId;
+        [SerializeField] private string partId;
+        [SerializeField] private string pieceId;
+
+        [Header("Holder")]
         [SerializeField] private GameObject platformsHolder;
-        [Space(10f)]
+
+        [Header("Settings")]
         [SerializeField] private int totalParts = 3;
         [SerializeField] [Range(2, 64)] private int segments = 36;
         [Tooltip("The gap between each platform.")]
         [SerializeField] private float platformGap;
 
-        private const string PrefabGroupID = "Platform";
-        private const string PlatformSegmentKey = "Segment";
-        private const string PlatformPieceKey = "Piece";
-        private const string PlatformPartKey = "Part";
-
         private PlatformTheme platformTheme;
 
         private float prevPlatformGap;
 
-        internal event Action<Platform> OnPlatformGenerated;
+        internal event Action<PlatformRoot> OnPlatformGenerated;
 
         public int PlatformSegments => segments;
 
@@ -37,7 +40,7 @@ namespace PrecisionDrop.Platforms.Unity {
         }
 
         public void Create(PlatformConfig config) {
-            GameObject platformRoot = CreatePlatformRoot(out Platform platform);
+            GameObject platformRoot = CreatePlatformRoot(out PlatformRoot platform);
             PlatformPart[] parts = CreatePartsParents(platformRoot.transform);
             PlatformPiece[] platformPieces = CreatePlatformPieces(parts, config);
             platform.Init(parts, platformPieces);
@@ -45,26 +48,25 @@ namespace PrecisionDrop.Platforms.Unity {
             OnPlatformGenerated?.Invoke(platform);
         }
 
-        private GameObject CreatePlatformRoot(out Platform platform) {
-            if (!PrefabRegistry.TryInstantiate(PrefabGroupID, PlatformSegmentKey, platformsHolder.transform, out GameObject platformObj)) { ThrowPrefabException(PlatformSegmentKey); }
+        private GameObject CreatePlatformRoot(out PlatformRoot platform) {
+            GameObject platformObj = PoolApi.Rent(poolId, rootId, platformsHolder.transform);
 
             platformObj.transform.localPosition = Vector3.down * prevPlatformGap;
             return platformObj.TryGetComponent(out platform)
                 ? platformObj
                 : throw new NullReferenceException(
-                    $"[{nameof(PlatformBuilder)}] Could not get {nameof(Platform)} component");
+                    $"[{nameof(PlatformBuilder)}] Could not get {nameof(PlatformRoot)} component");
         }
 
         private PlatformPart[] CreatePartsParents(Transform root) {
             var parents = new PlatformPart[totalParts];
             for (int i = 0; i < totalParts; i++) {
-                if (!PrefabRegistry.TryInstantiate(PrefabGroupID, PlatformPartKey, root, out GameObject parentObj)) { ThrowPrefabException(PlatformPartKey); }
+                GameObject parentObj = PoolApi.Rent(poolId, partId, root);
                 Transform parent = parentObj.transform;
-                if (!parent.TryGetComponent<PlatformPart>(out PlatformPart part)) { ThrowComponentException(nameof(PlatformPart), "Part"); }
+                if (!parent.TryGetComponent(out PlatformPart part)) { ThrowComponentException(nameof(PlatformPart), "Part"); }
 
                 parent.localPosition = Vector3.zero;
                 parent.localEulerAngles = Vector3.zero;
-                parent.name += $"{i + 1:0}";
                 parents[i] = part;
             }
 
@@ -91,8 +93,9 @@ namespace PrecisionDrop.Platforms.Unity {
                 if (InZone(i, config.GapPositions)) { type = PieceVariant.Gap; }
                 else if (InZone(i, config.DangerPositions)) { type = PieceVariant.Danger; }
 
-                if (!PrefabRegistry.TryInstantiate(PrefabGroupID, PlatformPieceKey, parents[parentIndex].transform, out GameObject pieceObj)) { ThrowPrefabException(PlatformPieceKey); }
-                if (!pieceObj.TryGetComponent<PlatformPiece>(out PlatformPiece platformPiece)) { ThrowComponentException(nameof(PlatformPiece), "Piece"); }
+                GameObject pieceObj = PoolApi.Rent(poolId, pieceId, parents[parentIndex].transform);
+
+                if (!pieceObj.TryGetComponent(out PlatformPiece platformPiece)) { ThrowComponentException(nameof(PlatformPiece), "Piece"); }
 
                 Vector3 localPos = Vector3.zero;
                 float y = step * (i + 1);
@@ -103,11 +106,6 @@ namespace PrecisionDrop.Platforms.Unity {
             }
 
             return pieces;
-        }
-
-        private static void ThrowPrefabException(string key) {
-            throw new Exception(
-                $"[{nameof(PlatformBuilder)}] Could not fetch prefab using key '{key}' and group ID '{PrefabGroupID}'");
         }
 
         private static void ThrowComponentException(string componentName, string objName) {

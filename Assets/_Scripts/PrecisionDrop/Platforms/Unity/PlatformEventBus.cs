@@ -13,17 +13,17 @@ namespace PrecisionDrop.Platforms.Unity {
             builder.OnPlatformGenerated += Builder_OnPlatformGenerated;
         }
 
-        private void Builder_OnPlatformGenerated(Platform platform) {
+        private void Builder_OnPlatformGenerated(PlatformRoot platform) {
             platform.OnPassedPlatform += Platform_OnPassedPlatform;
             platform.OnCollidedPlatform += Platform_OnCollidedPlatform;
         }
 
-        private void Platform_OnPassedPlatform(Platform platform) {
+        private void Platform_OnPassedPlatform(PlatformRoot platform) {
             platform.OnPassedPlatform -= Platform_OnPassedPlatform;
             OnPlatformPassed?.Invoke(platform);
         }
 
-        private void Platform_OnCollidedPlatform(Platform platform, PieceVariant pieceVariant) {
+        private void Platform_OnCollidedPlatform(PlatformRoot platform, PieceVariant pieceVariant) {
             OnPlatformCollision?.Invoke(platform, pieceVariant);
         }
     }

@@ -44,6 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd8576095ae94e3998dc02cc73eefb4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: PrecisionDrop.Platforms.Unity::PrecisionDrop.Platforms.Unity.PlatformPart
+  constForce: {x: 0, y: -25, z: 0}
   rigidbodySettings:
     mass: 3.5
     linearDamping: 0

@@ -314,6 +314,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0575722dad637204ab0b7d085fb74b83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: PrecisionDrop.LevelManagment.Unity::PrecisionDrop.LevelManagment.Unity.PlatformGenerator
+  poolId: Platform
+  rootId: Root
+  partId: Part
+  pieceId: Piece
   platformsHolder: {fileID: 1903749731}
   totalParts: 3
   segments: 36
@@ -2079,6 +2083,8 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   smashColorChangeTime: 0.15
+  poolId: Player_VFX
+  bounceId: BounceEffect
 --- !u!1 &8709977730161427415
 GameObject:
   m_ObjectHideFlags: 0

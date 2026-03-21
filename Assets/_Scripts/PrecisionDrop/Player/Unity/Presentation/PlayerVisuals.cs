@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using CocaCopa.Core.Animation;
-using CocaCopa.PrefabRegistry;
+using CocaCopa.ObjectPooling;
 using UnityEngine;
 
 namespace PrecisionDrop.Player.Unity.Presentation {
@@ -14,12 +14,13 @@ namespace PrecisionDrop.Player.Unity.Presentation {
         [SerializeField] private AnimationCurve smashColorCurve = AnimationCurve.Linear(0f, 0f, 1f, 1f);
         [SerializeField] private float smashColorChangeTime;
 
-        private const string PlayerGroupId = "Player_Bounce";
-
-        private MeshRenderer meshRenderer;
-        private PlayerTheme theme;
+        [Header("Pool Selection")]
+        [SerializeField] private string poolId;
+        [SerializeField] private string bounceId;
 
         private ValueAnimator smashColorChangeAnim;
+        private MeshRenderer meshRenderer;
+        private PlayerTheme theme;
 
         private void Awake() {
             meshRenderer = GetComponent<MeshRenderer>();
@@ -36,12 +37,31 @@ namespace PrecisionDrop.Player.Unity.Presentation {
         }
 
         internal void BounceEffect(Transform hitObj) {
-            if (hitObj == null) { throw new NullReferenceException($"[{nameof(PlayerVisuals)}] {nameof(hitObj)}"); }
+            if (!hitObj) { throw new ArgumentNullException(nameof(hitObj), $"[{nameof(PlayerVisuals)}] {nameof(BounceEffect)} failed: {nameof(hitObj)} is null."); }
 
-            if (PrefabRegistry.TryInstantiate(PlayerGroupId, theme.BounceVfxId, hitObj, out GameObject bounceVfx)) {
-                Vector3 spherePosition = transform.position;
-                bounceVfx.transform.position = spherePosition;
+            GameObject bounceVfx = RentBounceVfxObj(hitObj, out float duration);
+            bounceVfx.transform.position = transform.position;
+            StartCoroutine(ReturnBounceVfxToPool(bounceVfx, duration));
+        }
+
+        private GameObject RentBounceVfxObj(Transform hitObj, out float vfxDuration) {
+            GameObject vfx = PoolApi.Rent(poolId, bounceId, hitObj);
+
+            if (!vfx.TryGetComponent(out ParticleSystem ps)) {
+                throw new MissingComponentException(
+                    $"[{nameof(PlayerVisuals)}] {nameof(RentBounceVfxObj)} failed: rented VFX is missing {nameof(ParticleSystem)}."
+                );
             }
+            vfxDuration = ps.main.duration + ps.main.startLifetime.constantMax;
+            ParticleSystem.MainModule main = ps.main;
+            main.startColor = theme.BounceVfxColor;
+
+            return vfx;
+        }
+
+        private static IEnumerator ReturnBounceVfxToPool(GameObject vfx, float returnInSeconds) {
+            yield return new WaitForSeconds(returnInSeconds);
+            if (vfx) { PoolApi.Return(vfx); }
         }
 
         internal void SmashState(bool enable) {
