@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace PrecisionDrop.Player.Unity {
     [RequireComponent(typeof(Rigidbody))]
-    internal sealed class PlayerSphere : MonoBehaviour, IPlayerSphere, IPlayerStateRead, IPlayerStateWrite {
+    public sealed class PlayerSphere : MonoBehaviour, IPlayerSphere, IPlayerStateRead, IPlayerStateWrite {
         [SerializeField] private PlayerConfigAsset defaultConfig;
         [SerializeField] private PlayerVisuals visuals;
 

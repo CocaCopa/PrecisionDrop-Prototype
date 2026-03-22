@@ -1217,6 +1217,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: PrecisionDrop.App.Unity::PrecisionDrop.App.Unity.AppBootstrapper
   themeSelectorAsset: {fileID: 11400000, guid: 1cb81bb46fec2a74fb72cf120eac25de, type: 2}
   uiBootstrapper: {fileID: 778090966}
+  environment: {fileID: 1636195631}
   playerSystem: {fileID: 1087362015}
   levelGeneratorSystem: {fileID: 326202816}
   platformsSystem: {fileID: 970392691}
@@ -1360,6 +1361,37 @@ MonoBehaviour:
   towerController: {fileID: 678116792}
   playerSphere: {fileID: 479435879}
   playerVisuals: {fileID: 8382022908429848329}
+--- !u!1 &1257907205
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1257907206}
+  m_Layer: 0
+  m_Name: EditorOnly
+  m_TagString: EditorOnly
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1257907206
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1257907205}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1431603226
 GameObject:
   m_ObjectHideFlags: 0
@@ -1698,6 +1730,51 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1636195630
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1636195632}
+  - component: {fileID: 1636195631}
+  m_Layer: 0
+  m_Name: Environment
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1636195631
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1636195630}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8dbacd051b0437ca00b8bdf0159120d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PrecisionDrop.GameEnvironment.Unity.Environment
+  towerRenderer: {fileID: 8712997518207892933}
+--- !u!4 &1636195632
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1636195630}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -15.29423, y: 0, z: -14.86268}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1724987612
 GameObject:
   m_ObjectHideFlags: 0
@@ -1987,7 +2064,7 @@ GameObject:
   - component: {fileID: 6603007029527981497}
   - component: {fileID: 8712997518207892933}
   m_Layer: 0
-  m_Name: CentralCylinder
+  m_Name: Tower
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2156,6 +2233,7 @@ SceneRoots:
   m_Roots:
   - {fileID: 410087041}
   - {fileID: 832575519}
+  - {fileID: 1257907206}
   - {fileID: 1846909223}
   - {fileID: 864054524}
   - {fileID: 679105235}
@@ -2165,6 +2243,7 @@ SceneRoots:
   - {fileID: 1620066338}
   - {fileID: 1505284439}
   - {fileID: 8334999856831895917}
+  - {fileID: 1636195632}
   - {fileID: 1087025173}
   - {fileID: 892757038}
   - {fileID: 778090967}

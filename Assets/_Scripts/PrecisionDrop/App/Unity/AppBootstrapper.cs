@@ -1,12 +1,12 @@
 using System;
+using PrecisionDrop.App.Unity.Themes;
 using PrecisionDrop.GameFlow.Unity;
 using PrecisionDrop.LevelGeneration.Unity;
 using PrecisionDrop.Platforms.Unity;
-using PrecisionDrop.Platforms.Unity.Presentation;
 using PrecisionDrop.Player.Unity;
-using PrecisionDrop.Player.Unity.Presentation;
 using PrecisionDrop.SessionTracker.Unity;
 using UnityEngine;
+using Environment = PrecisionDrop.GameEnvironment.Unity.Environment;
 
 namespace PrecisionDrop.App.Unity {
     public sealed class AppBootstrapper : MonoBehaviour {
@@ -15,6 +15,9 @@ namespace PrecisionDrop.App.Unity {
 
         [Header("UI Bootstrapper")]
         [SerializeField] private UiBootstrapper uiBootstrapper;
+
+        [Header("Environment")]
+        [SerializeField] private Environment environment;
 
         [Header("Scene Systems")]
         [SerializeField] private PlayerSystem playerSystem;
@@ -40,6 +43,7 @@ namespace PrecisionDrop.App.Unity {
             gameSessionInstaller = new GameSessionInstaller();
 
             LevelThemeAsset levelTheme = themeSelectorAsset.Select();
+            environment.ApplyTheme(levelTheme.EnvironmentTheme);
 
             platformsSystem.Install(levelTheme.PlatformTheme);
             gameFlowInstaller.Install(playerSystem.PlayerApi, platformsSystem.EventBus);

@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace PrecisionDrop.Platforms.Unity {
     [RequireComponent(typeof(Collider))]
-    internal sealed class PlatformPiece : MonoBehaviour, IPoolable {
+    public sealed class PlatformPiece : MonoBehaviour, IPoolable {
         private Collider pieceCollider;
         private MeshRenderer pieceRenderer;
         private PieceVariant pieceVariant;

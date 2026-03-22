@@ -1,0 +1,21 @@
+{
+  "name": "PrecisionDrop.App.EditorUtils",
+  "rootNamespace": "PrecisionDrop.App.EditorUtils",
+  "references": [
+    "PrecisionDrop.App.Unity",
+    "PrecisionDrop.Platforms.Unity",
+    "PrecisionDrop.Player.Unity",
+    "PrecisionDrop.GameEnvironment.Unity"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": true,
+  "precompiledReferences": [],
+  "autoReferenced": false,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

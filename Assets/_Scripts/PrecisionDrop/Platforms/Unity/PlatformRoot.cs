@@ -5,7 +5,7 @@ using PrecisionDrop.Platforms.Contracts;
 using UnityEngine;
 
 namespace PrecisionDrop.Platforms.Unity {
-    internal sealed class PlatformRoot : MonoBehaviour, IPlatform {
+    public sealed class PlatformRoot : MonoBehaviour, IPlatform {
         [SerializeField] private float breakForceAmount;
 
         private const float BounceCooldown = 0.15f;

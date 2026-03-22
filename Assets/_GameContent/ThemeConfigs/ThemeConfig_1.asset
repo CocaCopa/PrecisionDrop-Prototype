@@ -21,3 +21,6 @@ MonoBehaviour:
   platformTheme:
     regularColor: {r: 0.26666668, g: 0.29411766, b: 0.32941177, a: 1}
     dangerColor: {r: 0.54901963, g: 0.6509804, b: 0.85882354, a: 1}
+  environmentTheme:
+    skyboxMap: {fileID: 8900000, guid: f038ed73200c2564f98f101a0b005283, type: 3}
+    towerColor: {r: 0.1764706, g: 0.19215687, b: 0.21960784, a: 1}
