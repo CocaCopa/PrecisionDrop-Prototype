@@ -1,17 +1,40 @@
-﻿using PrecisionDrop.SessionTracker.Contracts;
+﻿using System;
 using PrecisionDrop.UserInterface.Gameplay;
+using PrecisionDrop.UserInterface.Screens;
 using UnityEngine;
 
 namespace PrecisionDrop.App.Unity {
     internal sealed class UiBootstrapper : MonoBehaviour {
+        [SerializeField] private LoseScreenUI loseScreenUI;
         [SerializeField] private ScoreUI scoreUI;
 
-        internal void Install(IScore score) {
-            scoreUI.Install(score);
+        private SessionFlowController sessionFlowController;
+
+        private void Awake() {
+            ValidateSceneWiring();
+        }
+
+        internal void Install(AppBootstrapper ab) {
+            scoreUI.Install(ab.GameFlowRef, ab.ScoreRef);
+            loseScreenUI.Install(ab.InputSourceRef, ab.GameFlowRef, ab.ScoreRef);
+
+            sessionFlowController = new SessionFlowController();
+            sessionFlowController.Install(loseScreenUI);
         }
 
         internal void Init() {
             scoreUI.Init();
+            loseScreenUI.Init();
+            sessionFlowController.Init();
+        }
+
+        private void ValidateSceneWiring() {
+            if (!scoreUI) { throw new NullReferenceException(Msg(nameof(scoreUI))); }
+            if (!loseScreenUI) { throw new NullReferenceException(Msg(nameof(loseScreenUI))); }
+        }
+
+        private string Msg(string fieldName) {
+            return $"[{nameof(AppBootstrapper)}] Missing reference: {fieldName} on '{name}'.";
         }
     }
 }
