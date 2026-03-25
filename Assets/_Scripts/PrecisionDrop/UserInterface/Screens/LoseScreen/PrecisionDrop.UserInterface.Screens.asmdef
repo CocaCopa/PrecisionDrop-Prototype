@@ -1,11 +1,13 @@
 {
-  "name": "PrecisionDrop.UserInterface.Gameplay",
-  "rootNamespace": "PrecisionDrop.UserInterface.Gameplay",
+  "name": "PrecisionDrop.UserInterface.Screens",
+  "rootNamespace": "PrecisionDrop.UserInterface.Screens",
   "references": [
     "Unity.TextMeshPro",
     "CocaCopa.Unity",
+    "PrecisionDrop.Input.Contracts",
     "PrecisionDrop.SessionTracker.Contracts",
-    "PrecisionDrop.GameFlow.Contracts"
+    "PrecisionDrop.GameFlow.Contracts",
+    "PrecisionDrop.UserInterface.Screens.Contracts"
   ],
   "includePlatforms": [],
   "excludePlatforms": [],
