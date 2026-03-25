@@ -7,6 +7,7 @@ using UnityEngine;
 
 namespace PrecisionDrop.Player.Unity {
     public class PlayerSystem : MonoBehaviour {
+        [SerializeField] private PlayerConfigAsset playerConfig;
         [SerializeField] private CameraController cameraController;
         [SerializeField] private TowerController towerController;
         [SerializeField] private PlayerSphere playerSphere;
@@ -16,12 +17,14 @@ namespace PrecisionDrop.Player.Unity {
         private bool initialized;
 
         public PlayerAccess PlayerApi => new(playerSphere, playerSphere, playerSphere);
+        public PlayerConfigAsset PlayerConfig => playerConfig;
 
         private void Awake() {
-            if (cameraController == null) { throw new NullReferenceException($"[{nameof(PlayerSystem)}] {nameof(cameraController)} is not assigned."); }
-            if (towerController == null) { throw new NullReferenceException($"[{nameof(PlayerSystem)}] {nameof(towerController)} is not assigned."); }
-            if (playerVisuals == null) { throw new NullReferenceException($"[{nameof(PlayerSystem)}] {nameof(playerVisuals)} is not assigned."); }
-            if (playerSphere == null) { throw new NullReferenceException($"[{nameof(PlayerSystem)}] {nameof(playerSphere)} is not assigned."); }
+            if (playerConfig == null) { throw NullReferenceException(nameof(playerConfig)); }
+            if (cameraController == null) { throw NullReferenceException(nameof(cameraController)); }
+            if (towerController == null) { throw NullReferenceException(nameof(towerController)); }
+            if (playerVisuals == null) { throw NullReferenceException(nameof(playerVisuals)); }
+            if (playerSphere == null) { throw NullReferenceException(nameof(playerSphere)); }
         }
 
         public void Install(IInputSource inputSource, IGameFlow gameFlow, PlayerTheme theme) {
@@ -29,6 +32,7 @@ namespace PrecisionDrop.Player.Unity {
             if (gameFlow is null) { throw new ArgumentNullException(nameof(gameFlow)); }
 
             installed = true;
+            playerSphere.Install(playerConfig.JumpStrength);
             cameraController.Install(gameFlow);
             towerController.Install(inputSource, gameFlow);
             playerVisuals.Install(theme);
@@ -46,6 +50,12 @@ namespace PrecisionDrop.Player.Unity {
             cameraController.Init();
             towerController.Init();
             playerVisuals.ApplyTheme();
+        }
+
+        private NullReferenceException NullReferenceException(string fieldName) {
+            return new NullReferenceException(
+                $"[{nameof(PlayerSystem)}] {fieldName} is not assigned."
+            );
         }
     }
 }

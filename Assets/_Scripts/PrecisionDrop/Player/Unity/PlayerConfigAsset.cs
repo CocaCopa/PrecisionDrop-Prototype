@@ -2,9 +2,9 @@ using UnityEngine;
 
 namespace PrecisionDrop.Player.Unity {
     [CreateAssetMenu(fileName = "NewPlayerConfig", menuName = "PrecisionDrop/Player/Config")]
-    internal sealed class PlayerConfigAsset : ScriptableObject {
-        [SerializeField] private float jumpStrength;
-        [SerializeField] private int smashThreshold;
+    public sealed class PlayerConfigAsset : ScriptableObject {
+        [SerializeField] [Min(0f)] private float jumpStrength;
+        [SerializeField] [Min(1)] private int smashThreshold;
 
         public float JumpStrength => jumpStrength;
         public int SmashThreshold => smashThreshold;

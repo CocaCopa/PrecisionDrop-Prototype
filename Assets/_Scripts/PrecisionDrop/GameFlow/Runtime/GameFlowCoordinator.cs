@@ -6,6 +6,7 @@ using PrecisionDrop.Player.Contracts;
 namespace PrecisionDrop.GameFlow.Runtime {
     internal sealed class GameFlowCoordinator : IGameFlow {
         private readonly PlayerAccess playerAccess;
+        private readonly float smashThreshold;
         private readonly IPlatformEventBus platformEventBus;
 
         public event Action OnPlayerPassedPlatform;
@@ -15,8 +16,9 @@ namespace PrecisionDrop.GameFlow.Runtime {
         private int passCounter;
         private bool gameOver;
 
-        internal GameFlowCoordinator(PlayerAccess playerAccess, IPlatformEventBus platformEventBus) {
+        internal GameFlowCoordinator(PlayerAccess playerAccess, float smashThreshold, IPlatformEventBus platformEventBus) {
             this.playerAccess = playerAccess;
+            this.smashThreshold = smashThreshold;
             this.platformEventBus = platformEventBus;
         }
 
@@ -64,9 +66,9 @@ namespace PrecisionDrop.GameFlow.Runtime {
         private void PlatformEventBus_OnPlatformPassed(IPlatform platform) {
             if (gameOver) { return; }
 
-            if (passCounter > 2 && !playerAccess.StateRead.CanSmash) { playerAccess.StateWrite.SetSmashState(true); }
-            platform.Break();
             passCounter++;
+            if (passCounter >= smashThreshold && !playerAccess.StateRead.CanSmash) { playerAccess.StateWrite.SetSmashState(true); }
+            platform.Break();
             OnPlayerPassedPlatform?.Invoke();
         }
     }

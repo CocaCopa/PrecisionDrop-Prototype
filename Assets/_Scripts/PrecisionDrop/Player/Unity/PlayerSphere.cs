@@ -5,21 +5,27 @@ using UnityEngine;
 namespace PrecisionDrop.Player.Unity {
     [RequireComponent(typeof(Rigidbody))]
     public sealed class PlayerSphere : MonoBehaviour, IPlayerSphere, IPlayerStateRead, IPlayerStateWrite {
-        [SerializeField] private PlayerConfigAsset defaultConfig;
         [SerializeField] private PlayerVisuals visuals;
 
-        private bool canJump;
+        private PlayerConfigAsset config;
         private Rigidbody sphereRb;
+
+        private bool canJump;
         private bool test;
+        private float jumpStrength;
 
         private void Awake() {
             sphereRb = GetComponent<Rigidbody>();
             canJump = true;
         }
 
+        public void Install(float jumpStrengthValue) {
+            jumpStrength = jumpStrengthValue;
+        }
+
         public void Jump() {
             if (!canJump) { return; }
-            sphereRb.linearVelocity = defaultConfig.JumpStrength * Vector3.up;
+            sphereRb.linearVelocity = jumpStrength * Vector3.up;
             visuals.BounceEffect(GetCollidedObj());
         }
 

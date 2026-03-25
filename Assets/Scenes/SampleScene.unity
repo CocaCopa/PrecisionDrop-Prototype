@@ -1077,7 +1077,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 034e0de34b49fa2449ec2d3d51452c7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PrecisionDrop.Player.Unity.PlayerSphere
-  defaultConfig: {fileID: 11400000, guid: d2c265eab474ba840a42275e92b912bd, type: 2}
   visuals: {fileID: 8382022908429848329}
 --- !u!1 &555026528
 GameObject:
@@ -1208,7 +1207,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc0bb53263840454693c79d9b05b3306, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PrecisionDrop.Player.Unity.CameraController
-  unityInput: {fileID: 1903074189}
   towerObj: {fileID: 1903749731}
   centralCylinder: {fileID: 592360829889967031}
   offsetOnPassPlatform: 5
@@ -2173,6 +2171,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7884ff3a48cd42fab2907973044825c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: PrecisionDrop.Player.Unity::PrecisionDrop.Player.Unity.PlayerSystem
+  playerConfig: {fileID: 11400000, guid: d2c265eab474ba840a42275e92b912bd, type: 2}
   cameraController: {fileID: 1558143331}
   towerController: {fileID: 678116792}
   playerSphere: {fileID: 479435879}

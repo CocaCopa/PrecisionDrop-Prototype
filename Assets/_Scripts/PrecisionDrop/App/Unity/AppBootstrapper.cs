@@ -35,6 +35,7 @@ namespace PrecisionDrop.App.Unity {
         private GameSessionInstaller gameSessionInstaller;
 
         internal PlayerAccess PlayerAccessRef => playerSystem.PlayerApi;
+        internal PlayerConfigAsset PlayerConfigRef => playerSystem.PlayerConfig;
         internal IGameFlow GameFlowRef => gameFlowInstaller.Api;
         internal IPlatformBuilder PlatformBuilderRef => platformsSystem.Builder;
         internal IPlatformEventBus PlatformEventBusRef => platformsSystem.EventBus;
@@ -60,7 +61,7 @@ namespace PrecisionDrop.App.Unity {
             environment.ApplyTheme(levelTheme.EnvironmentTheme);
 
             platformsSystem.Install(levelTheme.PlatformTheme);
-            gameFlowInstaller.Install(PlayerAccessRef, PlatformEventBusRef);
+            gameFlowInstaller.Install(PlayerAccessRef, PlayerConfigRef.SmashThreshold, PlatformEventBusRef);
             levelGeneratorSystem.Install(GameFlowRef, PlatformBuilderRef);
             playerSystem.Install(InputSourceRef, GameFlowRef, levelTheme.PlayerTheme);
             gameSessionInstaller.Install(GameFlowRef);

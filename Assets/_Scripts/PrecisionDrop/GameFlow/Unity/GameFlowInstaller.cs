@@ -13,11 +13,11 @@ namespace PrecisionDrop.GameFlow.Unity {
 
         public IGameFlow Api => installed ? coordinator : throw new InvalidOperationException($"[{nameof(GameFlowInstaller)}] API accessed before {nameof(Install)}().");
 
-        public void Install(PlayerAccess playerAccess, IPlatformEventBus eventBus) {
+        public void Install(PlayerAccess playerAccess, float smashThreshold, IPlatformEventBus eventBus) {
             if (installed) { throw new InvalidOperationException($"[{nameof(GameFlowInstaller)}] {nameof(Install)}() called twice."); }
             if (eventBus is null) { throw new ArgumentNullException(nameof(eventBus)); }
 
-            coordinator = new GameFlowCoordinator(playerAccess, eventBus);
+            coordinator = new GameFlowCoordinator(playerAccess, smashThreshold, eventBus);
             installed = true;
         }
 

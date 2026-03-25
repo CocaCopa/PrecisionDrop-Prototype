@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: DefaultSphere
   m_EditorClassIdentifier: PrecisionDrop.Player.Unity::PrecisionDrop.Player.Unity.PlayerConfigAsset
   jumpStrength: 14
-  smashThreshold: 0
+  smashThreshold: 3
