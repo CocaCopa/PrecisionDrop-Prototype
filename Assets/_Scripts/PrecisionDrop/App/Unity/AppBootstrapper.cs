@@ -62,7 +62,7 @@ namespace PrecisionDrop.App.Unity {
             platformsSystem.Install(levelTheme.PlatformTheme);
             gameFlowInstaller.Install(PlayerAccessRef, PlatformEventBusRef);
             levelGeneratorSystem.Install(GameFlowRef, PlatformBuilderRef);
-            playerSystem.Install(GameFlowRef, levelTheme.PlayerTheme);
+            playerSystem.Install(InputSourceRef, GameFlowRef, levelTheme.PlayerTheme);
             gameSessionInstaller.Install(GameFlowRef);
         }
 

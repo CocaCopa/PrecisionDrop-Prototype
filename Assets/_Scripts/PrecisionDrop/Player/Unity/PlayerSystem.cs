@@ -1,5 +1,6 @@
 using System;
 using PrecisionDrop.GameFlow.Contracts;
+using PrecisionDrop.Input.Contracts;
 using PrecisionDrop.Player.Contracts;
 using PrecisionDrop.Player.Unity.Presentation;
 using UnityEngine;
@@ -23,13 +24,13 @@ namespace PrecisionDrop.Player.Unity {
             if (playerSphere == null) { throw new NullReferenceException($"[{nameof(PlayerSystem)}] {nameof(playerSphere)} is not assigned."); }
         }
 
-        public void Install(IGameFlow gameFlow, PlayerTheme theme) {
+        public void Install(IInputSource inputSource, IGameFlow gameFlow, PlayerTheme theme) {
             if (installed) { throw new InvalidOperationException($"[{nameof(PlayerSystem)}] {nameof(Install)}() called twice."); }
             if (gameFlow is null) { throw new ArgumentNullException(nameof(gameFlow)); }
 
             installed = true;
             cameraController.Install(gameFlow);
-            towerController.Install(gameFlow);
+            towerController.Install(inputSource, gameFlow);
             playerVisuals.Install(theme);
         }
 

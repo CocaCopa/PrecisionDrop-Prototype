@@ -1,27 +1,23 @@
-using System;
 using PrecisionDrop.GameFlow.Contracts;
 using PrecisionDrop.Input.Contracts;
 using UnityEngine;
 
 namespace PrecisionDrop.Player.Unity {
     internal sealed class TowerController : MonoBehaviour {
-        [SerializeField] private GameObject unityInput;
         [SerializeField] private GameObject towerObj;
         [Space(10f)]
         [SerializeField] private Transform centralCylinder;
         [SerializeField] private float offsetOnPassPlatform;
 
-        private IInputSource InputSource { get; set; }
+        private IInputSource inputSource;
         private IGameFlow gameFlow;
 
-        internal void Install(IGameFlow gameFlow) {
-            this.gameFlow = gameFlow;
+        internal void Install(IInputSource inputSourceRef, IGameFlow gameFlowRef) {
+            inputSource = inputSourceRef;
+            gameFlow = gameFlowRef;
         }
 
         public void Init() {
-            if (!unityInput.TryGetComponent(out IInputSource source)) { throw new Exception($"GameObject '{unityInput.name}' does not contain a component implementing {nameof(IInputSource)}"); }
-            InputSource = source;
-
             gameFlow.OnPlayerPassedPlatform += GameFlow_OnPlayerPassedPlatform;
             gameFlow.OnPlayerHitDanger += GameFlow_OnPlayerHitDanger;
         }
@@ -35,10 +31,12 @@ namespace PrecisionDrop.Player.Unity {
         }
 
         private void LateUpdate() {
-            if (InputSource is not { IsHolding: true }) { return; }
+            RotateTower();
+        }
 
+        private void RotateTower() {
             Vector3 towerEuler = towerObj.transform.localEulerAngles;
-            towerEuler.y += InputSource.MouseDragDelta.x;
+            towerEuler.y += inputSource.MouseDragDelta.x;
             towerObj.transform.localEulerAngles = towerEuler;
         }
     }
