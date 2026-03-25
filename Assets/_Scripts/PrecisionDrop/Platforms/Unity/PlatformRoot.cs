@@ -8,7 +8,7 @@ namespace PrecisionDrop.Platforms.Unity {
     public sealed class PlatformRoot : MonoBehaviour, IPlatform {
         [SerializeField] private float breakForceAmount;
 
-        private const float BounceCooldown = 0.15f;
+        private const float BounceCooldown = 0.5f;
         private float bounceTimer;
 
         internal event Action<PlatformRoot, PieceVariant> OnCollidedPlatform;
