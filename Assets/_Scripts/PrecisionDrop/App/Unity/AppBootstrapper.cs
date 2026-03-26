@@ -40,6 +40,7 @@ namespace PrecisionDrop.App.Unity {
         internal IPlatformBuilder PlatformBuilderRef => platformsSystem.Builder;
         internal IPlatformEventBus PlatformEventBusRef => platformsSystem.EventBus;
         internal IScore ScoreRef => gameSessionInstaller.ScoreApi;
+        internal ICombo ComboRef => gameSessionInstaller.ComboApi;
         internal IInputSource InputSourceRef => (IInputSource)unityInput;
 
         private void Awake() {
