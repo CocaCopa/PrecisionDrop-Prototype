@@ -10,6 +10,7 @@ namespace PrecisionDrop.GameFlow.Runtime {
         private readonly IPlatformEventBus platformEventBus;
 
         public event Action OnPlayerPassedPlatform;
+        public event Action<SmashInfo> OnPlayerSmashedPlatform;
         public event Action OnPlayerBounced;
         public event Action OnPlayerHitDanger;
 
@@ -28,16 +29,19 @@ namespace PrecisionDrop.GameFlow.Runtime {
             platformEventBus.OnPlatformPassed += PlatformEventBus_OnPlatformPassed;
         }
 
-        private void PlatformEventBus_OnPlatformCollision(IPlatform platform, PieceVariant pieceVariant) {
+        private void PlatformEventBus_OnPlatformCollision(IPlatform platform, CollisionData colData) {
             if (gameOver) { return; }
 
-            if (playerAccess.StateRead.CanSmash) {
-                ForceBreakPlatform(platform);
-                NormalCollision();
-            }
-            else { VariantBasedCollision(pieceVariant); }
+            if (playerAccess.StateRead.CanSmash) { SmashCollision(platform, colData); }
+            else { VariantBasedCollision(colData.PieceVariant); }
 
             passCounter = 0;
+        }
+
+        private void SmashCollision(IPlatform platform, CollisionData colData) {
+            ForceBreakPlatform(platform);
+            NormalCollision();
+            OnPlayerSmashedPlatform?.Invoke(new SmashInfo(VariantToSmashType(colData.PieceVariant), colData.ContactPoint));
         }
 
         private void ForceBreakPlatform(IPlatform platform) {
@@ -70,6 +74,14 @@ namespace PrecisionDrop.GameFlow.Runtime {
             if (passCounter >= smashThreshold && !playerAccess.StateRead.CanSmash) { playerAccess.StateWrite.SetSmashState(true); }
             platform.Break();
             OnPlayerPassedPlatform?.Invoke();
+        }
+
+        private static SmashType VariantToSmashType(PieceVariant variant) {
+            return variant switch {
+                PieceVariant.Normal => SmashType.Normal,
+                PieceVariant.Danger => SmashType.Danger,
+                _ => throw new NotImplementedException($"[{nameof(GameFlowCoordinator)}] Variant '{variant.ToString()}' does not match with a '{nameof(SmashType)}'")
+            };
         }
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using CocaCopa.ObjectPooling;
+using CocaCopa.Primitives;
 using PrecisionDrop.Platforms.Contracts;
 using UnityEngine;
 
@@ -10,7 +11,7 @@ namespace PrecisionDrop.Platforms.Unity {
         private MeshRenderer pieceRenderer;
         private PieceVariant pieceVariant;
 
-        internal event Action<PieceVariant> OnPlayerCollided;
+        internal event Action<CollisionData> OnPlayerCollided;
         internal event Action OnPlayerPassed;
 
         private void Awake() {
@@ -21,8 +22,10 @@ namespace PrecisionDrop.Platforms.Unity {
             if (pieceRenderer == null) { throw new NullReferenceException($"[{nameof(PlatformPiece)}] Component: '{nameof(MeshRenderer)}' not serialized"); }
         }
 
-        private void OnCollisionEnter(Collision _) {
-            OnPlayerCollided?.Invoke(pieceVariant);
+        private void OnCollisionEnter(Collision c) {
+            Vector3 contactPoint = c.contacts[0].point;
+            var colData = new CollisionData(pieceVariant, new C_Vector3(contactPoint.x, contactPoint.y, contactPoint.z));
+            OnPlayerCollided?.Invoke(colData);
         }
 
         private void OnTriggerEnter(Collider other) {

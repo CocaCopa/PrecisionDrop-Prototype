@@ -11,7 +11,7 @@ namespace PrecisionDrop.Platforms.Unity {
         private const float BounceCooldown = 0.5f;
         private float bounceTimer;
 
-        internal event Action<PlatformRoot, PieceVariant> OnCollidedPlatform;
+        internal event Action<PlatformRoot, CollisionData> OnCollidedPlatform;
         internal event Action<PlatformRoot> OnPassedPlatform;
 
         private PlatformPart[] platformParts;
@@ -41,11 +41,11 @@ namespace PrecisionDrop.Platforms.Unity {
             HookPieceEvents(platformPieces);
         }
 
-        private void Piece_OnPlayerCollided(PieceVariant pieceVariant) {
+        private void Piece_OnPlayerCollided(CollisionData colData) {
             if (Time.time < bounceTimer) { return; }
 
             bounceTimer = Time.time + BounceCooldown;
-            OnCollidedPlatform?.Invoke(this, pieceVariant);
+            OnCollidedPlatform?.Invoke(this, colData);
         }
 
         private void Platform_OnPlayerPassed() {

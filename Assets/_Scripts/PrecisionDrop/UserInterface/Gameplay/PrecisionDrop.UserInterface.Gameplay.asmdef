@@ -5,7 +5,9 @@
     "Unity.TextMeshPro",
     "CocaCopa.Unity",
     "PrecisionDrop.SessionTracker.Contracts",
-    "PrecisionDrop.GameFlow.Contracts"
+    "PrecisionDrop.GameFlow.Contracts",
+    "CocaCopa.ObjectPooling",
+    "CocaCopa.Primitives"
   ],
   "includePlatforms": [],
   "excludePlatforms": [],

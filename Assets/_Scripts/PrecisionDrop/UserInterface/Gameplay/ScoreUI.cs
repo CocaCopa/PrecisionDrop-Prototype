@@ -35,19 +35,20 @@ namespace PrecisionDrop.UserInterface.Gameplay {
             initialized = true;
             gameFlow.OnPlayerHitDanger += GameFlow_OnPlayerHitDanger;
             score.OnScoreChanged += Score_OnScoreChanged;
-            RefreshScore();
+            RefreshScore(0);
         }
 
         private void GameFlow_OnPlayerHitDanger() {
             scoreAnimator.Hide();
         }
 
-        private void Score_OnScoreChanged() {
-            RefreshScore();
+        private void Score_OnScoreChanged(ScoreInfo scoreInfo) {
+            int newTotal = scoreInfo.Total;
+            RefreshScore(newTotal);
         }
 
-        private void RefreshScore() {
-            scoreTxt.SetText(score.CurrentScore.ToString("0"));
+        private void RefreshScore(int newTotal) {
+            scoreTxt.SetText(newTotal.ToString("0"));
         }
 
         private void OnDestroy() {

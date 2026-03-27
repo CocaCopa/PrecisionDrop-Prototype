@@ -17,29 +17,29 @@ MonoBehaviour:
       batchCount: 6
       gapConfigIndex: 0
       alignmentOffset:
-        min: -50
-        max: 50
+        min: 0
+        max: 0
     fullDangerSectionSettings:
       maxFullDangerSections: 2
       maxSolidsForFullDanger: 5
       fullDangerChance: 30
     generalSettings:
       dangerPairRange:
-        min: 1
-        max: 2
-      alignWithPreviousChance: 15
+        min: 3
+        max: 4
+      alignWithPreviousChance: 100
       alignmentOffset:
-        min: -7
-        max: 7
+        min: 0
+        max: 0
     gapConfigs:
-    - totalGaps: 4
+    - totalGaps: 1
       gapRange:
         min: 4
         max: 5
       chance: 100
     dangerConfig:
-      pairCount:
-        densityRatio: 14
+      pair:
+        densityRatio: 20
         minPairCount: 1
       gapVariation:
         shrinkRatio: 75
@@ -47,3 +47,4 @@ MonoBehaviour:
         ratio:
           min: 0
           max: 100
+        edgeSnapChance: 100

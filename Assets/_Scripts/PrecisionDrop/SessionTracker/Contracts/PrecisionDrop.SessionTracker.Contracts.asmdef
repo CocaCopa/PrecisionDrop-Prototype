@@ -1,7 +1,9 @@
 {
     "name": "PrecisionDrop.SessionTracker.Contracts",
     "rootNamespace": "PrecisionDrop.SessionTracker.Contracts",
-    "references": [],
+    "references": [
+        "CocaCopa.Primitives"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

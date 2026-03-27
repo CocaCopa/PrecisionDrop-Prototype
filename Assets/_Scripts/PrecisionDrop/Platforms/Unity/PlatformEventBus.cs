@@ -7,7 +7,7 @@ namespace PrecisionDrop.Platforms.Unity {
         [SerializeField] private PlatformBuilder builder;
 
         public event Action<IPlatform> OnPlatformPassed;
-        public event Action<IPlatform, PieceVariant> OnPlatformCollision;
+        public event Action<IPlatform, CollisionData> OnPlatformCollision;
 
         public void Init() {
             builder.OnPlatformGenerated += Builder_OnPlatformGenerated;
@@ -27,8 +27,8 @@ namespace PrecisionDrop.Platforms.Unity {
             OnPlatformPassed?.Invoke(platform);
         }
 
-        private void Platform_OnCollidedPlatform(PlatformRoot platform, PieceVariant pieceVariant) {
-            OnPlatformCollision?.Invoke(platform, pieceVariant);
+        private void Platform_OnCollidedPlatform(PlatformRoot platform, CollisionData colData) {
+            OnPlatformCollision?.Invoke(platform, colData);
         }
 
         private void UnsubscribeFromPlatform(PlatformRoot platform) {

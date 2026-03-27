@@ -52,8 +52,8 @@ namespace PrecisionDrop.UserInterface.Screens {
             Show();
         }
 
-        private void Score_OnScoreChanged() {
-            latestScore = score.CurrentScore;
+        private void Score_OnScoreChanged(ScoreInfo scoreInfo) {
+            latestScore = scoreInfo.Total;
         }
 
         private void Update() {

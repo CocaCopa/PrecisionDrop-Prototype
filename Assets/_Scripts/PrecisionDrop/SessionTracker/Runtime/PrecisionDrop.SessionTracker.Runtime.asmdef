@@ -3,7 +3,8 @@
   "rootNamespace": "PrecisionDrop.SessionTracker.Runtime",
   "references": [
     "PrecisionDrop.GameFlow.Contracts",
-    "PrecisionDrop.SessionTracker.Contracts"
+    "PrecisionDrop.SessionTracker.Contracts",
+    "CocaCopa.Primitives"
   ],
   "includePlatforms": [],
   "excludePlatforms": [],

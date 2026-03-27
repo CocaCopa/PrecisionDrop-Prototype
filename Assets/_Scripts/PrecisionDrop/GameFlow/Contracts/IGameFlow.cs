@@ -3,6 +3,7 @@ using System;
 namespace PrecisionDrop.GameFlow.Contracts {
     public interface IGameFlow {
         event Action OnPlayerPassedPlatform;
+        event Action<SmashInfo> OnPlayerSmashedPlatform;
         event Action OnPlayerBounced;
         event Action OnPlayerHitDanger;
     }

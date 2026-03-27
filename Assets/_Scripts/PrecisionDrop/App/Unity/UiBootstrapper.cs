@@ -7,6 +7,7 @@ namespace PrecisionDrop.App.Unity {
     internal sealed class UiBootstrapper : MonoBehaviour {
         [SerializeField] private LoseScreenUI loseScreenUI;
         [SerializeField] private ScoreUI scoreUI;
+        [SerializeField] private WorldScorePopup worldScorePopup;
         [SerializeField] private ComboUI comboUI;
 
         private SessionFlowController sessionFlowController;
@@ -17,6 +18,7 @@ namespace PrecisionDrop.App.Unity {
 
         internal void Install(AppBootstrapper ab) {
             scoreUI.Install(ab.GameFlowRef, ab.ScoreRef);
+            worldScorePopup.Install(ab.ScoreRef);
             comboUI.Install(ab.ComboRef);
             loseScreenUI.Install(ab.InputSourceRef, ab.GameFlowRef, ab.ScoreRef);
 
@@ -26,6 +28,7 @@ namespace PrecisionDrop.App.Unity {
 
         internal void Init() {
             scoreUI.Init();
+            worldScorePopup.Init();
             comboUI.Init();
             loseScreenUI.Init();
             sessionFlowController.Init();
@@ -33,6 +36,7 @@ namespace PrecisionDrop.App.Unity {
 
         private void ValidateSceneWiring() {
             if (!scoreUI) { throw new NullReferenceException(Msg(nameof(scoreUI))); }
+            if (!worldScorePopup) { throw new NullReferenceException(Msg(nameof(worldScorePopup))); }
             if (!comboUI) { throw new NullReferenceException(Msg(nameof(comboUI))); }
             if (!loseScreenUI) { throw new NullReferenceException(Msg(nameof(loseScreenUI))); }
         }
