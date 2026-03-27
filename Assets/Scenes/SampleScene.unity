@@ -1347,6 +1347,9 @@ MonoBehaviour:
   towerObj: {fileID: 1903749731}
   centralCylinder: {fileID: 592360829889967031}
   offsetOnPassPlatform: 5
+  rotationMultiplier: 1
+  deltaCompressionExponent: 0.6
+  maxRotationStep: 12
 --- !u!4 &678116793
 Transform:
   m_ObjectHideFlags: 0
@@ -2312,7 +2315,7 @@ MonoBehaviour:
     disappear: 1
   hideOffsets:
     top: 0
-    bottom: 0
+    bottom: 150
     left: 0
     right: 0
   moveCurve:
@@ -3488,7 +3491,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f92cbeaf531ee2249a8ed480cff19ca0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: PrecisionDrop.Input.Unity::PrecisionDrop.Input.Unity.UnityInput
-  mouseSensitivity: 0.85
+  mouseSensitivity: 1
   invertRotation: 1
 --- !u!4 &1903074191
 Transform:
