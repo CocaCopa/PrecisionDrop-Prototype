@@ -13,6 +13,15 @@ MonoBehaviour:
   m_Name: PoolCatalog
   m_EditorClassIdentifier: CocaCopa.ObjectPooling.Unity::CocaCopa.ObjectPooling.Unity.Config.PoolCatalog
   groups:
+  - groupId: UserInterface
+    prewarmGroup: 0
+    prewarmPercentage: 0
+    entries:
+    - id: Score_World
+      prefab: {fileID: 5337280708232963234, guid: 37a414ee55d107c43aceff1aecca650f, type: 3}
+      maxPoolCount: 5
+      prewarm: 0
+      prewarmCount: 1
   - groupId: Player_VFX
     prewarmGroup: 0
     prewarmPercentage: 0
@@ -21,7 +30,7 @@ MonoBehaviour:
       prefab: {fileID: 7275548786892498063, guid: c001aa3c1b9de9b4bac49fde5ebfdcfb, type: 3}
       maxPoolCount: 10
       prewarm: 0
-      prewarmCount: 6
+      prewarmCount: 4
   - groupId: Platform
     prewarmGroup: 0
     prewarmPercentage: 0

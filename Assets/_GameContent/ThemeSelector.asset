@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: PrecisionDrop.App.Unity::PrecisionDrop.App.Unity.ThemeSelectorAsset
   themes:
   - {fileID: 11400000, guid: a9020ef1eb6b68e418ae2b429e287c26, type: 2}
+  - {fileID: 11400000, guid: bc1dd6eb6ef5694469a1110d490fdf58, type: 2}
