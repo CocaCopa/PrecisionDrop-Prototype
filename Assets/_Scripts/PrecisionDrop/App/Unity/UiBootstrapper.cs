@@ -11,22 +11,37 @@ namespace PrecisionDrop.App.Unity {
         [SerializeField] private ComboUI comboUI;
 
         private SessionFlowController sessionFlowController;
+        private bool installed;
+        private bool initialized;
 
         private void Awake() {
             ValidateSceneWiring();
         }
 
-        internal void Install(AppBootstrapper ab) {
-            scoreUI.Install(ab.GameFlowRef, ab.ScoreRef);
-            worldScorePopup.Install(ab.ScoreRef);
-            comboUI.Install(ab.ComboRef);
-            loseScreenUI.Install(ab.InputSourceRef, ab.GameFlowRef, ab.ScoreRef);
+        internal void Install(UiAccess access) {
+            if (installed) { throw new InvalidOperationException($"[{nameof(UiBootstrapper)}] {nameof(Install)}() called twice."); }
+
+            installed = true;
+
+            scoreUI.Install(access.GameFlow, access.Score);
+            worldScorePopup.Install(access.Score);
+            comboUI.Install(access.Combo);
+            loseScreenUI.Install(access.Input, access.GameFlow, access.Score);
 
             sessionFlowController = new SessionFlowController();
             sessionFlowController.Install(loseScreenUI);
         }
 
         internal void Init() {
+            if (!installed) { throw new InvalidOperationException($"[{nameof(UiBootstrapper)}] {nameof(Init)}() called before {nameof(Install)}()."); }
+
+            if (initialized) {
+                Debug.LogWarning($"[{nameof(UiBootstrapper)}] Already initialized.");
+                return;
+            }
+
+            initialized = true;
+
             scoreUI.Init();
             worldScorePopup.Init();
             comboUI.Init();
@@ -42,7 +57,7 @@ namespace PrecisionDrop.App.Unity {
         }
 
         private string Msg(string fieldName) {
-            return $"[{nameof(AppBootstrapper)}] Missing reference: {fieldName} on '{name}'.";
+            return $"[{nameof(UiBootstrapper)}] Missing reference: {fieldName} on '{name}'.";
         }
     }
 }

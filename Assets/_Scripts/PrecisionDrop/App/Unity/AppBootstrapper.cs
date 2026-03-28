@@ -1,9 +1,9 @@
 using System;
-using PrecisionDrop.Input.Unity;
 using PrecisionDrop.App.Unity.Themes;
 using PrecisionDrop.GameFlow.Contracts;
 using PrecisionDrop.GameFlow.Unity;
 using PrecisionDrop.Input.Contracts;
+using PrecisionDrop.Input.Unity;
 using PrecisionDrop.LevelGeneration.Unity;
 using PrecisionDrop.Platforms.Contracts;
 using PrecisionDrop.Platforms.Unity;
@@ -34,19 +34,15 @@ namespace PrecisionDrop.App.Unity {
         private GameFlowInstaller gameFlowInstaller;
         private GameSessionInstaller gameSessionInstaller;
 
-        internal PlayerAccess PlayerAccessRef => playerSystem.PlayerApi;
-        internal PlayerConfigAsset PlayerConfigRef => playerSystem.PlayerConfig;
-        internal IGameFlow GameFlowRef => gameFlowInstaller.Api;
-        internal IPlatformBuilder PlatformBuilderRef => platformsSystem.Builder;
-        internal IPlatformEventBus PlatformEventBusRef => platformsSystem.EventBus;
-        internal IScore ScoreRef => gameSessionInstaller.ScoreApi;
-        internal ICombo ComboRef => gameSessionInstaller.ComboApi;
-        internal IInputSource InputSourceRef => (IInputSource)unityInput;
-
         private void Awake() {
             ValidateSceneWiring();
             Compose();
-            uiBootstrapper.Install(this);
+            uiBootstrapper.Install(new UiAccess(
+                gameFlowInstaller.Api,
+                gameSessionInstaller.ScoreApi,
+                gameSessionInstaller.ComboApi,
+                unityInput
+            ));
         }
 
         private void Start() {
@@ -58,14 +54,29 @@ namespace PrecisionDrop.App.Unity {
             gameFlowInstaller = new GameFlowInstaller();
             gameSessionInstaller = new GameSessionInstaller();
 
-            LevelThemeAsset levelTheme = themeSelectorAsset.Select();
+            LevelThemeAsset levelTheme = themeSelectorAsset.Select()
+                                         ?? throw new NullReferenceException(
+                                             $"[{nameof(AppBootstrapper)}] {nameof(themeSelectorAsset)} returned null {nameof(LevelThemeAsset)}."
+                                         );
+
             environment.ApplyTheme(levelTheme.EnvironmentTheme);
 
             platformsSystem.Install(levelTheme.PlatformTheme);
-            gameFlowInstaller.Install(PlayerAccessRef, PlayerConfigRef.SmashThreshold, PlatformEventBusRef);
-            levelGeneratorSystem.Install(GameFlowRef, PlatformBuilderRef);
-            playerSystem.Install(InputSourceRef, GameFlowRef, levelTheme.PlayerTheme);
-            gameSessionInstaller.Install(GameFlowRef);
+            gameFlowInstaller.Install(
+                playerSystem.PlayerApi,
+                playerSystem.PlayerConfig.SmashThreshold,
+                platformsSystem.EventBus
+            );
+            levelGeneratorSystem.Install(
+                gameFlowInstaller.Api,
+                platformsSystem.Builder
+            );
+            playerSystem.Install(
+                unityInput,
+                gameFlowInstaller.Api,
+                levelTheme.PlayerTheme
+            );
+            gameSessionInstaller.Install(gameFlowInstaller.Api);
         }
 
         private void InitializeSystems() {
@@ -79,15 +90,30 @@ namespace PrecisionDrop.App.Unity {
 
         private void ValidateSceneWiring() {
             if (!themeSelectorAsset) { throw new NullReferenceException(Msg(nameof(themeSelectorAsset))); }
+            if (!uiBootstrapper) { throw new NullReferenceException(Msg(nameof(uiBootstrapper))); }
+            if (!environment) { throw new NullReferenceException(Msg(nameof(environment))); }
             if (!unityInput) { throw new NullReferenceException(Msg(nameof(unityInput))); }
             if (!playerSystem) { throw new NullReferenceException(Msg(nameof(playerSystem))); }
             if (!platformsSystem) { throw new NullReferenceException(Msg(nameof(platformsSystem))); }
             if (!levelGeneratorSystem) { throw new NullReferenceException(Msg(nameof(levelGeneratorSystem))); }
-            if (!uiBootstrapper) { throw new NullReferenceException(Msg(nameof(uiBootstrapper))); }
         }
 
         private string Msg(string fieldName) {
             return $"[{nameof(AppBootstrapper)}] Missing reference: {fieldName} on '{name}'.";
+        }
+    }
+
+    public readonly struct UiAccess {
+        public readonly IGameFlow GameFlow;
+        public readonly IScore Score;
+        public readonly ICombo Combo;
+        public readonly IInputSource Input;
+
+        public UiAccess(IGameFlow gameFlow, IScore score, ICombo combo, IInputSource input) {
+            GameFlow = gameFlow ?? throw new ArgumentNullException(nameof(gameFlow));
+            Score = score ?? throw new ArgumentNullException(nameof(score));
+            Combo = combo ?? throw new ArgumentNullException(nameof(combo));
+            Input = input ?? throw new ArgumentNullException(nameof(input));
         }
     }
 }
