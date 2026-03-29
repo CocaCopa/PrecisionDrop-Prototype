@@ -5,9 +5,7 @@ using PrecisionDrop.GameFlow.Unity;
 using PrecisionDrop.Input.Contracts;
 using PrecisionDrop.Input.Unity;
 using PrecisionDrop.LevelGeneration.Unity;
-using PrecisionDrop.Platforms.Contracts;
 using PrecisionDrop.Platforms.Unity;
-using PrecisionDrop.Player.Contracts;
 using PrecisionDrop.Player.Unity;
 using PrecisionDrop.SessionTracker.Contracts;
 using PrecisionDrop.SessionTracker.Unity;
@@ -24,6 +22,9 @@ namespace PrecisionDrop.App.Unity {
 
         [Header("Environment")]
         [SerializeField] private Environment environment;
+
+        [Header("Audio")]
+        [SerializeField] private ComboAudio comboAudio;
 
         [Header("Scene Systems")]
         [SerializeField] private UnityInput unityInput;
@@ -54,10 +55,7 @@ namespace PrecisionDrop.App.Unity {
             gameFlowInstaller = new GameFlowInstaller();
             gameSessionInstaller = new GameSessionInstaller();
 
-            LevelThemeAsset levelTheme = themeSelectorAsset.Select()
-                                         ?? throw new NullReferenceException(
-                                             $"[{nameof(AppBootstrapper)}] {nameof(themeSelectorAsset)} returned null {nameof(LevelThemeAsset)}."
-                                         );
+            LevelThemeAsset levelTheme = themeSelectorAsset.Select() ?? throw new NullReferenceException($"[{nameof(AppBootstrapper)}] {nameof(themeSelectorAsset)} returned null {nameof(LevelThemeAsset)}.");
 
             environment.ApplyTheme(levelTheme.EnvironmentTheme);
 
@@ -77,6 +75,7 @@ namespace PrecisionDrop.App.Unity {
                 levelTheme.PlayerTheme
             );
             gameSessionInstaller.Install(gameFlowInstaller.Api);
+            comboAudio.Install(gameSessionInstaller.ComboApi);
         }
 
         private void InitializeSystems() {
@@ -86,6 +85,8 @@ namespace PrecisionDrop.App.Unity {
             levelGeneratorSystem.Init();
             playerSystem.Init();
             gameSessionInstaller.Init();
+
+            comboAudio.Init();
         }
 
         private void ValidateSceneWiring() {
@@ -96,6 +97,7 @@ namespace PrecisionDrop.App.Unity {
             if (!playerSystem) { throw new NullReferenceException(Msg(nameof(playerSystem))); }
             if (!platformsSystem) { throw new NullReferenceException(Msg(nameof(platformsSystem))); }
             if (!levelGeneratorSystem) { throw new NullReferenceException(Msg(nameof(levelGeneratorSystem))); }
+            if (!comboAudio) { throw new NullReferenceException(Msg(nameof(comboAudio))); }
         }
 
         private string Msg(string fieldName) {

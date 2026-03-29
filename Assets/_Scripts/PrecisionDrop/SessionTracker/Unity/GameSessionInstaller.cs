@@ -1,6 +1,7 @@
 ﻿using System;
 using PrecisionDrop.GameFlow.Contracts;
 using PrecisionDrop.SessionTracker.Contracts;
+using UnityEngine;
 
 namespace PrecisionDrop.SessionTracker.Unity {
     public sealed class GameSessionInstaller {

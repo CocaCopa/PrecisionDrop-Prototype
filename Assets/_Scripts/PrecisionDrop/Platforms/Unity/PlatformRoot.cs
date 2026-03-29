@@ -6,6 +6,7 @@ using UnityEngine;
 
 namespace PrecisionDrop.Platforms.Unity {
     public sealed class PlatformRoot : MonoBehaviour, IPlatform {
+        [SerializeField] private PlatformAudio sfx;
         [SerializeField] private float breakForceAmount;
 
         private const float BounceCooldown = 0.5f;
@@ -74,6 +75,7 @@ namespace PrecisionDrop.Platforms.Unity {
             DisablePieceColliders();
             ThrowParts();
             StartCoroutine(ReturnPlatformToPool());
+            sfx.PlayBreak();
         }
 
         private IEnumerator ReturnPlatformToPool() {

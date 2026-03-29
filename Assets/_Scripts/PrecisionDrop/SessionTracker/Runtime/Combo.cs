@@ -27,7 +27,7 @@ namespace PrecisionDrop.SessionTracker.Unity {
 
         private void GameFlow_OnPlayerPassedPlatform() {
             comboCounter++;
-            if (comboCounter > 1) { OnComboCounterUpdated?.Invoke(comboCounter); }
+            OnComboCounterUpdated?.Invoke(comboCounter);
         }
     }
 }

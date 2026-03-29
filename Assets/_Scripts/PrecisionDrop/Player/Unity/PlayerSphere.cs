@@ -5,7 +5,8 @@ using UnityEngine;
 namespace PrecisionDrop.Player.Unity {
     [RequireComponent(typeof(Rigidbody))]
     public sealed class PlayerSphere : MonoBehaviour, IPlayerSphere, IPlayerStateRead, IPlayerStateWrite {
-        [SerializeField] private PlayerVisuals visuals;
+        [SerializeField] private PlayerVisuals vfx;
+        [SerializeField] private PlayerAudio sfx;
 
         private PlayerConfigAsset config;
         private Rigidbody sphereRb;
@@ -26,14 +27,15 @@ namespace PrecisionDrop.Player.Unity {
         public void Jump() {
             if (!canJump) { return; }
             sphereRb.linearVelocity = jumpStrength * Vector3.up;
-            visuals.BounceEffect(GetCollidedObj());
+            vfx.BounceEffect(GetCollidedObj());
+            sfx.PlayBounceShort();
         }
 
         public bool CanSmash { get; private set; }
 
         public void SetSmashState(bool enable) {
             CanSmash = enable;
-            visuals.SmashState(enable);
+            vfx.SmashState(enable);
         }
 
         public void Lose() {
@@ -41,6 +43,7 @@ namespace PrecisionDrop.Player.Unity {
 
             sphereRb.interpolation = RigidbodyInterpolation.None;
             transform.SetParent(GetCollidedObj().parent);
+            sfx.PlayBounceFull();
         }
 
         private Transform GetCollidedObj() {

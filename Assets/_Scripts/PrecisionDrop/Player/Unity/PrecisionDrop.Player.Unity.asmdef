@@ -3,6 +3,7 @@
   "rootNamespace": "PrecisionDrop.Player.Unity",
   "references": [
     "CocaCopa.Core",
+    "CocaCopa.Primitives",
     "CocaCopa.ObjectPooling",
     "PrecisionDrop.Input.Contracts",
     "PrecisionDrop.Player.Contracts",
