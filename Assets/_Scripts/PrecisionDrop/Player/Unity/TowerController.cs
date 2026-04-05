@@ -36,6 +36,8 @@ namespace PrecisionDrop.Player.Unity {
         }
 
         private void RotateTower() {
+            if (!inputSource.IsHolding) { return; }
+
             float rawDelta = inputSource.MouseDragDelta.x;
             float adjustedDelta = CompressDelta(rawDelta) * rotationMultiplier;
             adjustedDelta = Mathf.Clamp(adjustedDelta, -maxRotationStep, maxRotationStep);
