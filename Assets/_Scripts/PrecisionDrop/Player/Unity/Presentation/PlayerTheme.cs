@@ -4,10 +4,13 @@ using UnityEngine;
 namespace PrecisionDrop.Player.Unity.Presentation {
     [Serializable]
     public struct PlayerTheme {
+        [Header("Normal")]
         [SerializeField] private Color sphereColor;
-        [SerializeField] private Color sphereSmashColor;
         [SerializeField] private Color trailColor;
+        [Header("Smash")]
+        [SerializeField] private Color sphereSmashColor;
         [SerializeField] private Color trailSmashColor;
+        [Header("Bounce")]
         [SerializeField] private Color bounceVfxColor;
 
         public Color SphereColor => sphereColor;

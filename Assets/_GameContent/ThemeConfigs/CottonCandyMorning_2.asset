@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 193145cd9669bbe408905ab5e290908e, type: 3}
+  m_Name: CottonCandyMorning_2
+  m_EditorClassIdentifier: PrecisionDrop.App.Unity::PrecisionDrop.App.Unity.LevelThemeAsset
+  playerTheme:
+    sphereColor: {r: 0.764151, g: 0.74231815, b: 0, a: 1}
+    trailColor: {r: 0.5660378, g: 0.55051076, b: 0.06140977, a: 1}
+    sphereSmashColor: {r: 0.23529412, g: 0.25882354, b: 1, a: 1}
+    trailSmashColor: {r: 0.32039872, g: 0.33840686, b: 0.9056604, a: 1}
+    bounceVfxColor: {r: 0.5660378, g: 0.5518252, b: 0.104129605, a: 1}
+  platformTheme:
+    regularColor: {r: 0.52156866, g: 0.05490196, b: 0.20784314, a: 1}
+    dangerColor: {r: 0.9056604, g: 0.54254186, b: 0.6542707, a: 1}
+  environmentTheme:
+    skyboxMap: {fileID: 8900000, guid: 46d0b58fb967f1a4586c8b0b65096042, type: 3}
+    towerColor: {r: 0.003921569, g: 0.003921569, b: 0.105882354, a: 1}

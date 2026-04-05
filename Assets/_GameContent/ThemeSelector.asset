@@ -15,3 +15,5 @@ MonoBehaviour:
   themes:
   - {fileID: 11400000, guid: a9020ef1eb6b68e418ae2b429e287c26, type: 2}
   - {fileID: 11400000, guid: bc1dd6eb6ef5694469a1110d490fdf58, type: 2}
+  - {fileID: 11400000, guid: 12a4b6df0139d134a84d48947c75171e, type: 2}
+  - {fileID: 11400000, guid: 9bc7f31f2a2a0004db588cfe97bceeb5, type: 2}
