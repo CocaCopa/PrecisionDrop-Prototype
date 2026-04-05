@@ -9,8 +9,11 @@ A Helix Jump-inspired gameplay prototype built in Unity.
 This prototype focuses on improving collision fairness in a Helix Jump-style game. While playing the original, I frequently encountered moments where the ball looked safe but still triggered a bounce or failure due to oversized collision boundaries.  
 Here, the contact area is intentionally reduced to better match what the player sees, favoring clarity and perceived control over strict physical correctness.
 
-- 🔗 Play: *Soon*
-- 🎥 Gameplay Showcase: *Soon*
+🔗 **Play (WebGL):**  
+https://cocacopa.itch.io/precision-drop
+  
+🎥 **Gameplay Showcase:**  
+*Soon*
 
 ---
 
